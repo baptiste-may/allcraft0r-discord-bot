@@ -23,7 +23,6 @@ public class CommandHelp extends ListenerAdapter {
 			embed.addField(":red_square: **" + Main.prefix + "non (message)**", "> Demande refusée", true);
 			embed.addField(":red_square: **" + Main.prefix + "oui (message)**", "> Demande acceptée", true);
 			embed.addField(":red_square: **" + Main.prefix + "text (message)**", "> Message personnalisé", true);
-			embed.addField(":red_square: **" + Main.prefix + "warn @(membre)**", "> Message de prévention", true);
 			
 			embed.addField(":yellow_square: **" + Main.prefix + "tank**", "> AMERICA ! F*CK YEAHH !!", true);
 			embed.addField(":yellow_square: **" + Main.prefix + "eyes**", "> I'm watching you...", true);

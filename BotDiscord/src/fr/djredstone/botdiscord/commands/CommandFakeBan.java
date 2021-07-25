@@ -68,7 +68,7 @@ public class CommandFakeBan extends ListenerAdapter {
             }
 
             if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
-                channel.sendMessage("You dont have pmerission to run this command").queue();
+                channel.sendMessage(Main.noPermMessage).queue();
                 return;
             }
             
@@ -78,7 +78,8 @@ public class CommandFakeBan extends ListenerAdapter {
 			embed.setColor(Color.DARK_GRAY);
 
             event.getChannel().sendMessage(embed.build()).queue();
-            event.getMessage().delete().queue();
+            event.getChannel().sendTyping().queue();
+			event.getMessage().delete().queue();
             
         }
 		
