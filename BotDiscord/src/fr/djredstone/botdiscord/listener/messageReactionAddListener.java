@@ -18,9 +18,14 @@ public class messageReactionAddListener extends ListenerAdapter {
 			
 			if(event.getMessageId().equalsIgnoreCase(ID)) {
 				
-				if(event.getReaction().getReactionEmote().getEmoji().equalsIgnoreCase("⚔️")) {
+				if(!event.getMember().getUser().equals(event.getJDA().getSelfUser())) {
 					
-					event.getChannel().sendMessage("Test réussi !");
+					if(event.getReaction().getReactionEmote().getEmoji().equalsIgnoreCase("⚔️")) {
+						
+						event.getChannel().sendMessage("Test réussi !").queue();
+						event.getTextChannel().retrieveMessageById(event.getMessageId()).complete().delete().queue();
+
+					}
 					
 				}
 				

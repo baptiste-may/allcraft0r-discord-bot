@@ -37,10 +37,10 @@ public class Main extends JavaPlugin {
 	public HashMap<User, Integer> messageByMinute = new HashMap<User, Integer>();
 	
 	public List<String> P4startMessageID = new ArrayList<String>();
-	public Boolean P4gameStart = false;
-	public String P4gameMessageID = null;
-	public User P4firstPlayer = null;
-	public User P4secondPlayer = null;
+	public HashMap<String, Boolean> P4gameStart = new HashMap<String, Boolean>();
+	public HashMap<String, String> P4gameMessageID = new HashMap<String, String>();
+	public HashMap<String, User> P4firstPlayer = new HashMap<String, User>();
+	public HashMap<String, User> P4secondPlayer = new HashMap<String, User>();
 	
 	public static JDA jda;
 	

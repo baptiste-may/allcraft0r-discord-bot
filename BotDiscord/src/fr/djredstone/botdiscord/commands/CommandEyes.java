@@ -9,7 +9,7 @@ public class CommandEyes extends ListenerAdapter {
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
 		
-		if(args[0].equalsIgnoreCase(Main.prefix + "tank")) {
+		if(args[0].equalsIgnoreCase(Main.prefix + "eyes")) {
 			
 			event.getChannel().sendMessage(":eye::lips::eye:").queue();
 			event.getChannel().sendTyping().queue();
