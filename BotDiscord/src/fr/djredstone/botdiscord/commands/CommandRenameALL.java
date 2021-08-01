@@ -20,15 +20,31 @@ public class CommandRenameALL extends ListenerAdapter {
 				
 			} else {
 				
-				result = args[1];
+				StringBuilder message = new StringBuilder();
+				for(String arg : args) {
+					if(!arg.equalsIgnoreCase(args[0])) {
+						message.append(arg);
+						message.append(" ");
+					}
+				}
+				if(message.toString() == null) {
+					message.append("");
+				}
+				
+				result = message.toString();
 				
 			}
 			
+			event.getChannel().sendMessage("Tous les pseudos ont été mis à jours !").queue();
+			
 			for(Member member : event.getGuild().getMembers()) {
 				
-				member.modifyNickname(result);
+				member.modifyNickname(result).queue();
 				
 			}
+			
+			event.getChannel().sendTyping().queue();
+			event.getMessage().delete().queue();
 			
 		}
 	}

@@ -39,7 +39,7 @@ public class CommandFakeBan extends ListenerAdapter {
             		event.getMessage().reply("Utilisation : " + Main.prefix + "fakeban <@membre> (raison)\n").queue();
             		return;
             		
-            	} else if(event.getMessage().getAttachments().get(0).getContentType().equalsIgnoreCase("image/png")) {
+            	} else if(event.getMessage().getAttachments().get(0).getContentType().startsWith("image")) {
             		
             		name = args.get(1);
                 	avatarURL = event.getMessage().getAttachments().get(0).getUrl();
@@ -74,7 +74,8 @@ public class CommandFakeBan extends ListenerAdapter {
             
             EmbedBuilder embed = new EmbedBuilder();
             embed.setAuthor(name + " a été banni", null, avatarURL);
-			embed.setDescription("**Raison :** " + reason);
+            embed.addBlankField(false);
+            embed.addField("**Raison :** " + reason, "", false);
 			embed.setColor(Color.DARK_GRAY);
 
             event.getChannel().sendMessage(embed.build()).queue();
