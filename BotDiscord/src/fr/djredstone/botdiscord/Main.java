@@ -17,7 +17,7 @@ import fr.djredstone.botdiscord.commands.CommandNon;
 import fr.djredstone.botdiscord.commands.CommandOui;
 import fr.djredstone.botdiscord.commands.CommandP4;
 import fr.djredstone.botdiscord.commands.CommandPing;
-import fr.djredstone.botdiscord.commands.CommandPrefix;
+import fr.djredstone.botdiscord.commands.CommandRenameALL;
 import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
@@ -32,7 +32,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 public class Main extends JavaPlugin {
 	
 	static String token = "ODY1NTAyODczNTU5NjI5ODM0.YPE8XQ.d2X4XXJ_9tyeNnqjg7V73Tq21-w";
-	public static String prefix = "!h";
+	public static String prefix = "!";
 	public static String noPermMessage = "Vous n'êtes pas une personne de puissance.";
 	public HashMap<User, Integer> messageByMinute = new HashMap<User, Integer>();
 	
@@ -58,7 +58,6 @@ public class Main extends JavaPlugin {
 		try {
 			jda = JDABuilder.createDefault(token).build();
 		} catch (LoginException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -68,7 +67,6 @@ public class Main extends JavaPlugin {
 	    try {
 			builder.build();
 		} catch (LoginException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
@@ -89,7 +87,7 @@ public class Main extends JavaPlugin {
 	    
 	    jda.addEventListener(new CommandFakeBan());
 	    
-	    jda.addEventListener(new CommandPrefix());
+	    jda.addEventListener(new CommandRenameALL());
 	    
 	    jda.upsertCommand("haide", "Affiche de l'aide").queue();
 	    
