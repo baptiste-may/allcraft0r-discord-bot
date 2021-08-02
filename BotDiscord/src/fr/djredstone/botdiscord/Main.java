@@ -87,7 +87,7 @@ public class Main extends JavaPlugin {
 	    
 	    jda.addEventListener(new CommandFakeBan());
 	    
-	    jda.addEventListener(new CommandRenameALL());
+	    jda.addEventListener(new CommandRenameALL(this));
 	    
 	    jda.upsertCommand("haide", "Affiche de l'aide").queue();
 	    
@@ -102,6 +102,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		
+		jda.shutdown();
 		jda.shutdownNow();
 		super.onDisable();
 		
