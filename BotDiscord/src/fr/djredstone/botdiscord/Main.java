@@ -17,7 +17,6 @@ import fr.djredstone.botdiscord.commands.CommandNon;
 import fr.djredstone.botdiscord.commands.CommandOui;
 import fr.djredstone.botdiscord.commands.CommandP4;
 import fr.djredstone.botdiscord.commands.CommandPing;
-import fr.djredstone.botdiscord.commands.CommandRenameALL;
 import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
@@ -86,8 +85,6 @@ public class Main extends JavaPlugin {
 	    jda.addEventListener(new CommandEyes());
 	    
 	    jda.addEventListener(new CommandFakeBan());
-	    
-	    jda.addEventListener(new CommandRenameALL(this));
 	    
 	    jda.upsertCommand("haide", "Affiche de l'aide").queue();
 	    
