@@ -30,7 +30,7 @@ public class CommandP4 extends ListenerAdapter {
 				if(args[1].equalsIgnoreCase("start")) {
 					
 					EmbedBuilder embed = new EmbedBuilder();
-					embed.setTitle("**" + event.getAuthor().getName() + "** commence une partie de puissance 4 !");
+					embed.setTitle("**" + event.getMember().getUser().getName() + "** commence une partie de puissance 4 !");
 					embed.setDescription("Clickez sur l'émoji :crossed_swords: pour l'affronter !");
 					embed.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/1200px-Puissance4_01.svg.png");
 					embed.setColor(Color.ORANGE);
@@ -38,6 +38,7 @@ public class CommandP4 extends ListenerAdapter {
 					event.getChannel().sendMessage(embed.build()).queue(message -> {
 						message.addReaction("⚔️").queue();
 						main.P4startMessageID.add(message.getId());
+						main.P4startMessageUser.put(message.getId(), event.getAuthor().getId());
 						});
 					event.getChannel().sendTyping().queue();
 					event.getMessage().delete().queue();

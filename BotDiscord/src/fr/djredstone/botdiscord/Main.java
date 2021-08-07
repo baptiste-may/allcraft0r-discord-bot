@@ -36,10 +36,10 @@ public class Main extends JavaPlugin {
 	public HashMap<User, Integer> messageByMinute = new HashMap<User, Integer>();
 	
 	public List<String> P4startMessageID = new ArrayList<String>();
-	public HashMap<String, Boolean> P4gameStart = new HashMap<String, Boolean>();
-	public HashMap<String, String> P4gameMessageID = new HashMap<String, String>();
-	public HashMap<String, User> P4firstPlayer = new HashMap<String, User>();
-	public HashMap<String, User> P4secondPlayer = new HashMap<String, User>();
+	public HashMap<String, String> P4firstPlayer = new HashMap<String, String>();
+	public HashMap<String, String> P4secondPlayer = new HashMap<String, String>();
+	public HashMap<String, String> P4startMessageUser = new HashMap<String, String>();
+	public HashMap<String, String> P4tour = new HashMap<String, String>();
 	
 	public static JDA jda;
 	
@@ -51,8 +51,6 @@ public class Main extends JavaPlugin {
 		}
 		
 		this.saveConfig();
-		
-		super.onEnable();
 		
 		try {
 			jda = JDABuilder.createDefault(token).build();
@@ -68,6 +66,8 @@ public class Main extends JavaPlugin {
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
+	    
+	    jda.addEventListener(new P4Game(this));
 	    
 	    jda.addEventListener(new CommandP4(this));
 	    
@@ -99,9 +99,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		
-		jda.shutdown();
 		jda.shutdownNow();
-		super.onDisable();
 		
 	}
 
