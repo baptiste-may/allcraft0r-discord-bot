@@ -26,6 +26,7 @@ import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Main extends JavaPlugin {
@@ -74,6 +75,8 @@ public class Main extends JavaPlugin {
 	    
 	    new P4Game(this);
 	    
+	    jda.addEventListener(this);
+	    
 	    jda.addEventListener(new CommandP4(this));
 	    
 	    jda.addEventListener(new CommandHelp());
@@ -96,6 +99,12 @@ public class Main extends JavaPlugin {
 	    jda.addEventListener(new messageRecivedListener(this));
 	    jda.addEventListener(new messageReactionAddListener(this));
 	    
+	    try {
+			jda.awaitReady();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -105,5 +114,9 @@ public class Main extends JavaPlugin {
 		jda.shutdownNow();
 		
 	}
+	
+	public void onReadyEvent(ReadyEvent event) {
+        System.out.println("§cBot discord allcraft0r prêt !");
+    }
 
 }
