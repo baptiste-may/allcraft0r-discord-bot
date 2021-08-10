@@ -30,7 +30,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Main extends JavaPlugin {
 	
-	static String token = "ODY1NTAyODczNTU5NjI5ODM0.YPE8XQ.d2X4XXJ_9tyeNnqjg7V73Tq21-w";
+	static String token;
 	public static String prefix = "!";
 	public static String noPermMessage = "Vous n'êtes pas une personne de puissance.";
 	public HashMap<User, Integer> messageByMinute = new HashMap<User, Integer>();
@@ -49,8 +49,13 @@ public class Main extends JavaPlugin {
 		if(!this.getConfig().contains("minNbMessageWarn")) {
 			this.getConfig().set("minNbMessageWarn", 4);
 		}
+		if(!this.getConfig().contains("token")) {
+			this.getConfig().set("token", "YOUR TOKEN HERE");
+		}
 		
 		this.saveConfig();
+		
+		token = this.getConfig().getString("token");
 		
 		try {
 			jda = JDABuilder.createDefault(token).build();
