@@ -74,8 +74,7 @@ public class CommandFakeBan extends ListenerAdapter {
             
             EmbedBuilder embed = new EmbedBuilder();
             embed.setAuthor(name + " a été banni", null, avatarURL);
-            embed.addBlankField(false);
-            embed.addField("**Raison :** " + reason, "", false);
+            embed.setDescription("**Raison :** " + reason);
 			embed.setColor(Color.DARK_GRAY);
 
             event.getChannel().sendMessage(embed.build()).queue();

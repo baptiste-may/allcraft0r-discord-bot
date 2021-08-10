@@ -67,7 +67,7 @@ public class Main extends JavaPlugin {
 			e.printStackTrace();
 		}
 	    
-	    jda.addEventListener(new P4Game(this));
+	    new P4Game(this);
 	    
 	    jda.addEventListener(new CommandP4(this));
 	    
@@ -85,8 +85,6 @@ public class Main extends JavaPlugin {
 	    jda.addEventListener(new CommandEyes());
 	    
 	    jda.addEventListener(new CommandFakeBan());
-	    
-	    jda.upsertCommand("haide", "Affiche de l'aide").queue();
 	    
 	    new messageByMinuteTest(this);
 	    

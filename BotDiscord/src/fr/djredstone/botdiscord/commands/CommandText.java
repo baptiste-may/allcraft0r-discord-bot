@@ -23,8 +23,11 @@ public class CommandText extends ListenerAdapter {
 			StringBuilder message = new StringBuilder();
 			for(String arg : args) {
 				if(!arg.equalsIgnoreCase(args[0])) {
-					message.append(arg);
-					message.append(" ");
+					if(!event.getMessage().getMentionedChannels().isEmpty() && arg.equalsIgnoreCase(args[1])) {
+					} else {
+						message.append(arg);
+						message.append(" ");
+					}
 				}
 			}
 			if(message.toString() == null) {
@@ -37,8 +40,14 @@ public class CommandText extends ListenerAdapter {
 			embed.setFooter(" - " + event.getAuthor().getAsTag());
 			embed.setColor(Color.YELLOW);
 			
-			event.getChannel().sendMessage(embed.build()).queue();
-			event.getChannel().sendTyping().queue();
+			if(event.getMessage().getMentionedChannels().isEmpty()) {
+				event.getChannel().sendMessage(embed.build()).queue();
+				event.getChannel().sendTyping().queue();
+			} else {
+				event.getMessage().getMentionedChannels().get(0).sendMessage(embed.build()).queue();
+				event.getMessage().getMentionedChannels().get(0).sendTyping().queue();
+			}
+			
 			event.getMessage().delete().queue();
 			
 		}
