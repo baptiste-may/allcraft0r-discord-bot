@@ -26,14 +26,16 @@ import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-public class Main extends JavaPlugin {
+public class Main extends JavaPlugin implements EventListener {
 	
 	static String token;
 	public static String prefix = "!";
-	public static String noPermMessage = "Vous n'êtes pas une personne de puissance.";
+	public static String noPermMessage = "Vous n'Ã©tes pas une personne de puissance.";
 	public HashMap<User, Integer> messageByMinute = new HashMap<User, Integer>();
 	
 	public List<String> P4startMessageID = new ArrayList<String>();
@@ -116,7 +118,13 @@ public class Main extends JavaPlugin {
 	}
 	
 	public void onReadyEvent(ReadyEvent event) {
-        System.out.println("§cBot discord allcraft0r prêt !");
+        System.out.println("Â§cBot discord allcraft0r prÃªt !");
     }
+
+	@Override
+	public void onEvent(GenericEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
