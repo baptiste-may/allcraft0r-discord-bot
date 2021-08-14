@@ -1,6 +1,8 @@
 package fr.djredstone.botdiscord;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,9 +22,12 @@ import fr.djredstone.botdiscord.commands.CommandPing;
 import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
+import fr.djredstone.botdiscord.listener.lostMemberListener;
 import fr.djredstone.botdiscord.listener.messageReactionAddListener;
 import fr.djredstone.botdiscord.listener.messageRecivedListener;
+import fr.djredstone.botdiscord.listener.newMemberListener;
 import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.User;
@@ -43,6 +48,12 @@ public class Main extends JavaPlugin implements EventListener {
 	public HashMap<String, String> P4secondPlayer = new HashMap<String, String>();
 	public HashMap<String, String> P4startMessageUser = new HashMap<String, String>();
 	public HashMap<String, String> P4tour = new HashMap<String, String>();
+	
+	public static int messagesByDay = 0;
+	public static int newMembers = 0;
+	public static int lostMembers = 0;
+	public static List<User> activeMembers = new ArrayList<User>();
+	public static List<String> activeChannels = new ArrayList<String>();
 	
 	public static JDA jda;
 	
@@ -100,6 +111,8 @@ public class Main extends JavaPlugin implements EventListener {
 	    
 	    jda.addEventListener(new messageRecivedListener(this));
 	    jda.addEventListener(new messageReactionAddListener(this));
+	    jda.addEventListener(new newMemberListener());
+	    jda.addEventListener(new lostMemberListener());
 	    
 	    try {
 			jda.awaitReady();
@@ -113,7 +126,21 @@ public class Main extends JavaPlugin implements EventListener {
 	@Override
 	public void onDisable() {
 		
-		jda.shutdownNow();
+		Calendar c = new GregorianCalendar();
+	    c.add(Calendar.DATE,-1);
+	    
+	    EmbedBuilder embed = new EmbedBuilder();
+	    embed.setTitle("**Information de la journée d'hier**");
+	    embed.addField("**Membres actuel**", "" + jda.getGuildById("497090628639916032").getMemberCount(), true);
+	    embed.addField("**Nombre de messages**", "" + messagesByDay, true);
+	    embed.addField("**Nouveaux membres**", "" + newMembers, true);
+	    embed.addField("**Membres perdus**", "" + lostMembers, true);
+	    embed.addField("**Membres actifs**", "" + activeMembers.size(), true);
+	    embed.addField("**Channels actifs**", "" + activeChannels.size(), true);
+	    
+	    jda.getTextChannelById("497141089480998912").sendMessage(embed.build()).queue();
+		
+		jda.shutdown();
 		
 	}
 	
