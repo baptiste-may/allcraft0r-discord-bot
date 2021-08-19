@@ -13,8 +13,8 @@ public class CommandLink extends ListenerAdapter {
 		if(args[0].equalsIgnoreCase(Main.prefix + "link")) {
 			
 			event.getChannel().sendMessage("Voici plusieurs lien en rapport avec allcraft0r :").setActionRow(
-					Button.link("https://www.youtube.com/channel/UCY8ryk_01LytUhgfA5X3vFg", "Chaîne Youtube de allcraft0r"),
-					Button.link("https://www.youtube.com/channel/UCQH2Kxrr6Y68ZcBWfJdtZ6A", "Chaîne Youtube Best Of Discord"),
+					Button.link("https://www.youtube.com/channel/UCY8ryk_01LytUhgfA5X3vFg", "ChaÃ®ne Youtube de allcraft0r"),
+					Button.link("https://www.youtube.com/channel/UCQH2Kxrr6Y68ZcBWfJdtZ6A", "ChaÃ®ne Youtube Best Of Discord"),
 					Button.link("https://twitter.com/bestOfAllcraft?s=09", "Compte Twitter Best of Discord")
 					).queue();;
 			

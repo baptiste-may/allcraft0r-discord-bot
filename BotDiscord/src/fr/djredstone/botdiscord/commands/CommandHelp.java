@@ -17,12 +17,12 @@ public class CommandHelp extends ListenerAdapter {
 			embed.addField(":blue_square: **" + Main.prefix + "aide**", "> Liste des commandes", true);
 			embed.addField(":blue_square: **" + Main.prefix + "send**", "> Envoye un message aux personnes de puissances", true);
 			embed.addField(":blue_square: **" + Main.prefix + "ping**", "> Lance une balle de ping pong, voit en combien de temps de la renvoie", true);
-			embed.addField(":blue_square: **" + Main.prefix + "link**", "> Affiche des liens en rapport à allcraft0r", true);
+			embed.addField(":blue_square: **" + Main.prefix + "link**", "> Affiche des liens en rapport Ã  allcraft0r", true);
 			
 			embed.addField(":red_square: **" + Main.prefix + "ask**", "> Demande prise en compte", true);
-			embed.addField(":red_square: **" + Main.prefix + "non (message)**", "> Demande refusée", true);
-			embed.addField(":red_square: **" + Main.prefix + "oui (message)**", "> Demande acceptée", true);
-			embed.addField(":red_square: **" + Main.prefix + "text (message)**", "> Message personnalisé", true);
+			embed.addField(":red_square: **" + Main.prefix + "non (message)**", "> Demande refusÃ©e", true);
+			embed.addField(":red_square: **" + Main.prefix + "oui (message)**", "> Demande acceptÃ©e", true);
+			embed.addField(":red_square: **" + Main.prefix + "text (message)**", "> Message personnalisÃ©", true);
 			
 			embed.addField(":yellow_square: **" + Main.prefix + "tank**", "> AMERICA ! F*CK YEAHH !!", true);
 			embed.addField(":yellow_square: **" + Main.prefix + "eyes**", "> I'm watching you...", true);

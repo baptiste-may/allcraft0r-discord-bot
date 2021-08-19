@@ -15,8 +15,8 @@ public class CommandSend extends ListenerAdapter {
 		if(args[0].equalsIgnoreCase(Main.prefix + "send")) {
 			
 			EmbedBuilder embed = new EmbedBuilder();
-			embed.setTitle("  :warning: Message de la hiérarchie :warning:");
-			embed.setDescription("Votre message a été correctement envoyé.");
+			embed.setTitle("  :warning: Message de la hiÃ©rarchie :warning:");
+			embed.setDescription("Votre message a Ã©tÃ© correctement envoyÃ©.");
 			embed.setFooter(event.getAuthor().getName());
 			embed.setThumbnail("https://images.emojiterra.com/twitter/v13.0/512px/2705.png");
 			embed.setColor(Color.GREEN);

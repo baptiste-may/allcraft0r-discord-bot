@@ -35,7 +35,7 @@ public class CommandText extends ListenerAdapter {
 			}
 			
 			EmbedBuilder embed = new EmbedBuilder();
-			embed.setTitle(":warning: Message de la hiérarchie :warning:");
+			embed.setTitle(":warning: Message de la hiÃ©rarchie :warning:");
 			embed.setDescription(message.toString());
 			embed.setFooter(" - " + event.getAuthor().getAsTag());
 			embed.setColor(Color.YELLOW);

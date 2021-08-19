@@ -64,7 +64,7 @@ public class CommandFakeBan extends ListenerAdapter {
             String reason = String.join(" ", args.subList(2, args.size()));
             
             if(reason.equalsIgnoreCase("")) {
-            	reason = "Non spécifiée";
+            	reason = "Non spÃ©cifiÃ©e";
             }
 
             if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
@@ -73,7 +73,7 @@ public class CommandFakeBan extends ListenerAdapter {
             }
             
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setAuthor(name + " a été banni", null, avatarURL);
+            embed.setAuthor(name + " a Ã©tÃ© banni", null, avatarURL);
             embed.setDescription("**Raison :** " + reason);
 			embed.setColor(Color.DARK_GRAY);
 

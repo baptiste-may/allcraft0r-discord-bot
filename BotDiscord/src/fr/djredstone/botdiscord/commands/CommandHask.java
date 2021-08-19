@@ -21,8 +21,8 @@ public class CommandHask extends ListenerAdapter {
             }
 			
 			EmbedBuilder embed = new EmbedBuilder();
-			embed.setTitle(":warning: Message de la hiérarchie :warning:");
-			embed.setDescription("Votre demande a été prise en compte. :thumbsup:");
+			embed.setTitle(":warning: Message de la hiÃ©rarchie :warning:");
+			embed.setDescription("Votre demande a Ã©tÃ© prise en compte. :thumbsup:");
 			embed.setFooter("Nous vous informerons lorsque nous aurons plus d'informations. :receipt:");
 			embed.setColor(Color.ORANGE);
 			

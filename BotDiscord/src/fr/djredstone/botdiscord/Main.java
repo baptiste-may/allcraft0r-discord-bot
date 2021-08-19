@@ -138,20 +138,15 @@ public class Main extends JavaPlugin implements EventListener {
 	    embed.addField("**Membres actifs**", "" + activeMembers.size(), true);
 	    embed.addField("**Channels actifs**", "" + activeChannels.size(), true);
 	    
-	    jda.getTextChannelById("497141089480998912").sendMessage(embed.build()).queue();
+	    jda.getTextChannelById("877824690452840488").sendMessage(embed.build()).queue();
 		
 		jda.shutdown();
 		
 	}
 	
-	public void onReadyEvent(ReadyEvent event) {
-        System.out.println("§cBot discord allcraft0r prêt !");
-    }
-
 	@Override
-	public void onEvent(GenericEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onEvent(GenericEvent event) {
+		if(event instanceof ReadyEvent) System.out.println("§cBot discord allcraft0r prêt !");
+    }
 
 }

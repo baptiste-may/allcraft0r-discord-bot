@@ -14,11 +14,13 @@ public class messageRecivedListener extends ListenerAdapter {
 
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		
+		if(event.getAuthor() == Main.jda.getSelfUser()) return;
+		
 		Main.messagesByDay = Main.messagesByDay + 1;
 		
 		if(!Main.activeMembers.contains(event.getAuthor())) Main.activeMembers.add(event.getAuthor());
 		
-		if(!Main.activeChannels.contains(event.getMessageId())) Main.activeChannels.add(event.getMessageId());
+		if(!Main.activeChannels.contains(event.getChannel().getId())) Main.activeChannels.add(event.getChannel().getId());
 		
 		if(!event.getAuthor().isBot()) {
 			
@@ -32,7 +34,7 @@ public class messageRecivedListener extends ListenerAdapter {
 			
 			if(mainClass.messageByMinute.get(event.getAuthor()) > (Integer) mainClass.getConfig().get("minNbMessageWarn")) {
 				
-				Main.jda.getTextChannelById("497141089480998912").sendMessage("**" + event.getAuthor().getAsTag() + "** est � plus de " + mainClass.getConfig().get("minNbMessageWarn") + " messages par minutes (actuellement � " + mainClass.messageByMinute.get(event.getAuthor()) + ")").queue();
+				Main.jda.getTextChannelById("497141089480998912").sendMessage("**" + event.getAuthor().getAsTag() + "** est à plus de " + mainClass.getConfig().get("minNbMessageWarn") + " messages par minutes (actuellement à " + mainClass.messageByMinute.get(event.getAuthor()) + ")").queue();
 			}
 			
 		}
