@@ -8,6 +8,10 @@ import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.djredstone.botdiscord.commands.CommandEyes;
@@ -36,7 +40,7 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-public class Main extends JavaPlugin implements EventListener {
+public class Main extends JavaPlugin implements EventListener, Listener {
 	
 	static String token;
 	public static String prefix = "!";
@@ -54,6 +58,8 @@ public class Main extends JavaPlugin implements EventListener {
 	public static int lostMembers = 0;
 	public static List<User> activeMembers = new ArrayList<User>();
 	public static List<String> activeChannels = new ArrayList<String>();
+	
+	public boolean isAnReload = false;
 	
 	public static JDA jda;
 	
@@ -120,27 +126,49 @@ public class Main extends JavaPlugin implements EventListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	    
+	    Bukkit.getPluginManager().registerEvents(this, this);
 		
 	}
 	
 	@Override
 	public void onDisable() {
 		
-		Calendar c = new GregorianCalendar();
-	    c.add(Calendar.DATE,-1);
-	    
-	    EmbedBuilder embed = new EmbedBuilder();
-	    embed.setTitle("**Information de la journée d'hier**");
-	    embed.addField("**Membres actuel**", "" + jda.getGuildById("497090628639916032").getMemberCount(), true);
-	    embed.addField("**Nombre de messages**", "" + messagesByDay, true);
-	    embed.addField("**Nouveaux membres**", "" + newMembers, true);
-	    embed.addField("**Membres perdus**", "" + lostMembers, true);
-	    embed.addField("**Membres actifs**", "" + activeMembers.size(), true);
-	    embed.addField("**Channels actifs**", "" + activeChannels.size(), true);
-	    
-	    jda.getTextChannelById("877824690452840488").sendMessage(embed.build()).queue();
+		if(!isAnReload) {
+			
+			Calendar c = new GregorianCalendar();
+		    c.add(Calendar.DATE,-1);
+		    
+		    EmbedBuilder embed = new EmbedBuilder();
+		    embed.setTitle("**Information de la journée d'hier**");
+		    embed.addField("**Membres actuel**", "" + jda.getGuildById("497090628639916032").getMemberCount(), true);
+		    embed.addField("**Nombre de messages**", "" + messagesByDay, true);
+		    embed.addField("**Nouveaux membres**", "" + newMembers, true);
+		    embed.addField("**Membres perdus**", "" + lostMembers, true);
+		    embed.addField("**Membres actifs**", "" + activeMembers.size(), true);
+		    embed.addField("**Channels actifs**", "" + activeChannels.size(), true);
+		    
+		    jda.getTextChannelById("877824690452840488").sendMessage(embed.build()).queue();
+		    
+		    jda.shutdown();
+			
+		} else {
+			
+			jda.shutdownNow();
+			
+		}
 		
-		jda.shutdown();
+	}
+	
+	@EventHandler
+	public void onServerCommand(ServerCommandEvent event) {
+		
+		if(event.getCommand().equalsIgnoreCase("reload") || event.getCommand().equalsIgnoreCase("rl")) {
+			
+			System.out.println("Reload détécté !");
+			isAnReload = true;
+			
+		}
 		
 	}
 	
