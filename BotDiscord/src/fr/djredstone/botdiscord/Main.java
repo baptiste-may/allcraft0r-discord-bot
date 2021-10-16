@@ -1,8 +1,6 @@
 package fr.djredstone.botdiscord;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.djredstone.botdiscord.commands.CommandEyes;
 import fr.djredstone.botdiscord.commands.CommandFakeBan;
+import fr.djredstone.botdiscord.commands.CommandFindNumber;
 import fr.djredstone.botdiscord.commands.CommandHask;
 import fr.djredstone.botdiscord.commands.CommandHelp;
 import fr.djredstone.botdiscord.commands.CommandLink;
@@ -26,14 +25,11 @@ import fr.djredstone.botdiscord.commands.CommandPing;
 import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
-import fr.djredstone.botdiscord.listener.lostMemberListener;
 import fr.djredstone.botdiscord.listener.messageReactionAddListener;
-import fr.djredstone.botdiscord.listener.messageRecivedListener;
-import fr.djredstone.botdiscord.listener.newMemberListener;
 import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -43,6 +39,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 public class Main extends JavaPlugin implements EventListener, Listener {
 	
 	static String token;
+	static String tokenMEE6;
 	public static String prefix = "!";
 	public static String noPermMessage = "Vous n'étes pas une personne de puissance.";
 	public HashMap<User, Integer> messageByMinute = new HashMap<User, Integer>();
@@ -53,18 +50,17 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 	public HashMap<String, String> P4startMessageUser = new HashMap<String, String>();
 	public HashMap<String, String> P4tour = new HashMap<String, String>();
 	
-	public static int messagesByDay = 0;
-	public static int newMembers = 0;
-	public static int lostMembers = 0;
-	public static List<User> activeMembers = new ArrayList<User>();
-	public static List<String> activeChannels = new ArrayList<String>();
-	
 	public boolean isAnReload = false;
 	
 	public static JDA jda;
+	public static JDA mee6;
+	
+	public static Main main;
 	
 	@Override
 	public void onEnable() {
+		
+		Main.main = this;
 		
 		if(!this.getConfig().contains("minNbMessageWarn")) {
 			this.getConfig().set("minNbMessageWarn", 4);
@@ -72,13 +68,18 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 		if(!this.getConfig().contains("token")) {
 			this.getConfig().set("token", "YOUR TOKEN HERE");
 		}
+		if(!this.getConfig().contains("tokenMEE6")) {
+			this.getConfig().set("tokenMEE6", "YOUR MEE6 TOKEN HERE");
+		}
 		
 		this.saveConfig();
 		
 		token = this.getConfig().getString("token");
+		tokenMEE6 = this.getConfig().getString("tokenMEE6");
 		
 		try {
 			jda = JDABuilder.createDefault(token).build();
+			mee6 = JDABuilder.createDefault(tokenMEE6).build();
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
@@ -86,8 +87,18 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 		JDABuilder builder = JDABuilder.createDefault(token);
 	    
 	    builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
+	    builder.setActivity(Activity.playing("reprendre du service !"));
 	    try {
 			builder.build();
+		} catch (LoginException e) {
+			e.printStackTrace();
+		}
+	    
+	    JDABuilder builderMEE6 = JDABuilder.createDefault(tokenMEE6);
+	    
+	    builderMEE6.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY);
+	    try {
+	    	builderMEE6.build();
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
@@ -97,6 +108,7 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 	    jda.addEventListener(this);
 	    
 	    jda.addEventListener(new CommandP4(this));
+	    jda.addEventListener(new CommandFindNumber());
 	    
 	    jda.addEventListener(new CommandHelp());
 	    jda.addEventListener(new CommandSend());
@@ -111,14 +123,11 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 	    jda.addEventListener(new CommandTank());
 	    jda.addEventListener(new CommandEyes());
 	    
-	    jda.addEventListener(new CommandFakeBan());
+	    mee6.addEventListener(new CommandFakeBan());
 	    
 	    new messageByMinuteTest(this);
 	    
-	    jda.addEventListener(new messageRecivedListener(this));
 	    jda.addEventListener(new messageReactionAddListener(this));
-	    jda.addEventListener(new newMemberListener());
-	    jda.addEventListener(new lostMemberListener());
 	    
 	    try {
 			jda.awaitReady();
@@ -133,30 +142,9 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 	
 	@Override
 	public void onDisable() {
-		
-		if(!isAnReload) {
 			
-			Calendar c = new GregorianCalendar();
-		    c.add(Calendar.DATE,-1);
-		    
-		    EmbedBuilder embed = new EmbedBuilder();
-		    embed.setTitle("**Information de la journée d'hier**");
-		    embed.addField("**Membres actuel**", "" + jda.getGuildById("497090628639916032").getMemberCount(), true);
-		    embed.addField("**Nombre de messages**", "" + messagesByDay, true);
-		    embed.addField("**Nouveaux membres**", "" + newMembers, true);
-		    embed.addField("**Membres perdus**", "" + lostMembers, true);
-		    embed.addField("**Membres actifs**", "" + activeMembers.size(), true);
-		    embed.addField("**Channels actifs**", "" + activeChannels.size(), true);
-		    
-		    jda.getTextChannelById("877824690452840488").sendMessage(embed.build()).queue();
-		    
-		    jda.shutdown();
-			
-		} else {
-			
-			jda.shutdownNow();
-			
-		}
+		jda.shutdownNow();
+		mee6.shutdownNow();
 		
 	}
 	
