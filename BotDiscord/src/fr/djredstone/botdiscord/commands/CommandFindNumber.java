@@ -43,9 +43,9 @@ public class CommandFindNumber extends ListenerAdapter {
 				log.warning("Le nombre aléatoire est " + randomNB + " 👀");
 				
 				EmbedBuilder embed = new EmbedBuilder();
-				embed.setTitle("Un nombre aléatoire a été génrérer entre 1 et " + max + " :game_die:");
+				embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
 				embed.setDescription("Tout le monde peut chercher mon nombre :eyes:");
-				embed.setFooter("| Commander par " + event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl());
+				embed.setFooter("| Commandé par " + event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl());
 				embed.setColor(Color.RED);
 				
 				event.getChannel().sendMessage(embed.build()).queue();
@@ -81,7 +81,7 @@ public class CommandFindNumber extends ListenerAdapter {
 				    	channelID = null;
 				    	
 				    	EmbedBuilder embed = new EmbedBuilder();
-						embed.setTitle("Quelqu'un a trouver le nombre ! :clap:");
+						embed.setTitle("Quelqu'un a trouvé le nombre ! :clap:");
 						embed.setDescription("__**" + event.getAuthor().getAsTag() + "**__ a découvert le nombre **" + randomNB + "** !");
 						embed.setColor(Color.YELLOW);
 						
