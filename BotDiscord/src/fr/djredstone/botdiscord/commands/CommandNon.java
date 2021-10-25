@@ -33,7 +33,7 @@ public class CommandNon extends ListenerAdapter {
 			
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle(":warning: Message de la hiérarchie :warning:");
-			embed.setDescription("Votre demande a été refus�e.");
+			embed.setDescription("Votre demande a été refusée.");
 			embed.setFooter(message.toString());
 			embed.setColor(Color.RED);
 			embed.setThumbnail("https://images.emojiterra.com/google/android-10/512px/274c.png");

@@ -33,7 +33,7 @@ public class CommandOui extends ListenerAdapter {
 			
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle(":warning: Message de la hiérarchie :warning:");
-			embed.setDescription("Votre demande a été accept�e.");
+			embed.setDescription("Votre demande a été acceptée.");
 			embed.setFooter(message.toString());
 			embed.setColor(Color.GREEN);
 			embed.setThumbnail("https://images.emojiterra.com/twitter/v13.0/512px/2705.png");
