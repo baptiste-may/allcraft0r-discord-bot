@@ -1,6 +1,7 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
+import java.util.Objects;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,7 +31,7 @@ public class CommandSend extends ListenerAdapter {
 			}
 			
 			event.getChannel().sendMessage(embed.build()).queue();
-			Main.jda.getTextChannelById("497141089480998912").sendMessage("Nouveau message de " + event.getAuthor().getName() + " : " + message.toString()).queue();
+			Objects.requireNonNull(Main.jda.getTextChannelById("497141089480998912")).sendMessage("Nouveau message de " + event.getAuthor().getName() + " : " + message).queue();
 			event.getChannel().sendTyping().queue();
 			event.getMessage().delete().queue();
 			

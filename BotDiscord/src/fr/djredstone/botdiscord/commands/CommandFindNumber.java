@@ -15,18 +15,17 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class CommandFindNumber extends ListenerAdapter {
 	
 	private String channelID = null;
-	
 	private int randomNB;
-	private int max = 1000;
-	
-	private Random random = new Random();
+	private int coups;
+
+	private final Random random = new Random();
 	
 	Logger log = Bukkit.getLogger();
 	
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		String[] args = event.getMessage().getContentRaw().split("\\s+");
-		
-		max = 1000;
+
+		int max = 1000;
 		
 		if(args[0].equalsIgnoreCase(Main.prefix + "number")) {
 			
@@ -34,13 +33,15 @@ public class CommandFindNumber extends ListenerAdapter {
 				
 				try {
 					if(args.length > 1) max = Integer.parseInt(args[1]);
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException ignored) {
 				}
 				
 				channelID = event.getChannel().getId();
 				randomNB = random.nextInt(max - 1 + 1) + 1;
 				
 				log.warning("Le nombre aléatoire est " + randomNB + " 👀");
+				
+				coups = 0;
 				
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
@@ -61,6 +62,8 @@ public class CommandFindNumber extends ListenerAdapter {
 				try {
 				    int proposition = Integer.parseInt(event.getMessage().getContentDisplay());
 				    
+				    coups ++;
+				    
 				    if(proposition < randomNB) {
 				    	new BukkitRunnable() {
 							@Override
@@ -77,7 +80,7 @@ public class CommandFindNumber extends ListenerAdapter {
 							}
 						}.runTaskLater(Main.main, 100);
 				    	event.getMessage().addReaction("⬇️").queue();
-				    } else if(proposition == randomNB) {
+				    } else {
 				    	channelID = null;
 				    	
 				    	EmbedBuilder embed = new EmbedBuilder();
@@ -87,11 +90,15 @@ public class CommandFindNumber extends ListenerAdapter {
 						
 						event.getChannel().sendMessage(embed.build()).queue();
 						
+						int nb = 100 - coups;
+						event.getChannel().sendMessage("Avec " + coups + " coups, tu gagnes **" + nb + " redstones** " + event.getAuthor().getAsMention() + " !").queue();
+						Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + nb);
+						
 						event.getMessage().delete().queue();
 						
 				    }
 				    
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException ignored) {
 				}
 				
 			}

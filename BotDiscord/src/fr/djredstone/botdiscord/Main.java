@@ -7,21 +7,26 @@ import java.util.List;
 import javax.security.auth.login.LoginException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
+import fr.djredstone.botdiscord.commands.CommandDaily;
+import fr.djredstone.botdiscord.commands.CommandDashboard;
 import fr.djredstone.botdiscord.commands.CommandEyes;
 import fr.djredstone.botdiscord.commands.CommandFakeBan;
+import fr.djredstone.botdiscord.commands.CommandFakeResetXP;
 import fr.djredstone.botdiscord.commands.CommandFindNumber;
 import fr.djredstone.botdiscord.commands.CommandHask;
 import fr.djredstone.botdiscord.commands.CommandHelp;
 import fr.djredstone.botdiscord.commands.CommandLink;
+import fr.djredstone.botdiscord.commands.CommandMoney;
 import fr.djredstone.botdiscord.commands.CommandNon;
 import fr.djredstone.botdiscord.commands.CommandOui;
 import fr.djredstone.botdiscord.commands.CommandP4;
 import fr.djredstone.botdiscord.commands.CommandPing;
+import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
@@ -42,16 +47,11 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 	static String tokenMEE6;
 	public static String prefix = "!";
 	public static String noPermMessage = "Vous n'étes pas une personne de puissance.";
-	public HashMap<User, Integer> messageByMinute = new HashMap<User, Integer>();
+	public HashMap<User, Integer> messageByMinute = new HashMap<>();
 	
-	public List<String> P4startMessageID = new ArrayList<String>();
-	public HashMap<String, String> P4firstPlayer = new HashMap<String, String>();
-	public HashMap<String, String> P4secondPlayer = new HashMap<String, String>();
-	public HashMap<String, String> P4startMessageUser = new HashMap<String, String>();
-	public HashMap<String, String> P4tour = new HashMap<String, String>();
-	
-	public boolean isAnReload = false;
-	
+	public List<String> P4startMessageID = new ArrayList<>();
+	public HashMap<String, String> P4startMessageUser = new HashMap<>();
+
 	public static JDA jda;
 	public static JDA mee6;
 	
@@ -87,7 +87,7 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 		JDABuilder builder = JDABuilder.createDefault(token);
 	    
 	    builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
-	    builder.setActivity(Activity.playing("reprendre du service !"));
+	    builder.setActivity(Activity.playing("faire de la redstone"));
 	    try {
 			builder.build();
 		} catch (LoginException e) {
@@ -109,6 +109,11 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 	    
 	    jda.addEventListener(new CommandP4(this));
 	    jda.addEventListener(new CommandFindNumber());
+	    jda.addEventListener(new CommandQuitteOuDouble());
+	    
+	    jda.addEventListener(new CommandMoney());
+	    jda.addEventListener(new CommandDashboard());
+	    jda.addEventListener(new CommandDaily());;
 	    
 	    jda.addEventListener(new CommandHelp());
 	    jda.addEventListener(new CommandSend());
@@ -124,6 +129,7 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 	    jda.addEventListener(new CommandEyes());
 	    
 	    mee6.addEventListener(new CommandFakeBan());
+		mee6.addEventListener(new CommandFakeResetXP());
 	    
 	    new messageByMinuteTest(this);
 	    
@@ -148,21 +154,30 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 		
 	}
 	
-	@EventHandler
-	public void onServerCommand(ServerCommandEvent event) {
-		
-		if(event.getCommand().equalsIgnoreCase("reload") || event.getCommand().equalsIgnoreCase("rl")) {
-			
-			System.out.println("Reload détécté !");
-			isAnReload = true;
-			
-		}
-		
-	}
-	
 	@Override
-	public void onEvent(GenericEvent event) {
+	public void onEvent(@NotNull GenericEvent event) {
 		if(event instanceof ReadyEvent) System.out.println("§cBot discord allcraft0r prêt !");
     }
+	
+	public static int getMoney(User user) {
+		
+		Main.main.reloadConfig();
+    	FileConfiguration config = Main.main.getConfig();
+		
+    	if(!config.contains("money." + user.getId())) {
+			config.set("money." + user.getId(), 1000);
+			Main.main.saveConfig();
+		}
+		
+		return config.getInt("money." + user.getId());
+	}
+	
+	public static void setMoney(User user, int money) {
+		
+		Main.main.reloadConfig();
+    	Main.main.getConfig().set("money." + user.getId(), money);
+		main.saveConfig();
+
+	}
 
 }

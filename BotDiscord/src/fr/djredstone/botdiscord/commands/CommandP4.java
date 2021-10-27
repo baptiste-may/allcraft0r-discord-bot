@@ -1,6 +1,7 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
+import java.util.Objects;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,7 +31,7 @@ public class CommandP4 extends ListenerAdapter {
 				if(args[1].equalsIgnoreCase("start")) {
 					
 					EmbedBuilder embed = new EmbedBuilder();
-					embed.setTitle("**" + event.getMember().getUser().getName() + "** commence une partie de puissance 4 !");
+					embed.setTitle("**" + Objects.requireNonNull(event.getMember()).getUser().getName() + "** commence une partie de puissance 4 !");
 					embed.setDescription("Clickez sur l'émoji :crossed_swords: pour l'affronter !");
 					embed.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/1200px-Puissance4_01.svg.png");
 					embed.setColor(Color.ORANGE);

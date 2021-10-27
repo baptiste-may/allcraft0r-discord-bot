@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -29,8 +30,8 @@ public class CommandFakeBan extends ListenerAdapter {
                 return;
             }
             
-            String name = null;
-            String avatarURL = null;
+            String name;
+            String avatarURL;
             
             if(mentionedMembers.isEmpty()) {
             	
@@ -39,7 +40,7 @@ public class CommandFakeBan extends ListenerAdapter {
             		event.getMessage().reply("Utilisation : " + Main.prefix + "fakeban <@membre> (raison)\n").queue();
             		return;
             		
-            	} else if(event.getMessage().getAttachments().get(0).getContentType().startsWith("image")) {
+            	} else if(Objects.requireNonNull(event.getMessage().getAttachments().get(0).getContentType()).startsWith("image")) {
             		
             		name = args.get(1);
                 	avatarURL = event.getMessage().getAttachments().get(0).getUrl();
@@ -56,7 +57,7 @@ public class CommandFakeBan extends ListenerAdapter {
             	Member target = mentionedMembers.get(0);
                 User userTarget = target.getUser();
                 
-                name = userTarget.getAsTag().toString();
+                name = userTarget.getAsTag();
                 avatarURL = userTarget.getAvatarUrl();
             	
             }
@@ -67,6 +68,7 @@ public class CommandFakeBan extends ListenerAdapter {
             	reason = "Non spécifiée";
             }
 
+            assert member != null;
             if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
                 channel.sendMessage(Main.noPermMessage).queue();
                 return;
