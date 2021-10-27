@@ -18,7 +18,9 @@ public class messageReactionAddListener extends ListenerAdapter {
 	
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		if(!event.getAuthor().isBot()) {
-			if(r.nextBoolean()) Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + 1);
+			if(r.nextBoolean()) {
+				if(event.getMessage().getContentRaw().length() > 10) Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + 1);
+			}
 		}
 	}
 

@@ -38,8 +38,8 @@ public class CommandHelp extends ListenerAdapter {
 			embed1.setTitle("Commandes");
 			
 			embed1.addField(":white_medium_small_square: **" + Main.prefix + "aide**", "> Liste des commandes", true);
-			embed1.addField(":white_medium_small_square: **" + Main.prefix + "send**", "> Envoye un message aux personnes de puissances", true);
-			embed1.addField(":white_medium_small_square: **" + Main.prefix + "ping**", "> Lance une balle de ping pong, voit en combien de temps de la renvoie", true);
+			embed1.addField(":white_medium_small_square: **" + Main.prefix + "send**", "> Envoie un message aux personnes de puissances", true);
+			embed1.addField(":white_medium_small_square: **" + Main.prefix + "ping**", "> Lance une balle de ping pong, voit en combien de temps je la renvoie", true);
 			embed1.addField(":white_medium_small_square: **" + Main.prefix + "link**", "> Affiche des liens en rapport à allcraft0r", true);
 			
 			embed1.setColor(Color.BLUE);
@@ -53,8 +53,8 @@ public class CommandHelp extends ListenerAdapter {
 			EmbedBuilder embed3 = new EmbedBuilder();
 			embed3.addField(":white_medium_small_square: **" + Main.prefix + "money**", "> Affiche son nombre de redstones", true);
 			embed3.addField(":white_medium_small_square: **" + Main.prefix + "daily**", "> Récupère sa redstone quotidienne", true);
-			embed3.addField(":white_medium_small_square: **" + Main.prefix + "number**", "> Démmare une partie de find number", true);
-			embed3.addField(":white_medium_small_square: **" + Main.prefix + "quitteoudouble**", "> Démmare une partie de quitte ou double", true);
+			embed3.addField(":white_medium_small_square: **" + Main.prefix + "number**", "> Démarre une partie de find number", true);
+			embed3.addField(":white_medium_small_square: **" + Main.prefix + "quitteoudouble**", "> Démarre une partie de quitte ou double", true);
 			
 			embed3.setColor(Color.ORANGE);
 			

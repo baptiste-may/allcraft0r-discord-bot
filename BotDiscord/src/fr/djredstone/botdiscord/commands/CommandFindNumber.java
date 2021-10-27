@@ -17,6 +17,7 @@ public class CommandFindNumber extends ListenerAdapter {
 	private String channelID = null;
 	private int randomNB;
 	private int coups;
+	private int nbDeBase;
 
 	private final Random random = new Random();
 	
@@ -35,6 +36,8 @@ public class CommandFindNumber extends ListenerAdapter {
 					if(args.length > 1) max = Integer.parseInt(args[1]);
 				} catch (NumberFormatException ignored) {
 				}
+				
+				nbDeBase = max;
 				
 				channelID = event.getChannel().getId();
 				randomNB = random.nextInt(max - 1 + 1) + 1;
@@ -90,8 +93,13 @@ public class CommandFindNumber extends ListenerAdapter {
 						
 						event.getChannel().sendMessage(embed.build()).queue();
 						
-						int nb = 100 - coups;
-						event.getChannel().sendMessage("Avec " + coups + " coups, tu gagnes **" + nb + " redstones** " + event.getAuthor().getAsMention() + " !").queue();
+						int nb = nbDeBase - coups;
+						if(coups > 0) {
+							event.getChannel().sendMessage("Avec " + coups + " coups, tu gagnes **" + nb + " redstones** " + event.getAuthor().getAsMention() + " !").queue();
+						} else {
+							event.getChannel().sendMessage("Comme tu as fait trop de coups, tu ne vas pas récupérer de redstones !").queue();
+						}
+						
 						Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + nb);
 						
 						event.getMessage().delete().queue();
