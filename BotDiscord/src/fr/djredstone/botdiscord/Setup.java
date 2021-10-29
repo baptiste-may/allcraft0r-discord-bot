@@ -14,6 +14,7 @@ import fr.djredstone.botdiscord.commands.CommandFindNumber;
 import fr.djredstone.botdiscord.commands.CommandHask;
 import fr.djredstone.botdiscord.commands.CommandHelp;
 import fr.djredstone.botdiscord.commands.CommandLink;
+import fr.djredstone.botdiscord.commands.CommandLock;
 import fr.djredstone.botdiscord.commands.CommandMoney;
 import fr.djredstone.botdiscord.commands.CommandNon;
 import fr.djredstone.botdiscord.commands.CommandOui;
@@ -122,6 +123,7 @@ public class Setup implements EventListener, Listener {
 	    
 	    Main.mee6.addEventListener(new CommandFakeBan());
 	    Main.mee6.addEventListener(new CommandFakeResetXP());
+	    Main.mee6.addEventListener(new CommandLock());
 	    
 	    new messageByMinuteTest(main);
 	    
