@@ -6,13 +6,13 @@ import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class messageReactionAddListener extends ListenerAdapter {
+public class MessageReceivedListener extends ListenerAdapter {
 	
 	Main main;
 	
 	Random r = new Random();
 	
-	public messageReactionAddListener(Main main) {
+	public MessageReceivedListener(Main main) {
 		this.main = main;
 	}
 	

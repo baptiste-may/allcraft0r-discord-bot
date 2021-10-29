@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -21,43 +21,39 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 	
 	Random r = new Random();
 	
-	private void error(GuildMessageReceivedEvent event) {
-		event.getMessage().reply("Utilisation : " + Main.prefix + "quitteoudouble <nombre>").queue();
+	private void error(SlashCommandEvent event) {
+		event.reply("Utilisation : " + Main.prefix + "quitteoudouble <nombre>").queue();
 	}
 	
-	public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split("\\s+");
+	public void onSlashCommand(SlashCommandEvent event) {
     
-        if(args[0].equalsIgnoreCase(Main.prefix + "quitteoudouble")) {
+        if(event.getName().equalsIgnoreCase("quitteoudouble")) {
         	
-        	if(mise.get(event.getAuthor()) == null) {
+        	if(mise.get(event.getUser()) == null) {
         		
         		try {
     				
-    				int nb = Integer.parseInt(args[1]);
-    				int userMoney = Main.getMoney(event.getAuthor());
+    				int nb = (int) event.getOption("nb_depart_mise").getAsLong();
+    				int userMoney = Main.getMoney(event.getUser());
     				
     				if(nb < userMoney) {
     					
-    					mise.put(event.getAuthor(), nb);
-    					Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) - nb);
+    					mise.put(event.getUser(), nb);
+    					Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) - nb);
     					
     					EmbedBuilder embed = new EmbedBuilder();
     					embed.setTitle("Quitte ou double !");
-    					embed.setDescription(event.getAuthor().getAsMention() + ", tu proposes **" + mise.get(event.getAuthor()) + " redstones**. Vas-tu tenter le double ?");
+    					embed.setDescription(event.getUser().getAsMention() + ", tu proposes **" + mise.get(event.getUser()) + " redstones**. Vas-tu tenter le double ?");
     					embed.setColor(Color.ORANGE);
     					
     					event.getChannel().sendMessage(embed.build()).queue(message -> {
-    						messagesID.put(message.getId(), event.getAuthor());
+    						messagesID.put(message.getId(), event.getUser());
     						message.addReaction("✅").queue();
     						message.addReaction("❌").queue();
     					});
     					
-    					event.getMessage().delete().queue();
-    					
     				} else {
-    					event.getChannel().sendMessage(event.getAuthor().getAsMention() + ", tu n'as pas assez de redstones !").queue();
-    					event.getMessage().delete().queue();
+    					event.getChannel().sendMessage(event.getUser().getAsMention() + ", tu n'as pas assez de redstones !").queue();
     				}
     				
     			} catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {

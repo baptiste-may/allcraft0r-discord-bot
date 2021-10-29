@@ -5,35 +5,27 @@ import java.util.Objects;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandSend extends ListenerAdapter {
 
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split("\\s+");
+	public void onSlashCommand(SlashCommandEvent event) {
 		
-		if(args[0].equalsIgnoreCase(Main.prefix + "send")) {
+		if(event.getName().equalsIgnoreCase("send")) {
 			
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle("  :warning: Message de la hiérarchie :warning:");
 			embed.setDescription("Votre message a été correctement envoyé.");
-			embed.setFooter(event.getAuthor().getName());
+			embed.setFooter(event.getUser().getName());
 			embed.setThumbnail("https://images.emojiterra.com/twitter/v13.0/512px/2705.png");
 			embed.setColor(Color.GREEN);
 			
-			StringBuilder message = new StringBuilder();
-			for(String arg : args) {
-				if(!arg.equalsIgnoreCase(args[0])) {
-					message.append(arg);
-					message.append(" ");
-				}
-			}
+			String message = event.getOption("send_message").getAsString();
 			
-			event.getChannel().sendMessage(embed.build()).queue();
-			Objects.requireNonNull(Main.jda.getTextChannelById("497141089480998912")).sendMessage("Nouveau message de " + event.getAuthor().getName() + " : " + message).queue();
+			event.replyEmbeds(embed.build()).queue();
+			Objects.requireNonNull(Main.jda.getTextChannelById("497141089480998912")).sendMessage("Nouveau message de " + event.getUser().getName() + " : " + message).queue();
 			event.getChannel().sendTyping().queue();
-			event.getMessage().delete().queue();
 			
 		}
 		

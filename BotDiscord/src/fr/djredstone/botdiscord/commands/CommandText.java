@@ -6,47 +6,35 @@ import java.util.Objects;
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandText extends ListenerAdapter {
 	
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split("\\s+");
+	public void onSlashCommand(SlashCommandEvent event) {
 		
-		if(args[0].equalsIgnoreCase(Main.prefix + "text")) {
+		if(event.getName().equalsIgnoreCase("text")) {
 			
 			if (!Objects.requireNonNull(event.getMember()).hasPermission(Permission.NICKNAME_MANAGE)) {
                 event.getChannel().sendMessage(Main.noPermMessage).queue();
                 return;
             }
 			
-			StringBuilder message = new StringBuilder();
-			for(String arg : args) {
-				if(!arg.equalsIgnoreCase(args[0])) {
-					if(!event.getMessage().getMentionedChannels().isEmpty() && arg.equalsIgnoreCase(args[1])) {
-					} else {
-						message.append(arg);
-						message.append(" ");
-					}
-				}
-			}
+			String message = event.getOption("text").getAsString();
 
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle(":warning: Message de la hiérarchie :warning:");
 			embed.setDescription(message.toString());
-			embed.setFooter(" - " + event.getAuthor().getAsTag());
+			embed.setFooter(" - " + event.getUser().getAsTag());
 			embed.setColor(Color.YELLOW);
 			
-			if(event.getMessage().getMentionedChannels().isEmpty()) {
+			if(event.getOption("text_channel").getAsMessageChannel() == null) {
 				event.getChannel().sendMessage(embed.build()).queue();
 				event.getChannel().sendTyping().queue();
 			} else {
-				event.getMessage().getMentionedChannels().get(0).sendMessage(embed.build()).queue();
-				event.getMessage().getMentionedChannels().get(0).sendTyping().queue();
+				event.getOption("text_channel").getAsMessageChannel().sendMessage(embed.build()).queue();
+				event.getOption("text_channel").getAsMessageChannel().sendTyping().queue();
 			}
-			
-			event.getMessage().delete().queue();
 			
 		}
 	}

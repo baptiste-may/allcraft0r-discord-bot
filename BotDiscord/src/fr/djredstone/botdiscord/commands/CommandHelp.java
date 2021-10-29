@@ -5,15 +5,14 @@ import java.awt.Color;
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandHelp extends ListenerAdapter {
 	
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split("\\s+");
+	public void onSlashCommand(SlashCommandEvent event) {
 		
-		if(args[0].equalsIgnoreCase(Main.prefix + "aide")) {
+		if(event.getName().equalsIgnoreCase("aide")) {
 			
 			if(!event.getMember().hasPermission(Permission.NICKNAME_MANAGE)) {
 				
@@ -28,7 +27,7 @@ public class CommandHelp extends ListenerAdapter {
 				embedStaff.addField(":white_medium_small_square: **" + Main.prefix + "fakeban <membre> (message)** + image en attachment", "> Faux message de ban (personnalisé)", true);
 				embedStaff.addField(":white_medium_small_square: **" + Main.prefix + "reset-xp (<@membre>)**", "> Faux message de reset d'XP", true);
 				
-				event.getAuthor().openPrivateChannel().queue(channel -> {
+				event.getUser().openPrivateChannel().queue(channel -> {
 		            channel.sendMessage(embedStaff.build()).queue();
 		        });
 				
@@ -61,10 +60,9 @@ public class CommandHelp extends ListenerAdapter {
 			embed1.setThumbnail("https://images.emojiterra.com/google/android-10/512px/2754.png");
 			
 			event.getChannel().sendTyping().queue();
-			event.getChannel().sendMessage(embed1.build()).queue();
+			event.replyEmbeds(embed1.build()).queue();
 			event.getChannel().sendMessage(embed2.build()).queue();
 			event.getChannel().sendMessage(embed3.build()).queue();
-			event.getMessage().delete().queue();
 			
 		}
 		

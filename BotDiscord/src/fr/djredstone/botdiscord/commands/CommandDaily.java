@@ -5,31 +5,28 @@ import java.util.Set;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandDaily extends ListenerAdapter {
 	
 	private Set<User> hadGet = new HashSet<>();
 	
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split("\\s+");
+	public void onSlashCommand(SlashCommandEvent event) {
 		
-		if(args[0].equalsIgnoreCase(Main.prefix + "daily")) {
+		if(event.getName().equalsIgnoreCase("daily")) {
 			
-			if(!hadGet.contains(event.getAuthor())) {
+			if(!hadGet.contains(event.getMember().getUser())) {
 				
-				Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + 200);
+				Main.setMoney(event.getMember().getUser(), Main.getMoney(event.getMember().getUser()) + 200);
 				
-				event.getChannel().sendMessage("Tu as reçu **200 redstones** " + event.getAuthor().getAsMention()).queue();
-				event.getMessage().delete().queue();
+				event.reply("Tu as reçu **200 redstones** " + event.getMember().getUser().getAsMention()).queue();
 				
-				hadGet.add(event.getAuthor());
+				hadGet.add(event.getMember().getUser());
 				
 			} else {
 				
-				event.getChannel().sendMessage("Vous avez déjà récupérer votre redstone quotidienne, " + event.getAuthor().getAsMention()).queue();
-				event.getMessage().delete().queue();
+				event.reply("Vous avez déjà récupérer votre redstone quotidienne, " + event.getMember().getUser().getAsMention()).queue();
 				
 			}
 			

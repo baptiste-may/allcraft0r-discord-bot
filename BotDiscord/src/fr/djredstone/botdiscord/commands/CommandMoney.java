@@ -1,22 +1,16 @@
 package fr.djredstone.botdiscord.commands;
 
-import org.jetbrains.annotations.NotNull;
-
 import fr.djredstone.botdiscord.Main;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandMoney extends ListenerAdapter {
 	
-	public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split("\\s+");
-        User user = event.getAuthor();
+	public void onSlashCommand(SlashCommandEvent event) {
         
-        if(args[0].equalsIgnoreCase(Main.prefix + "money")) {
+        if(event.getName().equalsIgnoreCase("money")) {
         	
-        	event.getChannel().sendMessage(event.getAuthor().getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones**").queue();
-        	event.getMessage().delete().queue();
+        	event.reply(event.getUser().getAsMention() + ", tu as **" + Main.getMoney(event.getUser()) + " redstones** " + Main.redstoneEmoji).queue();
         	
         }
         

@@ -1,14 +1,15 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Random;
-import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -16,25 +17,27 @@ public class CommandFindNumber extends ListenerAdapter {
 	
 	private String channelID = null;
 	private int randomNB;
-	private int coups;
+	private HashMap<User, Integer> coups = new HashMap<>();
 	private int nbDeBase;
 
 	private final Random random = new Random();
 	
-	Logger log = Bukkit.getLogger();
-	
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-		String[] args = event.getMessage().getContentRaw().split("\\s+");
+	public void onSlashCommand(SlashCommandEvent event) {
 
 		int max = 1000;
 		
-		if(args[0].equalsIgnoreCase(Main.prefix + "number")) {
+		if(event.getName().equalsIgnoreCase("number")) {
 			
 			if(channelID == null) {
 				
 				try {
-					if(args.length > 1) max = Integer.parseInt(args[1]);
+					if(event.getOption("nb_max") != null) max = (int) event.getOption("nb_max").getAsLong();
 				} catch (NumberFormatException ignored) {
+				}
+				
+				if(max <= 500) {
+					event.reply("Le nombre maximum doit être supérieur à 500 !").queue();
+					return;
 				}
 				
 				nbDeBase = max;
@@ -42,30 +45,33 @@ public class CommandFindNumber extends ListenerAdapter {
 				channelID = event.getChannel().getId();
 				randomNB = random.nextInt(max - 1 + 1) + 1;
 				
-				log.warning("Le nombre aléatoire est " + randomNB + " 👀");
-				
-				coups = 0;
+				coups.clear();
 				
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
 				embed.setDescription("Tout le monde peut chercher mon nombre :eyes:");
-				embed.setFooter("| Commandé par " + event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl());
+				embed.setFooter("| Commandé par " + event.getMember().getUser().getAsTag(), event.getMember().getUser().getAvatarUrl());
 				embed.setColor(Color.RED);
 				
-				event.getChannel().sendMessage(embed.build()).queue();
-				
-				event.getMessage().delete().queue();
+				event.replyEmbeds(embed.build()).queue();
 				
 			}
 			
-		} else if(channelID != null) {
+		}
+		
+	}
+	
+	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+		
+		if(channelID != null) {
 			
 			if(channelID.equalsIgnoreCase(event.getChannel().getId())) {
 				
 				try {
 				    int proposition = Integer.parseInt(event.getMessage().getContentDisplay());
 				    
-				    coups ++;
+				    if(coups.get(event.getAuthor()) == null) coups.put(event.getAuthor(), 0);
+				    coups.put(event.getAuthor(), coups.get(event.getAuthor()) + 1);
 				    
 				    if(proposition < randomNB) {
 				    	new BukkitRunnable() {
@@ -93,9 +99,23 @@ public class CommandFindNumber extends ListenerAdapter {
 						
 						event.getChannel().sendMessage(embed.build()).queue();
 						
-						int nb = nbDeBase - coups;
-						if(coups > 0) {
-							event.getChannel().sendMessage("Avec " + coups + " coups, tu gagnes **" + nb + " redstones** " + event.getAuthor().getAsMention() + " !").queue();
+						int x = 1;
+						int essaisMax = 0;
+						while (x < nbDeBase) {
+							x *= 2;
+							essaisMax += 1;
+						}
+						essaisMax *= 1.5;
+
+						int nb = essaisMax - coups.get(event.getAuthor());
+						if (nb < 0) {
+						    nb = 0;
+				    	}
+						
+						nb = (nb * 100) / essaisMax;
+						
+						if(nb > 0) {
+							event.getChannel().sendMessage("Avec " + coups.get(event.getAuthor()) + " coups, tu gagnes **" + nb + " redstones** " + event.getAuthor().getAsMention() + " !").queue();
 						} else {
 							event.getChannel().sendMessage("Comme tu as fait trop de coups, tu ne vas pas récupérer de redstones !").queue();
 						}

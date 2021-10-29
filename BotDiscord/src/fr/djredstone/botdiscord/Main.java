@@ -5,22 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.GenericEvent;
-import net.dv8tion.jda.api.events.ReadyEvent;
-import net.dv8tion.jda.api.hooks.EventListener;
 
-public class Main extends JavaPlugin implements EventListener, Listener {
+public class Main extends JavaPlugin {
 	
 	static String token;
 	static String tokenMEE6;
-	public static String prefix = "!";
+	public static String prefix = "/";
 	public static String noPermMessage = "Vous n'étes pas une personne de puissance.";
+	public static String redstoneEmoji = "<:redstone:503978809645727745>";
 	public HashMap<User, Integer> messageByMinute = new HashMap<>();
 	
 	public List<String> P4startMessageID = new ArrayList<>();
@@ -48,18 +44,13 @@ public class Main extends JavaPlugin implements EventListener, Listener {
 		
 	}
 	
-	@Override
-	public void onEvent(@NotNull GenericEvent event) {
-		if(event instanceof ReadyEvent) System.out.println("§cBot discord allcraft0r prêt !");
-    }
-	
 	public static int getMoney(User user) {
 		
 		Main.main.reloadConfig();
     	FileConfiguration config = Main.main.getConfig();
 		
     	if(!config.contains("money." + user.getId())) {
-			config.set("money." + user.getId(), 1000);
+			config.set("money." + user.getId(), 100);
 			Main.main.saveConfig();
 		}
 		
