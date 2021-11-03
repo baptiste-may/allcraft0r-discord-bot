@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.djredstone.botdiscord.Main;
@@ -22,27 +24,40 @@ public class CommandFindNumber extends ListenerAdapter {
 
 	private final Random random = new Random();
 	
-	public void onSlashCommand(SlashCommandEvent event) {
-
+	public CommandFindNumber(String cmd, @Nullable String option, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+		
+		if(event1 == null && event2 == null) return;
+		
 		int max = 1000;
 		
-		if(event.getName().equalsIgnoreCase("number")) {
+		if(cmd.equalsIgnoreCase(Main.prefix + "number")) {
 			
 			if(channelID == null) {
 				
-				try {
-					if(event.getOption("nb_max") != null) max = (int) event.getOption("nb_max").getAsLong();
-				} catch (NumberFormatException ignored) {
+				if(event2 != null) {
+					try {
+						if(event2.getOption("nb_max") != null) max = (int) event2.getOption("nb_max").getAsLong();
+					} catch (NumberFormatException ignored) {
+					}
+				} else {
+					try {
+						if(option != null) max = Integer.parseInt(option);
+					} catch (NumberFormatException ignored) {
+					}
 				}
 				
-				if(max <= 500) {
-					event.reply("Le nombre maximum doit être supérieur à 500 !").queue();
+				if(max <= 1000) {
+					UtilsCommands.replyOrSend("Le nombre maximum doit être supérieur à 1000 !", event1, event2);
 					return;
 				}
 				
 				nbDeBase = max;
 				
-				channelID = event.getChannel().getId();
+				if(event1 != null) {
+					channelID = event1.getChannel().getId();
+				} else {
+					channelID = event2.getChannel().getId();
+				}
 				randomNB = random.nextInt(max - 1 + 1) + 1;
 				
 				coups.clear();
@@ -50,10 +65,10 @@ public class CommandFindNumber extends ListenerAdapter {
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
 				embed.setDescription("Tout le monde peut chercher mon nombre :eyes:");
-				embed.setFooter("| Commandé par " + event.getMember().getUser().getAsTag(), event.getMember().getUser().getAvatarUrl());
+				embed.setFooter("| Commandé par " + user.getAsTag(), user.getAvatarUrl());
 				embed.setColor(Color.RED);
 				
-				event.replyEmbeds(embed.build()).queue();
+				UtilsCommands.replyOrSend(embed, event1, event2);
 				
 			}
 			

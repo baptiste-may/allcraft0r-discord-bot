@@ -3,28 +3,18 @@ package fr.djredstone.botdiscord;
 import javax.security.auth.login.LoginException;
 
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import fr.djredstone.botdiscord.commands.CommandDaily;
 import fr.djredstone.botdiscord.commands.CommandDashboard;
-import fr.djredstone.botdiscord.commands.CommandEyes;
 import fr.djredstone.botdiscord.commands.CommandFakeBan;
 import fr.djredstone.botdiscord.commands.CommandFakeResetXP;
 import fr.djredstone.botdiscord.commands.CommandFindNumber;
-import fr.djredstone.botdiscord.commands.CommandHask;
-import fr.djredstone.botdiscord.commands.CommandHelp;
-import fr.djredstone.botdiscord.commands.CommandLink;
 import fr.djredstone.botdiscord.commands.CommandLock;
-import fr.djredstone.botdiscord.commands.CommandMoney;
-import fr.djredstone.botdiscord.commands.CommandNon;
-import fr.djredstone.botdiscord.commands.CommandOui;
 import fr.djredstone.botdiscord.commands.CommandP4;
-import fr.djredstone.botdiscord.commands.CommandPing;
 import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
-import fr.djredstone.botdiscord.commands.CommandSend;
-import fr.djredstone.botdiscord.commands.CommandTank;
-import fr.djredstone.botdiscord.commands.CommandText;
 import fr.djredstone.botdiscord.listener.MessageReceivedListener;
+import fr.djredstone.botdiscord.listener.OnDiscordCommand;
 import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -32,6 +22,9 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Setup implements EventListener, Listener {
@@ -81,45 +74,35 @@ public class Setup implements EventListener, Listener {
 	    
 	    new P4Game(main);
 	    
-	    Main.jda.updateCommands().queue();
+	    CommandListUpdateAction commands = Main.jda.updateCommands();
 	    
 	    Main.jda.addEventListener(this);
 	    
+	    Main.jda.addEventListener(new OnDiscordCommand());
+	    
 	    Main.jda.addEventListener(new CommandP4(main));
-	    Main.jda.addEventListener(new CommandFindNumber());
-	    Main.jda.upsertCommand("number", "Démarre une partie de find number").addOption(OptionType.INTEGER, "nb_max", "Nombre maximum").queue();
+	    Main.jda.addEventListener(new CommandFindNumber(null, null, null, null, null));
+	    commands.addCommands(new CommandData("number", "Démarre une partie de find number").addOption(OptionType.INTEGER, "nb_max", "Nombre maximum"));
 	    Main.jda.addEventListener(new CommandQuitteOuDouble());
-	    Main.jda.upsertCommand("quitteoudouble", "Démarre une partie de quitte ou double").addOption(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").queue();
+	    commands.addCommands(new CommandData("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)));
 	    
-	    Main.jda.addEventListener(new CommandMoney());
-	    Main.jda.upsertCommand("money", "Affiche son nombre de redstones").queue();
+	    commands.addCommands(new CommandData("money", "Affiche son nombre de redstones"));
 	    Main.jda.addEventListener(new CommandDashboard());
-	    Main.jda.upsertCommand("dashboard", "???").queue();
-	    Main.jda.addEventListener(new CommandDaily());
-	    Main.jda.upsertCommand("daily", "Récupère sa redstone quotidienne").queue();
+	    commands.addCommands(new CommandData("dashboard", "???"));
+	    commands.addCommands(new CommandData("daily", "Récupère sa redstone quotidienne"));
 	    
-	    Main.jda.addEventListener(new CommandHelp());
-	    Main.jda.upsertCommand("aide", "Liste des commandes").queue();
-	    Main.jda.addEventListener(new CommandSend());
-	    Main.jda.upsertCommand("send", "Envoie un message aux personnes de puissances").addOption(OptionType.STRING, "send_message", "Message").queue();
-	    Main.jda.addEventListener(new CommandPing());
-	    Main.jda.upsertCommand("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie").queue();
-	    Main.jda.addEventListener(new CommandLink());
-	    Main.jda.upsertCommand("link", "Affiche des liens en rapport à allcraft0r").queue();
+	    commands.addCommands(new CommandData("aide", "Liste des commandes"));
+	    commands.addCommands(new CommandData("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)));
+	    commands.addCommands(new CommandData("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"));
+	    commands.addCommands(new CommandData("link", "Affiche des liens en rapport à allcraft0r"));
 	    
-	    Main.jda.addEventListener(new CommandHask());
-	    Main.jda.upsertCommand("ask", "Demande prise en compte").queue();
-	    Main.jda.addEventListener(new CommandOui());
-	    Main.jda.upsertCommand("oui", "Demande acceptée").addOption(OptionType.STRING, "oui_message", "Message").queue();
-	    Main.jda.addEventListener(new CommandNon());
-	    Main.jda.upsertCommand("non", "Demande refusée").addOption(OptionType.STRING, "non_message", "Message").queue();
-	    Main.jda.addEventListener(new CommandText());
-	    Main.jda.upsertCommand("text", "Message personnalisé").addOption(OptionType.CHANNEL, "text_channel", "Channel").addOption(OptionType.STRING, "text", "Texte").queue();
+	    commands.addCommands(new CommandData("ask", "Demande prise en compte"));
+	    commands.addCommands(new CommandData("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message").setRequired(false)));
+	    commands.addCommands(new CommandData("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message").setRequired(false)));
+	    commands.addCommands(new CommandData("text", "Message personnalisé").addOptions(new OptionData(OptionType.CHANNEL, "text_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "text", "Texte").setRequired(true)));
 	    
-	    Main.jda.addEventListener(new CommandTank());
-	    Main.jda.upsertCommand("tank", "AMERICA ! F*CK YEAHH !!").queue();
-	    Main.jda.addEventListener(new CommandEyes());
-	    Main.jda.upsertCommand("eyes", "I'm watching you...").queue();
+	    commands.addCommands(new CommandData("tank", "AMERICA ! F*CK YEAHH !!"));
+	    commands.addCommands(new CommandData("eyes", "I'm watching you..."));
 	    
 	    Main.mee6.addEventListener(new CommandFakeBan());
 	    Main.mee6.addEventListener(new CommandFakeResetXP());
@@ -129,12 +112,32 @@ public class Setup implements EventListener, Listener {
 	    
 	    Main.jda.addEventListener(new MessageReceivedListener(main));
 	    
+	    commands.queue();
+	    
 	    try {
 	    	Main.jda.awaitReady();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	    
+	    new BukkitRunnable() {
+	    	
+	    	int message = 0;
+			
+			@Override
+			public void run() {
+
+				if(message == 0) {
+					Main.jda.getPresence().setActivity(Activity.watching("les vidéos d'allcraft0r"));
+					message = 1;
+				} else {
+					Main.jda.getPresence().setActivity(Activity.playing("faire de la redstone"));
+					message = 0;
+				}
+				
+			}
+		}.runTaskTimer(main, 0, 200);
 		
 	}
 	

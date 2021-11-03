@@ -14,7 +14,7 @@ public class Main extends JavaPlugin {
 	
 	static String token;
 	static String tokenMEE6;
-	public static String prefix = "/";
+	public static String prefix = "!";
 	public static String noPermMessage = "Vous n'étes pas une personne de puissance.";
 	public static String redstoneEmoji = "<:redstone:503978809645727745>";
 	public HashMap<User, Integer> messageByMinute = new HashMap<>();

@@ -1,26 +1,39 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
-import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public class CommandNon extends ListenerAdapter {
+public class CommandNon {
 	
-	public void onSlashCommand(SlashCommandEvent event) {
+	public CommandNon(String cmd, @Nullable String option, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
-		if(event.getName().equalsIgnoreCase("non")) {
+		if(cmd.equalsIgnoreCase(Main.prefix + "non")) {
 			
-			if (!Objects.requireNonNull(event.getMember()).hasPermission(Permission.NICKNAME_MANAGE)) {
-                event.reply(Main.noPermMessage).queue();
+			Member member;
+			if(event1 != null) {
+				member = event1.getMember();
+			} else {
+				member = event2.getMember();
+			}
+			
+			if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
+                UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
                 return;
             }
 			
-			String message = event.getOption("non_message").getAsString();
+			String message = option;
+			if(event2 != null) {
+				message = event2.getOption("non_message").getAsString();
+			}
 
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle(":warning: Message de la hiérarchie :warning:");
@@ -29,8 +42,7 @@ public class CommandNon extends ListenerAdapter {
 			embed.setColor(Color.RED);
 			embed.setThumbnail("https://images.emojiterra.com/google/android-10/512px/274c.png");
 			
-			event.replyEmbeds(embed.build()).queue();
-			event.getChannel().sendTyping().queue();
+			UtilsCommands.replyOrSend(embed, event1, event2);
 			
 		}
 	}

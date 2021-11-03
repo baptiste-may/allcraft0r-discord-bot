@@ -1,22 +1,32 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
-import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public class CommandHask extends ListenerAdapter {
+public class CommandHask {
 	
-	public void onSlashCommand(SlashCommandEvent event) {
+	public CommandHask(String cmd, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
-		if(event.getName().equalsIgnoreCase("ask")) {
+		if(cmd.equalsIgnoreCase(Main.prefix + "ask")) {
 			
-			if (!Objects.requireNonNull(event.getMember()).hasPermission(Permission.NICKNAME_MANAGE)) {
-                event.getChannel().sendMessage(Main.noPermMessage).queue();
+			Member member;
+			if(event1 != null) {
+				member = event1.getMember();
+			} else {
+				member = event2.getMember();
+			}
+			
+			if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
+                UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
                 return;
             }
 			
@@ -26,10 +36,10 @@ public class CommandHask extends ListenerAdapter {
 			embed.setFooter("Nous vous informerons lorsque nous aurons plus d'informations. :receipt:");
 			embed.setColor(Color.ORANGE);
 			
-			event.replyEmbeds(embed.build()).queue();
-			event.getChannel().sendTyping().queue();
+			UtilsCommands.replyOrSend(embed, event1, event2);
 			
 		}
+		
 	}
 
 }

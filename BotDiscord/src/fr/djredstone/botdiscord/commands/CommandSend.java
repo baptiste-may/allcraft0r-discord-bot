@@ -3,29 +3,34 @@ package fr.djredstone.botdiscord.commands;
 import java.awt.Color;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public class CommandSend extends ListenerAdapter {
+public class CommandSend {
 
-	public void onSlashCommand(SlashCommandEvent event) {
+	public CommandSend(String cmd, @Nullable String option, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
-		if(event.getName().equalsIgnoreCase("send")) {
+		if(cmd.equalsIgnoreCase(Main.prefix + "send")) {
 			
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle("  :warning: Message de la hiérarchie :warning:");
 			embed.setDescription("Votre message a été correctement envoyé.");
-			embed.setFooter(event.getUser().getName());
+			embed.setFooter(user.getName());
 			embed.setThumbnail("https://images.emojiterra.com/twitter/v13.0/512px/2705.png");
 			embed.setColor(Color.GREEN);
 			
-			String message = event.getOption("send_message").getAsString();
+			String message = option;
+			if(event2 != null) {
+				message = event2.getOption("send_message").getAsString();
+			}
 			
-			event.replyEmbeds(embed.build()).queue();
-			Objects.requireNonNull(Main.jda.getTextChannelById("497141089480998912")).sendMessage("Nouveau message de " + event.getUser().getName() + " : " + message).queue();
-			event.getChannel().sendTyping().queue();
+			UtilsCommands.replyOrSend(embed, event1, event2);
+			Objects.requireNonNull(Main.jda.getTextChannelById("497141089480998912")).sendMessage("Nouveau message de " + user.getName() + " : " + message).queue();
 			
 		}
 		

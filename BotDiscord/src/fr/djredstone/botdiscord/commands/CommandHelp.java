@@ -2,19 +2,31 @@ package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
 
+import javax.annotation.Nullable;
+
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public class CommandHelp extends ListenerAdapter {
+public class CommandHelp {
 	
-	public void onSlashCommand(SlashCommandEvent event) {
+	public CommandHelp(String cmd, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
-		if(event.getName().equalsIgnoreCase("aide")) {
+		if(cmd.equalsIgnoreCase(Main.prefix + "aide")) {
 			
-			if(!event.getMember().hasPermission(Permission.NICKNAME_MANAGE)) {
+			Member member;
+			if(event1 != null) {
+				member = event1.getMember();
+			} else {
+				member = event2.getMember();
+			}
+			
+			if(member.hasPermission(Permission.NICKNAME_MANAGE)) {
 				
 				EmbedBuilder embedStaff = new EmbedBuilder();
 				embedStaff.setTitle("Commandes privées", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Illuminati-Logo.png/480px-Illuminati-Logo.png");
@@ -27,7 +39,7 @@ public class CommandHelp extends ListenerAdapter {
 				embedStaff.addField(":white_medium_small_square: **" + Main.prefix + "fakeban <membre> (message)** + image en attachment", "> Faux message de ban (personnalisé)", true);
 				embedStaff.addField(":white_medium_small_square: **" + Main.prefix + "reset-xp (<@membre>)**", "> Faux message de reset d'XP", true);
 				
-				event.getUser().openPrivateChannel().queue(channel -> {
+				user.openPrivateChannel().queue(channel -> {
 		            channel.sendMessage(embedStaff.build()).queue();
 		        });
 				
@@ -59,13 +71,18 @@ public class CommandHelp extends ListenerAdapter {
 			
 			embed1.setThumbnail("https://images.emojiterra.com/google/android-10/512px/2754.png");
 			
-			event.getChannel().sendTyping().queue();
-			event.replyEmbeds(embed1.build()).queue();
-			event.getChannel().sendMessage(embed2.build()).queue();
-			event.getChannel().sendMessage(embed3.build()).queue();
+			UtilsCommands.replyOrSend(embed1, event1, event2);
+			TextChannel channel;
+			if(event1 != null) {
+				channel = event1.getChannel();
+			} else {
+				channel = event2.getTextChannel();
+			}
+			channel.sendMessage(embed2.build()).queue();
+			channel.sendMessage(embed3.build()).queue();
 			
 		}
 		
-    }
+	}
 
 }

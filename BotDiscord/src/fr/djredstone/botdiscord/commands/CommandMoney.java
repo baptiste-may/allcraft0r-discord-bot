@@ -1,19 +1,22 @@
 package fr.djredstone.botdiscord.commands;
 
-import fr.djredstone.botdiscord.Main;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import javax.annotation.Nullable;
 
-public class CommandMoney extends ListenerAdapter {
+import fr.djredstone.botdiscord.Main;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+
+public class CommandMoney {
 	
-	public void onSlashCommand(SlashCommandEvent event) {
-        
-        if(event.getName().equalsIgnoreCase("money")) {
+	public CommandMoney(String cmd, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+		
+		if(cmd.equalsIgnoreCase(Main.prefix + "money")) {
         	
-        	event.reply(event.getUser().getAsMention() + ", tu as **" + Main.getMoney(event.getUser()) + " redstones** " + Main.redstoneEmoji).queue();
+        	UtilsCommands.replyOrSend((user.getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones** " + Main.redstoneEmoji), event1, event2);
         	
         }
-        
+		
 	}
 
 }
