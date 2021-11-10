@@ -9,57 +9,52 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CommandText {
 	
-	public CommandText(String cmd, String option1, @Nullable String option2, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
-		
-		if(cmd.equalsIgnoreCase(Main.prefix + "text")) {
+	public CommandText(String message, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
-			Member member;
-			if(event1 != null) {
-				member = event1.getMember();
-			} else {
-				member = event2.getMember();
-			}
-			
-			if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
-				UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
-                return;
-            }
-			
-			String message = option1;
-			if(event2 != null) {
-				message = event2.getOption("text").getAsString();
-			}
-
-			EmbedBuilder embed = new EmbedBuilder();
-			embed.setTitle(":warning: Message de la hiérarchie :warning:");
-			embed.setDescription(message.toString());
-			embed.setFooter(" - " + user.getAsTag());
-			embed.setColor(Color.YELLOW);
-			
-			MessageChannel channel;
-			if(event2 != null) {
-				channel = event2.getOption("text_channel").getAsMessageChannel();
-			} else {
-				if(!event1.getMessage().getMentionedChannels().isEmpty()) {
-					channel = event1.getMessage().getMentionedChannels().get(0);
-				} else {
-					return;
-				}
-			}
-			
-			if(channel == null) {
-				UtilsCommands.replyOrSend(embed, event1, event2);
-			} else {
-				channel.sendMessage(embed.build()).queue();
-			}
-			
+		Member member;
+		if(event1 != null) {
+			member = event1.getMember();
+		} else {
+			member = event2.getMember();
 		}
+		
+		if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
+			UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
+            return;
+        }
+		
+		if(event2 != null) {
+			message = event2.getOption("text").getAsString();
+		}
+		
+		EmbedBuilder embed = new EmbedBuilder();
+		embed.setTitle(":warning: Message de la hiérarchie :warning:");
+		embed.setDescription(message.toString());
+		embed.setFooter(" - " + member.getUser().getAsTag());
+		embed.setColor(Color.YELLOW);
+		
+		MessageChannel channel;
+		if(event2 != null) {
+			channel = event2.getOption("text_channel").getAsMessageChannel();
+		} else {
+			if(!event1.getMessage().getMentionedChannels().isEmpty()) {
+				channel = event1.getMessage().getMentionedChannels().get(0);
+			} else {
+				return;
+			}
+		}
+		
+		if(channel == null) {
+			UtilsCommands.replyOrSend(embed, event1, event2);
+		} else {
+			channel.sendMessage(embed.build()).queue();
+		}
+		
 	}
 
 }

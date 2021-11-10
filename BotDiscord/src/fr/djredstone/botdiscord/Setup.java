@@ -81,8 +81,8 @@ public class Setup implements EventListener, Listener {
 	    Main.jda.addEventListener(new OnDiscordCommand());
 	    
 	    Main.jda.addEventListener(new CommandP4(main));
-	    Main.jda.addEventListener(new CommandFindNumber(null, null, null, null, null));
-	    commands.addCommands(new CommandData("number", "Démarre une partie de find number").addOption(OptionType.INTEGER, "nb_max", "Nombre maximum"));
+	    Main.jda.addEventListener(new CommandFindNumber(null, null, null, null));
+	    commands.addCommands(new CommandData("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)));
 	    Main.jda.addEventListener(new CommandQuitteOuDouble());
 	    commands.addCommands(new CommandData("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)));
 	    

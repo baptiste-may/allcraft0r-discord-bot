@@ -9,13 +9,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CommandMoney {
 	
-	public CommandMoney(String cmd, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
-		
-		if(cmd.equalsIgnoreCase(Main.prefix + "money")) {
+	public CommandMoney(User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
         	
-        	UtilsCommands.replyOrSend((user.getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones** " + Main.redstoneEmoji), event1, event2);
-        	
-        }
+        UtilsCommands.replyOrSend((user.getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones** " + Main.redstoneEmoji), event1, event2);
 		
 	}
 

@@ -21,69 +21,149 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class OnDiscordCommand extends ListenerAdapter {
 	
 	public void onSlashCommand(SlashCommandEvent event) {
-        
-		new CommandMoney(Main.prefix + event.getName(), event.getUser(), null, event);
-		new CommandDaily(Main.prefix + event.getName(), event.getUser(), null, event);
 		
-		new CommandFindNumber(Main.prefix + event.getName(), null, event.getUser(), null, event);
+		switch(event.getName()) {
 		
-		new CommandHask(Main.prefix + event.getName(), event.getUser(), null, event);
-		new CommandNon(Main.prefix + event.getName(), null, event.getUser(), null, event);
-		new CommandOui(Main.prefix + event.getName(), null, event.getUser(), null, event);
-        new CommandText(Main.prefix + event.getName(), null, null, event.getUser(), null, event);
-        
-        new CommandSend(Main.prefix + event.getName(), null, event.getUser(), null, event);
-        
-        new CommandEyes(Main.prefix + event.getName(), event.getUser(), null, event);
-        new CommandTank(Main.prefix + event.getName(), event.getUser(), null, event);
-        
-        new CommandHelp(Main.prefix + event.getName(), event.getUser(), null, event);
-        new CommandLink(Main.prefix + event.getName(), event.getUser(), null, event);
-        new CommandPing(Main.prefix + event.getName(), event.getUser(), null, event);
+		case "money":
+			new CommandMoney(event.getUser(), null, event);
+			break;
+		
+		case "daily":
+			new CommandDaily(event.getUser(), null, event);
+			break;
+			
+		case "number":
+			new CommandFindNumber(null, event.getUser(), null, event);
+			break;
+			
+		case "ask":
+			new CommandHask(null, event);
+			break;
+			
+		case "non":
+			new CommandNon(null, null, event);
+			break;
+			
+		case "oui":
+			new CommandOui(null, null, event);
+			break;
+			
+		case "text":
+			new CommandText(null, null, event);
+			break;
+			
+		case "send":
+			new CommandSend(event.getUser(), null, null, event);
+			break;
+			
+		case "eyes":
+			new CommandEyes(null, event);
+			break;
+			
+		case "tank":
+			new CommandTank(null, event);
+			break;
+			
+		case "aide":
+			new CommandHelp(null, event);
+			break;
+			
+		case "link":
+			new CommandLink(null, event);
+			break;
+			
+		case "ping":
+			new CommandPing(null, event);
+			break;
+			
+		default:
+			break;
+		
+		}
         
 	}
 	
+	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		String[] args = event.getMessage().getContentRaw().split("\\s+");
 		
-		if(args[0].startsWith(Main.prefix)) {
-			new CommandMoney(args[0], event.getAuthor(), event, null);
-			new CommandDaily(args[0], event.getAuthor(), event, null);
+		if(!args[0].startsWith("!")) return;
+		
+		String cmd = args[0].replace(Main.prefix, "");
+		
+		switch(cmd) {
+		
+		case "money":
+			new CommandMoney(event.getAuthor(), event, null);
+			break;
 			
+		case "daily":
+			new CommandDaily(event.getAuthor(), event, null);
+			break;
+		
+		case "number":
 			if(args.length > 1) {
-				new CommandFindNumber(args[0], args[1], event.getAuthor(), event, null);
+				new CommandFindNumber(args[1], event.getAuthor(), event, null);
 			} else {
-				new CommandFindNumber(args[0], null, event.getAuthor(), event, null);
+				new CommandFindNumber(null, event.getAuthor(), event, null);
 			}
+			break;
 			
-			new CommandHask(args[0], event.getAuthor(), event, null);
+		case "ask":
+			new CommandHask(event, null);
+			break;
+			
+		case "non":
 			if(args.length > 1) {
-				new CommandNon(args[0], args[1], event.getAuthor(), event, null);
+				new CommandNon(args[1], event, null);
 			} else {
-				new CommandNon(args[0], null, event.getAuthor(), event, null);
+				new CommandNon(null, event, null);
 			}
+			break;
+			
+		case "oui":
 			if(args.length > 1) {
-				new CommandOui(args[0], args[1], event.getAuthor(), event, null);
+				new CommandNon(args[1], event, null);
 			} else {
-				new CommandOui(args[0], null, event.getAuthor(), event, null);
+				new CommandNon(null, event, null);
 			}
-			if(args.length == 2) {
-				new CommandText(args[0], args[1], null, event.getAuthor(), event, null);
-			} else if(args.length > 2) {
-				new CommandText(args[0], args[1], args[2], event.getAuthor(), event, null);
-			}
+			break;
 			
+		case "text":
 			if(args.length > 1) {
-				new CommandSend(args[0], args[1], event.getAuthor(), event, null);
+				new CommandText(args[2], event, null);
+			} else {
+				new CommandText(null, event, null);
 			}
+			break;
 			
-			new CommandEyes(args[0], event.getAuthor(), event, null);
-			new CommandTank(args[0], event.getAuthor(), event, null);
+		case "send":
+			new CommandSend(event.getAuthor(), args[1], event, null);
+			break;
 			
-			new CommandHelp(args[0], event.getAuthor(), event, null);
-			new CommandLink(args[0], event.getAuthor(), event, null);
-			new CommandPing(args[0], event.getAuthor(), event, null);
+		case "eyes":
+			new CommandEyes(event, null);
+			break;
 			
+		case "tank":
+			new CommandTank(event, null);
+			break;
+			
+		case "aide":
+			new CommandHelp(event, null);
+			break;
+			
+		case "link":
+			new CommandLink(event, null);
+			break;
+			
+		case "ping":
+			new CommandPing(event, null);
+			break;
+			
+		default:
+			break;
+		
 		}
 		
 	}

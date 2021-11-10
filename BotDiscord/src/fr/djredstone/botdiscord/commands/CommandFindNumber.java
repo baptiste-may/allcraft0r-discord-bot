@@ -3,9 +3,11 @@ package fr.djredstone.botdiscord.commands;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.djredstone.botdiscord.Main;
@@ -17,65 +19,62 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandFindNumber extends ListenerAdapter {
 	
-	private String channelID = null;
-	private int randomNB;
-	private HashMap<User, Integer> coups = new HashMap<>();
-	private int nbDeBase;
+	private static String channelID = null;
+	private static int randomNB;
+	private static HashMap<User, Integer> coups = new HashMap<>();
+	private static int nbDeBase;
 
 	private final Random random = new Random();
 	
-	public CommandFindNumber(String cmd, @Nullable String option, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandFindNumber(@Nullable String option, @Nullable User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
 		if(event1 == null && event2 == null) return;
 		
 		int max = 1000;
-		
-		if(cmd.equalsIgnoreCase(Main.prefix + "number")) {
 			
-			if(channelID == null) {
-				
-				if(event2 != null) {
-					try {
-						if(event2.getOption("nb_max") != null) max = (int) event2.getOption("nb_max").getAsLong();
-					} catch (NumberFormatException ignored) {
-					}
-				} else {
-					try {
-						if(option != null) max = Integer.parseInt(option);
-					} catch (NumberFormatException ignored) {
-					}
+		if(channelID == null) {
+			
+			if(event2 != null) {
+				try {
+					if(event2.getOption("nb_max") != null) max = (int) event2.getOption("nb_max").getAsLong();
+				} catch (NumberFormatException ignored) {
 				}
-				
-				if(max <= 1000) {
-					UtilsCommands.replyOrSend("Le nombre maximum doit être supérieur à 1000 !", event1, event2);
-					return;
+			} else {
+				try {
+					if(option != null) max = Integer.parseInt(option);
+				} catch (NumberFormatException ignored) {
 				}
-				
-				nbDeBase = max;
-				
-				if(event1 != null) {
-					channelID = event1.getChannel().getId();
-				} else {
-					channelID = event2.getChannel().getId();
-				}
-				randomNB = random.nextInt(max - 1 + 1) + 1;
-				
-				coups.clear();
-				
-				EmbedBuilder embed = new EmbedBuilder();
-				embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
-				embed.setDescription("Tout le monde peut chercher mon nombre :eyes:");
-				embed.setFooter("| Commandé par " + user.getAsTag(), user.getAvatarUrl());
-				embed.setColor(Color.RED);
-				
-				UtilsCommands.replyOrSend(embed, event1, event2);
-				
 			}
+			
+			if(max < 1000) {
+				UtilsCommands.replyOrSend("Le nombre maximum doit être supérieur à 1000 !", event1, event2);
+				return;
+			}
+			
+			nbDeBase = max;
+			
+			if(event1 != null) {
+				channelID = event1.getChannel().getId().toString();
+			} else {
+				channelID = event2.getChannel().getId().toString();
+			}
+			randomNB = random.nextInt(max - 1 + 1) + 1;
+			
+			coups.clear();
+			
+			EmbedBuilder embed = new EmbedBuilder();
+			embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
+			embed.setDescription("Tout le monde peut chercher mon nombre :eyes:");
+			embed.setFooter("| Commandé par " + user.getAsTag(), user.getAvatarUrl());
+			embed.setColor(Color.RED);
+			
+			UtilsCommands.replyOrSend(embed, event1, event2);
 			
 		}
 		
 	}
 	
+	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		
 		if(channelID != null) {

@@ -12,25 +12,21 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CommandDaily {
 	
-	private Set<User> hadGet = new HashSet<>();
+	Set<String> hadGet = new HashSet<>();
 	
-	public CommandDaily(String cmd, User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
-		
-		if(cmd.equalsIgnoreCase(Main.prefix + "daily")) {
+	public CommandDaily(User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
-			if(!hadGet.contains(user)) {
-				
-				Main.setMoney(user, Main.getMoney(user) + 200);
-				
-				UtilsCommands.replyOrSend("Tu as reçu **200 redstones** " + Main.redstoneEmoji + user.getAsMention(), event1, event2);
-				
-				hadGet.add(user);
-				
-			} else {
-				
-				UtilsCommands.replyOrSend("Vous avez déjà récupérer votre redstone quotidienne, " + user.getAsMention(), event1, event2);
-				
-			}
+		if(!hadGet.contains(user.getId())) {
+			
+			Main.setMoney(user, Main.getMoney(user) + 200);
+			
+			UtilsCommands.replyOrSend("Tu as reçu **200 redstones** " + Main.redstoneEmoji + user.getAsMention(), event1, event2);
+			
+			hadGet.add(user.getId());
+			
+		} else {
+			
+			UtilsCommands.replyOrSend("Vous avez déjà récupérer votre redstone quotidienne, " + user.getAsMention(), event1, event2);
 			
 		}
 		
