@@ -3,11 +3,9 @@ package fr.djredstone.botdiscord.commands;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.djredstone.botdiscord.Main;

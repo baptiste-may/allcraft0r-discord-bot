@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CommandDaily {
 	
-	Set<String> hadGet = new HashSet<>();
+	private static Set<String> hadGet = new HashSet<>();
 	
 	public CommandDaily(User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
