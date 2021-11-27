@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
@@ -53,17 +54,17 @@ public class Setup implements EventListener, Listener {
 			e.printStackTrace();
 		}
 		
-		JDABuilder builder = JDABuilder.createDefault(Main.token);
+		JDABuilder builder = JDABuilder.createDefault(Main.token, GatewayIntent.GUILD_MESSAGES);
 	    
 	    builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
-	    builder.setActivity(Activity.playing("faire de la redstone"));
+	    builder.setActivity(Activity.playing("loading..."));
 	    try {
 			builder.build();
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
 	    
-	    JDABuilder builderMEE6 = JDABuilder.createDefault(Main.tokenMEE6);
+	    JDABuilder builderMEE6 = JDABuilder.createDefault(Main.tokenMEE6, GatewayIntent.GUILD_MESSAGES);
 	    
 	    builderMEE6.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY);
 	    try {
@@ -83,7 +84,7 @@ public class Setup implements EventListener, Listener {
 	    Main.jda.addEventListener(new CommandP4(main));
 	    Main.jda.addEventListener(new CommandFindNumber(null, null, null, null));
 	    commands.addCommands(new CommandData("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)));
-	    Main.jda.addEventListener(new CommandQuitteOuDouble());
+	    Main.jda.addEventListener(new CommandQuitteOuDouble(null, null, null, null));
 	    commands.addCommands(new CommandData("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)));
 	    
 	    commands.addCommands(new CommandData("money", "Affiche son nombre de redstones"));

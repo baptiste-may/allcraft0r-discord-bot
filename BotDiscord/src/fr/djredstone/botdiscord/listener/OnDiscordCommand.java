@@ -11,6 +11,7 @@ import fr.djredstone.botdiscord.commands.CommandMoney;
 import fr.djredstone.botdiscord.commands.CommandNon;
 import fr.djredstone.botdiscord.commands.CommandOui;
 import fr.djredstone.botdiscord.commands.CommandPing;
+import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
@@ -34,6 +35,10 @@ public class OnDiscordCommand extends ListenerAdapter {
 			
 		case "number":
 			new CommandFindNumber(null, event.getUser(), null, event);
+			break;
+			
+		case "quitteoudouble":
+			new CommandQuitteOuDouble(event.getUser(), null, null, event);
 			break;
 			
 		case "ask":
@@ -107,6 +112,10 @@ public class OnDiscordCommand extends ListenerAdapter {
 			} else {
 				new CommandFindNumber(null, event.getAuthor(), event, null);
 			}
+			break;
+			
+		case "quitteoudouble":
+			if(args.length > 1) new CommandQuitteOuDouble(event.getAuthor(), args[1], event, null);
 			break;
 			
 		case "ask":

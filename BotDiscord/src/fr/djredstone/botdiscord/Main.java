@@ -39,9 +39,9 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		
-		jda.shutdown();
+		jda.shutdownNow();
 		
-		mee6.shutdown();
+		mee6.shutdownNow();
 		
 	}
 	

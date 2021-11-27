@@ -26,7 +26,7 @@ public class CommandDaily {
 			
 		} else {
 			
-			UtilsCommands.replyOrSend("Vous avez déjà récupérer votre redstone quotidienne, " + user.getAsMention(), event1, event2);
+			UtilsCommands.replyOrSend("Vous avez déjà récupéré votre redstone quotidienne, " + user.getAsMention(), event1, event2);
 			
 		}
 		

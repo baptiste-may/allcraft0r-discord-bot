@@ -5,65 +5,71 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NotNull;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandQuitteOuDouble extends ListenerAdapter {
 	
-	private HashMap<User, Integer> mise = new HashMap<>();
-	public HashMap<String, User> messagesID = new HashMap<>();
+	private static HashMap<User, Integer> mise = new HashMap<>();
+	public static HashMap<String, User> messagesID = new HashMap<>();
 	
 	Random r = new Random();
 	
-	private void error(SlashCommandEvent event) {
-		event.reply("Utilisation : " + Main.prefix + "quitteoudouble <nombre>").queue();
-	}
-	
-	public void onSlashCommand(SlashCommandEvent event) {
-    
-        if(event.getName().equalsIgnoreCase("quitteoudouble")) {
+	public CommandQuitteOuDouble(User user, String option, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+		
+		if(user == null) return;
         	
-        	if(mise.get(event.getUser()) == null) {
-        		
-        		try {
+       	if(mise.get(user) == null) {
+       		
+       		try {
+    			
+    			int nb = Integer.parseInt(option);
+    			if(event2 != null) nb = (int) event2.getOption("nb_max").getAsLong();
+    			int userMoney = Main.getMoney(user);
+    			
+    			if(nb < userMoney) {
     				
-    				int nb = (int) event.getOption("nb_depart_mise").getAsLong();
-    				int userMoney = Main.getMoney(event.getUser());
+    				mise.put(user, nb);
+    				Main.setMoney(user, Main.getMoney(user) - nb);
     				
-    				if(nb < userMoney) {
-    					
-    					mise.put(event.getUser(), nb);
-    					Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) - nb);
-    					
-    					EmbedBuilder embed = new EmbedBuilder();
-    					embed.setTitle("Quitte ou double !");
-    					embed.setDescription(event.getUser().getAsMention() + ", tu proposes **" + mise.get(event.getUser()) + " redstones**. Vas-tu tenter le double ?");
-    					embed.setColor(Color.ORANGE);
-    					
-    					event.getChannel().sendMessage(embed.build()).queue(message -> {
-    						messagesID.put(message.getId(), event.getUser());
-    						message.addReaction("✅").queue();
-    						message.addReaction("❌").queue();
-    					});
-    					
+    				EmbedBuilder embed = new EmbedBuilder();
+    				embed.setTitle("Quitte ou double !");
+    				embed.setDescription(user.getAsMention() + ", tu proposes **" + mise.get(user) + " redstones**. Vas-tu tenter le double ?");
+    				embed.setColor(Color.ORANGE);
+    				
+    				TextChannel channel;
+    				if(event1 != null) {
+    					channel = event1.getChannel();
     				} else {
-    					event.getChannel().sendMessage(event.getUser().getAsMention() + ", tu n'as pas assez de redstones !").queue();
+    					channel = event2.getTextChannel();
     				}
+    		    		
+    				channel.sendMessage(embed.build()).queue(message -> {
+        				messagesID.put(message.getId(), user);
+        				message.addReaction("✅").queue();
+        				message.addReaction("❌").queue();
+        			});
+    				channel.sendTyping().queue();
+    		    	if(event1 != null) event1.getMessage().delete().queue();
     				
-    			} catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {
-    				error(event);
+    			} else {
+    				UtilsCommands.replyOrSend(user.getAsMention() + ", tu n'as pas assez de redstones !", event1, event2);
     			}
-
-			}
-        	
-        }
-        
+    			
+    		} catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {
+    		}
+		}
+       	      
 	}
 	
 	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
