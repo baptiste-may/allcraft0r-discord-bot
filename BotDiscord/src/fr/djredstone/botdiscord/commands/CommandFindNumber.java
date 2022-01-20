@@ -12,7 +12,7 @@ import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandFindNumber extends ListenerAdapter {
@@ -24,7 +24,7 @@ public class CommandFindNumber extends ListenerAdapter {
 
 	private final Random random = new Random();
 	
-	public CommandFindNumber(@Nullable String option, @Nullable User user, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandFindNumber(@Nullable String option, @Nullable User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
 		if(event1 == null && event2 == null) return;
 		
@@ -72,8 +72,7 @@ public class CommandFindNumber extends ListenerAdapter {
 		
 	}
 	
-	@Override
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+	public void onGuildMessageReceived(MessageReceivedEvent event) {
 		
 		if(channelID != null) {
 			
@@ -109,7 +108,7 @@ public class CommandFindNumber extends ListenerAdapter {
 						embed.setDescription("__**" + event.getAuthor().getAsTag() + "**__ a découvert le nombre **" + randomNB + "** !");
 						embed.setColor(Color.YELLOW);
 						
-						event.getChannel().sendMessage(embed.build()).queue();
+						event.getChannel().sendMessageEmbeds(embed.build()).queue();
 						
 						int x = 1;
 						int essaisMax = 0;

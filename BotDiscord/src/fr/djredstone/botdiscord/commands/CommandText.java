@@ -10,11 +10,11 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandText {
 	
-	public CommandText(String message, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandText(String message, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
 		Member member;
 		if(event1 != null) {
@@ -52,7 +52,7 @@ public class CommandText {
 		if(channel == null) {
 			UtilsCommands.replyOrSend(embed, event1, event2);
 		} else {
-			channel.sendMessage(embed.build()).queue();
+			channel.sendMessageEmbeds(embed.build()).queue();
 		}
 		
 	}

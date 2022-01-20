@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.djredstone.botdiscord.Main;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandDashboard extends ListenerAdapter {
@@ -36,7 +36,7 @@ public class CommandDashboard extends ListenerAdapter {
         return temp;
     }
 	
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+	public void onGuildMessageReceived(MessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
 		
 		if(args[0].equalsIgnoreCase(Main.prefix + "dashboard")) {

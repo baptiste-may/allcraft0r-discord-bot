@@ -16,7 +16,7 @@ import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class OnDiscordCommand extends ListenerAdapter {
@@ -88,8 +88,7 @@ public class OnDiscordCommand extends ListenerAdapter {
         
 	}
 	
-	@Override
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+	public void onGuildMessageReceived(MessageReceivedEvent event) {
 		String[] args = event.getMessage().getContentRaw().split("\\s+");
 		
 		if(!args[0].startsWith("!")) return;

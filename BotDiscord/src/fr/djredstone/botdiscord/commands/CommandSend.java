@@ -9,11 +9,11 @@ import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandSend {
 
-	public CommandSend(User user, String message, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandSend(User user, String message, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
 		if(event2 != null) message = event2.getOption("send_message").getAsString();
 		

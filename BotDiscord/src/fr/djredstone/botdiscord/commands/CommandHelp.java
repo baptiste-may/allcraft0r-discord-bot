@@ -8,13 +8,13 @@ import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandHelp {
 	
-	public CommandHelp(@Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandHelp(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
 		Member member;
 		if(event1 != null) {
@@ -37,7 +37,7 @@ public class CommandHelp {
 			embedStaff.addField(":white_medium_small_square: **" + Main.prefix + "reset-xp (<@membre>)**", "> Faux message de reset d'XP", true);
 			
 			member.getUser().openPrivateChannel().queue(channel -> {
-	            channel.sendMessage(embedStaff.build()).queue();
+	            channel.sendMessageEmbeds(embedStaff.build()).queue();
 	        });
 			
 		}
@@ -69,14 +69,14 @@ public class CommandHelp {
 		embed1.setThumbnail("https://images.emojiterra.com/google/android-10/512px/2754.png");
 		
 		UtilsCommands.replyOrSend(embed1, event1, event2);
-		TextChannel channel;
+		MessageChannel channel;
 		if(event1 != null) {
 			channel = event1.getChannel();
 		} else {
 			channel = event2.getTextChannel();
 		}
-		channel.sendMessage(embed2.build()).queue();
-		channel.sendMessage(embed3.build()).queue();
+		channel.sendMessageEmbeds(embed2.build()).queue();
+		channel.sendMessageEmbeds(embed3.build()).queue();
 		
 	}
 

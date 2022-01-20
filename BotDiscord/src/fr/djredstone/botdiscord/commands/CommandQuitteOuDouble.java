@@ -11,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -25,7 +25,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 	
 	Random r = new Random();
 	
-	public CommandQuitteOuDouble(User user, String option, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandQuitteOuDouble(User user, String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
 		if(user == null) return;
         	
@@ -47,14 +47,14 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
     				embed.setDescription(user.getAsMention() + ", tu proposes **" + mise.get(user) + " redstones**. Vas-tu tenter le double ?");
     				embed.setColor(Color.ORANGE);
     				
-    				TextChannel channel;
+    				MessageChannel channel;
     				if(event1 != null) {
     					channel = event1.getChannel();
     				} else {
     					channel = event2.getTextChannel();
     				}
     		    		
-    				channel.sendMessage(embed.build()).queue(message -> {
+    				channel.sendMessageEmbeds(embed.build()).queue(message -> {
         				messagesID.put(message.getId(), user);
         				message.addReaction("✅").queue();
         				message.addReaction("❌").queue();
@@ -89,7 +89,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 					
 					event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> messagesID.remove(message.getId()));
 					
-					event.getChannel().sendMessage(embed.build()).queue(message -> {
+					event.getChannel().sendMessageEmbeds(embed.build()).queue(message -> {
 						messagesID.put(message.getId(), event.getUser());
 						message.addReaction("✅").queue();
 						message.addReaction("❌").queue();
@@ -102,7 +102,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 					embed.setDescription("Dommage ! " + Objects.requireNonNull(event.getUser()).getAsMention() + ", tu viens de perdre la mise de **" + mise.get(event.getUser()) + " redstones** !");
 					embed.setColor(Color.RED);
 					
-					event.getChannel().sendMessage(embed.build()).queue();
+					event.getChannel().sendMessageEmbeds(embed.build()).queue();
 					
 					mise.remove(event.getUser());
 					
@@ -127,7 +127,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 				embed.setDescription(Objects.requireNonNull(event.getUser()).getAsMention() + ", tu récupères **" + mise.get(event.getUser()) + " redstones** !");
 				embed.setColor(Color.YELLOW);
 				
-				event.getChannel().sendMessage(embed.build()).queue();
+				event.getChannel().sendMessageEmbeds(embed.build()).queue();
 				
 				Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + mise.get(event.getUser()));
 				

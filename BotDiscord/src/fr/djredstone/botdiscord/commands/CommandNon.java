@@ -9,11 +9,11 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandNon {
 	
-	public CommandNon(@Nullable String option, @Nullable GuildMessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandNon(@Nullable String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
 		Member member;
 		if(event1 != null) {

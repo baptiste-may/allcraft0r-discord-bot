@@ -13,7 +13,7 @@ public class Logger {
 		embed.setTitle("**Message modifié**");
 		embed.setDescription("> " + event.getMessage());
 		embed.setFooter(event.getMessageId());
-		event.getGuild().getTextChannelById(channelID).sendMessage(embed.build()).queue();
+		event.getGuild().getTextChannelById(channelID).sendMessageEmbeds(embed.build()).queue();
 	}
 	
 	public void messageDelete(MessageDeleteEvent event) {
