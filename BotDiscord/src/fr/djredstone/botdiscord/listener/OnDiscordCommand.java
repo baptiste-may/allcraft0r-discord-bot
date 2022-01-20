@@ -7,6 +7,7 @@ import fr.djredstone.botdiscord.commands.CommandFindNumber;
 import fr.djredstone.botdiscord.commands.CommandHask;
 import fr.djredstone.botdiscord.commands.CommandHelp;
 import fr.djredstone.botdiscord.commands.CommandLink;
+import fr.djredstone.botdiscord.commands.CommandLock;
 import fr.djredstone.botdiscord.commands.CommandMoney;
 import fr.djredstone.botdiscord.commands.CommandNon;
 import fr.djredstone.botdiscord.commands.CommandOui;
@@ -15,6 +16,7 @@ import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.commands.CommandSend;
 import fr.djredstone.botdiscord.commands.CommandTank;
 import fr.djredstone.botdiscord.commands.CommandText;
+import fr.djredstone.botdiscord.commands.CommandUnlock;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -79,6 +81,14 @@ public class OnDiscordCommand extends ListenerAdapter {
 			
 		case "ping":
 			new CommandPing(null, event);
+			break;
+			
+		case "lock":
+			new CommandLock(null, event);
+			break;
+			
+		case "unlock":
+			new CommandUnlock(null, event);
 			break;
 			
 		default:
@@ -168,6 +178,14 @@ public class OnDiscordCommand extends ListenerAdapter {
 			
 		case "ping":
 			new CommandPing(event, null);
+			break;
+			
+		case "lock":
+			new CommandLock(event, null);
+			break;
+			
+		case "unlock":
+			new CommandUnlock(event, null);
 			break;
 			
 		default:

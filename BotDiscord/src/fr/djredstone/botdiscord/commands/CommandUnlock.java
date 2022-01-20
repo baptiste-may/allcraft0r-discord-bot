@@ -12,9 +12,9 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class CommandLock {
+public class CommandUnlock {
 	
-	public CommandLock(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandUnlock(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
         
 		Member member;
 		if(event1 != null) {
@@ -36,7 +36,7 @@ public class CommandLock {
 		}
 		
         if(message.getMentionedChannels().isEmpty()) {
-        	UtilsCommands.replyOrSend("Utilisation : " + Main.prefix + "lock <#channel>", event1, event2);
+        	UtilsCommands.replyOrSend("Utilisation : " + Main.prefix + "unlock <#channel>", event1, event2);
         	return;
         }
         
@@ -44,9 +44,9 @@ public class CommandLock {
         TextChannel channel = message.getMentionedChannels().get(0);
         PermissionOverride po = channel.createPermissionOverride(guild.getPublicRole()).complete();
         po.getManager().grant(Permission.MESSAGE_SEND).complete();
-        po.getManager().setDeny(Permission.MESSAGE_SEND).complete();
-        channel.sendMessage("Ce channel a été lock !");
-        UtilsCommands.replyOrSend("Le channel a été lock !", event1, event2);
+        po.getManager().setAllow(Permission.MESSAGE_SEND).complete();
+        channel.sendMessage("Ce channel a été unlock !");
+        UtilsCommands.replyOrSend("Le channel a été unlock !", event1, event2);
         
 	}
 

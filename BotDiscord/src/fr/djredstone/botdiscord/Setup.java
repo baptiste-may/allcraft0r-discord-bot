@@ -10,7 +10,6 @@ import fr.djredstone.botdiscord.commands.CommandDashboard;
 import fr.djredstone.botdiscord.commands.CommandFakeBan;
 import fr.djredstone.botdiscord.commands.CommandFakeResetXP;
 import fr.djredstone.botdiscord.commands.CommandFindNumber;
-import fr.djredstone.botdiscord.commands.CommandLock;
 import fr.djredstone.botdiscord.commands.CommandP4;
 import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.listener.MessageReceivedListener;
@@ -107,7 +106,6 @@ public class Setup implements EventListener, Listener {
 	    
 	    Main.mee6.addEventListener(new CommandFakeBan());
 	    Main.mee6.addEventListener(new CommandFakeResetXP());
-	    Main.mee6.addEventListener(new CommandLock());
 	    
 	    new messageByMinuteTest(main);
 	    
