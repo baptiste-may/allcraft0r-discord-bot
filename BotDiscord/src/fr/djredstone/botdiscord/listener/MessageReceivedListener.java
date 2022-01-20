@@ -16,7 +16,8 @@ public class MessageReceivedListener extends ListenerAdapter {
 		this.main = main;
 	}
 	
-	public void onGuildMessageReceived(MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(MessageReceivedEvent event) {
 		if(!event.getAuthor().isBot()) {
 			if(r.nextBoolean()) {
 				if(event.getMessage().getContentRaw().length() > 10) Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + 1);
