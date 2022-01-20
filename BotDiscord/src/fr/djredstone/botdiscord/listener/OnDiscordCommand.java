@@ -132,9 +132,9 @@ public class OnDiscordCommand extends ListenerAdapter {
 			
 		case "oui":
 			if(args.length > 1) {
-				new CommandNon(args[1], event, null);
+				new CommandOui(args[1], event, null);
 			} else {
-				new CommandNon(null, event, null);
+				new CommandOui(null, event, null);
 			}
 			break;
 			
