@@ -82,17 +82,17 @@ public class Main extends JavaPlugin {
 	
 	public static void setMoney(User user, int money) throws SQLException {
 		
+		getMoney(user);
+		
 		final DbConnection dbConnection = Main.databaseManager.getDbConnection();
 
 		final Connection connection = dbConnection.getConnection();
 		
-		final PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO ALLCRAFT0R_user_money VALUES(?, ?, ?, ?)");
-		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		final PreparedStatement preparedStatement1 = connection.prepareStatement("UPDATE ALLCRAFT0R_user_money SET money = ?, updated_at = ? WHERE uuid = ?");
 
-		preparedStatement1.setString(1, user.getId().toString());
-		preparedStatement1.setFloat(2, 100);
-		preparedStatement1.setTimestamp(3, timestamp);
-		preparedStatement1.setTimestamp(4, timestamp);
+		preparedStatement1.setInt(1, money);
+		preparedStatement1.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+		preparedStatement1.setString(3, user.getId());
 
 		preparedStatement1.executeUpdate();
 
