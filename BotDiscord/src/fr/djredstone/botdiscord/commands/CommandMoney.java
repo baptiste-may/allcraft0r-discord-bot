@@ -1,5 +1,7 @@
 package fr.djredstone.botdiscord.commands;
 
+import java.sql.SQLException;
+
 import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
@@ -11,7 +13,11 @@ public class CommandMoney {
 	
 	public CommandMoney(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
         	
-        UtilsCommands.replyOrSend((user.getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones** " + Main.redstoneEmoji), event1, event2);
+        try {
+			UtilsCommands.replyOrSend((user.getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones** " + Main.redstoneEmoji), event1, event2);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

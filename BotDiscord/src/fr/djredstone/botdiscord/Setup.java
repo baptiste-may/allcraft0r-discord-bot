@@ -2,6 +2,7 @@ package fr.djredstone.botdiscord;
 
 import javax.security.auth.login.LoginException;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import fr.djredstone.botdiscord.commands.CommandP4;
 import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.listener.MessageReceivedListener;
 import fr.djredstone.botdiscord.listener.OnDiscordCommand;
+import fr.djredstone.botdiscord.mysql.DatabaseManager;
 import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -31,6 +33,24 @@ public class Setup implements EventListener, Listener {
 
 	public Setup(Main main) {
 
+		// MySQL (Database)
+		FileConfiguration fc = main.getConfig();
+		if (!fc.contains("SQL.host")) {
+			fc.set("SQL.host", "HOST HERE");
+		}
+
+		if (!fc.contains("SQL.user")) {
+			fc.set("SQL.user", "USER HERE");
+		}
+
+		if (!fc.contains("SQL.password")) {
+			fc.set("SQL.password", "PASSWORD HERE");
+		}
+
+		if (!fc.contains("SQL.dbName")) {
+			fc.set("SQL.dbName", "DATABASE NAME HERE");
+		}
+		
 		if(Main.main.getConfig().getString("minNbMessageWarn") == null) {
 			Main.main.getConfig().set("minNbMessageWarn", 4);
 		}
@@ -42,6 +62,8 @@ public class Setup implements EventListener, Listener {
 		}
 		
 		Main.main.saveConfig();
+		
+		Main.databaseManager = new DatabaseManager(fc.getString("SQL.host"), fc.getString("SQL.user"), fc.getString("SQL.password"), fc.getString("SQL.dbName"));
 		
 		Main.token = Main.main.getConfig().getString("token");
 		Main.tokenMEE6 = Main.main.getConfig().getString("tokenMEE6");

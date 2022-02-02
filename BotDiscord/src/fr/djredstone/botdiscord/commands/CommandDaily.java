@@ -1,5 +1,6 @@
 package fr.djredstone.botdiscord.commands;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,11 @@ public class CommandDaily {
 			
 		if(!hadGet.contains(user.getId())) {
 			
-			Main.setMoney(user, Main.getMoney(user) + 200);
+			try {
+				Main.setMoney(user, Main.getMoney(user) + 200);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			
 			UtilsCommands.replyOrSend("Tu as reçu **200 redstones** " + Main.redstoneEmoji + user.getAsMention(), event1, event2);
 			

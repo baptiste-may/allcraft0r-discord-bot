@@ -1,5 +1,6 @@
 package fr.djredstone.botdiscord.listener;
 
+import java.sql.SQLException;
 import java.util.Random;
 
 import fr.djredstone.botdiscord.Main;
@@ -20,7 +21,12 @@ public class MessageReceivedListener extends ListenerAdapter {
 	public void onMessageReceived(MessageReceivedEvent event) {
 		if(!event.getAuthor().isBot()) {
 			if(r.nextBoolean()) {
-				if(event.getMessage().getContentRaw().length() > 10) Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + 1);
+				if(event.getMessage().getContentRaw().length() > 10)
+					try {
+						Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + 1);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		}
 	}

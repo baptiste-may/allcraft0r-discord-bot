@@ -1,6 +1,7 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
@@ -35,12 +36,22 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
     			
     			int nb = Integer.parseInt(option);
     			if(event2 != null) nb = (int) event2.getOption("nb_max").getAsLong();
-    			int userMoney = Main.getMoney(user);
+    			int userMoney;
+				try {
+					userMoney = Main.getMoney(user);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return;
+				}
     			
     			if(nb < userMoney) {
     				
     				mise.put(user, nb);
-    				Main.setMoney(user, Main.getMoney(user) - nb);
+    				try {
+						Main.setMoney(user, Main.getMoney(user) - nb);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
     				
     				EmbedBuilder embed = new EmbedBuilder();
     				embed.setTitle("Quitte ou double !");
@@ -129,7 +140,11 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 				
 				event.getChannel().sendMessageEmbeds(embed.build()).queue();
 				
-				Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + mise.get(event.getUser()));
+				try {
+					Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + mise.get(event.getUser()));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				
 				mise.remove(event.getUser());
 				

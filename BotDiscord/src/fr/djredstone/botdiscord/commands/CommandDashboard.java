@@ -1,5 +1,6 @@
 package fr.djredstone.botdiscord.commands;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -45,7 +46,11 @@ public class CommandDashboard extends ListenerAdapter {
 			for(Object objects : Main.main.getConfig().getList("money")) {
 				String userID = (String) objects;
 				
-				dashboard.put(Main.jda.getUserById(userID).getAsTag(), Main.getMoney(Main.jda.getUserById(userID)));
+				try {
+					dashboard.put(Main.jda.getUserById(userID).getAsTag(), Main.getMoney(Main.jda.getUserById(userID)));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				
 			}
 			

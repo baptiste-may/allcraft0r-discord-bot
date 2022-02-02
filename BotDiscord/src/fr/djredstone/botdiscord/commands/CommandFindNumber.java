@@ -1,6 +1,7 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -131,7 +132,11 @@ public class CommandFindNumber extends ListenerAdapter {
 							event.getChannel().sendMessage("Comme tu as fait trop de coups, tu ne vas pas récupérer de redstones !").queue();
 						}
 						
-						Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + nb);
+						try {
+							Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + nb);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 						
 						event.getMessage().delete().queue();
 						

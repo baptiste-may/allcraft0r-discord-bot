@@ -1,12 +1,18 @@
 package fr.djredstone.botdiscord;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.djredstone.botdiscord.mysql.DatabaseManager;
+import fr.djredstone.botdiscord.mysql.DbConnection;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 
@@ -22,6 +28,8 @@ public class Main extends JavaPlugin {
 	public List<String> P4startMessageID = new ArrayList<>();
 	public HashMap<String, String> P4startMessageUser = new HashMap<>();
 
+	public static DatabaseManager databaseManager;
+	
 	public static JDA jda;
 	public static JDA mee6;
 	
@@ -45,24 +53,48 @@ public class Main extends JavaPlugin {
 		
 	}
 	
-	public static int getMoney(User user) {
+	public static int getMoney(User user) throws SQLException {
 		
-		Main.main.reloadConfig();
-    	FileConfiguration config = Main.main.getConfig();
-		
-    	if(!config.contains("money." + user.getId())) {
-			config.set("money." + user.getId(), 100);
-			Main.main.saveConfig();
+		final DbConnection dbConnection = Main.databaseManager.getDbConnection();
+
+		final Connection connection = dbConnection.getConnection();
+
+		final PreparedStatement preparedStatement = connection.prepareStatement("SELECT uuid, money FROM ALLCRAFT0R_user_money WHERE uuid = ?");
+		preparedStatement.setString(1, user.getId().toString());
+		final ResultSet resultSet = preparedStatement.executeQuery();
+
+		if (!resultSet.next()) {
+			final PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO ALLCRAFT0R_user_money VALUES(?, ?, ?, ?)");
+			final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+			preparedStatement1.setString(1, user.getId().toString());
+			preparedStatement1.setFloat(2, 100);
+			preparedStatement1.setTimestamp(3, timestamp);
+			preparedStatement1.setTimestamp(4, timestamp);
+
+			preparedStatement1.executeUpdate();
+			
+			return 100;
 		}
 		
-		return config.getInt("money." + user.getId());
+		return resultSet.getInt("money");
 	}
 	
-	public static void setMoney(User user, int money) {
+	public static void setMoney(User user, int money) throws SQLException {
 		
-		Main.main.reloadConfig();
-    	Main.main.getConfig().set("money." + user.getId(), money);
-		main.saveConfig();
+		final DbConnection dbConnection = Main.databaseManager.getDbConnection();
+
+		final Connection connection = dbConnection.getConnection();
+		
+		final PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO ALLCRAFT0R_user_money VALUES(?, ?, ?, ?)");
+		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+		preparedStatement1.setString(1, user.getId().toString());
+		preparedStatement1.setFloat(2, 100);
+		preparedStatement1.setTimestamp(3, timestamp);
+		preparedStatement1.setTimestamp(4, timestamp);
+
+		preparedStatement1.executeUpdate();
 
 	}
 
