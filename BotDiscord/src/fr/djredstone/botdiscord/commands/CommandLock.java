@@ -1,5 +1,7 @@
 package fr.djredstone.botdiscord.commands;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
@@ -7,10 +9,11 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.managers.ChannelManager;
+import net.dv8tion.jda.internal.managers.ChannelManagerImpl;
 
 public class CommandLock {
 	
@@ -42,10 +45,13 @@ public class CommandLock {
         
         Guild guild = message.getGuild();
         TextChannel channel = message.getMentionedChannels().get(0);
-        PermissionOverride po = channel.createPermissionOverride(guild.getPublicRole()).complete();
-        po.getManager().grant(Permission.MESSAGE_SEND).complete();
-        po.getManager().setDeny(Permission.MESSAGE_SEND).complete();
-        channel.sendMessage("Ce channel a été lock !");
+        
+        ChannelManager cm = new ChannelManagerImpl(channel);
+        ArrayList<Permission> list = new ArrayList<Permission>();
+        list.add(Permission.MESSAGE_WRITE);
+        cm.putRolePermissionOverride(guild.getPublicRole().getIdLong(), null, list).queue();
+        
+        channel.sendMessage("Ce channel a été lock !").queue();
         UtilsCommands.replyOrSend("Le channel a été lock !", event1, event2);
         
 	}
