@@ -17,12 +17,13 @@ public class CommandHelp {
 	public CommandHelp(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
 		Member member;
-		if(event1 != null) {
-			member = event1.getMember();
-		} else {
+		if(event1 != null) member = event1.getMember();
+		else {
+			assert event2 != null;
 			member = event2.getMember();
 		}
-		
+
+		assert member != null;
 		if(member.hasPermission(Permission.NICKNAME_MANAGE)) {
 			
 			EmbedBuilder embedStaff = new EmbedBuilder();
@@ -36,9 +37,7 @@ public class CommandHelp {
 			embedStaff.addField(":white_medium_small_square: **" + Main.prefix + "fakeban <membre> (message)** + image en attachment", "> Faux message de ban (personnalisé)", true);
 			embedStaff.addField(":white_medium_small_square: **" + Main.prefix + "reset-xp (<@membre>)**", "> Faux message de reset d'XP", true);
 			
-			member.getUser().openPrivateChannel().queue(channel -> {
-	            channel.sendMessageEmbeds(embedStaff.build()).queue();
-	        });
+			member.getUser().openPrivateChannel().queue(channel -> channel.sendMessageEmbeds(embedStaff.build()).queue());
 			
 		}
 		
@@ -70,11 +69,9 @@ public class CommandHelp {
 		
 		UtilsCommands.replyOrSend(embed1, event1, event2);
 		MessageChannel channel;
-		if(event1 != null) {
-			channel = event1.getChannel();
-		} else {
-			channel = event2.getTextChannel();
-		}
+		if(event1 != null) channel = event1.getChannel();
+		else channel = event2.getTextChannel();
+
 		channel.sendMessageEmbeds(embed2.build()).queue();
 		channel.sendMessageEmbeds(embed3.build()).queue();
 		

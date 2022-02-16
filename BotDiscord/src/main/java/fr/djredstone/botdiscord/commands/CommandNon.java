@@ -1,6 +1,7 @@
 package fr.djredstone.botdiscord.commands;
 
 import java.awt.Color;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -16,23 +17,21 @@ public class CommandNon {
 	public CommandNon(@Nullable String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
 		Member member;
-		if(event1 != null) {
-			member = event1.getMember();
-		} else {
+		if(event1 != null) member = event1.getMember();
+		else {
+			assert event2 != null;
 			member = event2.getMember();
 		}
-		
+
+		assert member != null;
 		if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
             UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
             return;
         }
 		
 		String message = "";
-		if(event2 != null) {
-			if(event2.getOption("non_message") != null) message = event2.getOption("non_message").getAsString();
-		} else {
-			if(option != null) message = option;
-		}
+		if(event2 != null) if(event2.getOption("non_message") != null) message = Objects.requireNonNull(event2.getOption("non_message")).getAsString();
+		else if(option != null) message = option;
 		
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle(":warning: Message de la hiérarchie :warning:");

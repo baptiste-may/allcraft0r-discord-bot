@@ -109,7 +109,6 @@ public class Setup implements EventListener, Listener {
 	    commands.addCommands(new CommandData("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)));
 	    
 	    commands.addCommands(new CommandData("money", "Affiche son nombre de redstones"));
-	    Main.jda.addEventListener(new CommandDashboard());
 	    commands.addCommands(new CommandData("dashboard", "???"));
 	    commands.addCommands(new CommandData("daily", "Récupère sa redstone quotidienne"));
 	    
@@ -125,10 +124,10 @@ public class Setup implements EventListener, Listener {
 	    
 	    commands.addCommands(new CommandData("tank", "AMERICA ! F*CK YEAHH !!"));
 	    commands.addCommands(new CommandData("eyes", "I'm watching you..."));
-	    
-	    Main.mee6.addEventListener(new CommandFakeBan());
-	    Main.mee6.addEventListener(new CommandFakeResetXP());
-	    
+
+		commands.addCommands(new CommandData("fakeban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "User").setRequired(true), new OptionData(OptionType.STRING, "fakeban_raison", "Raison").setRequired(false)));
+	    commands.addCommands(new CommandData("fakeresetxp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "fakeresetxp_user", "User").setRequired(true)));
+
 	    new messageByMinuteTest(main);
 	    
 	    Main.jda.addEventListener(new MessageReceivedListener(main));

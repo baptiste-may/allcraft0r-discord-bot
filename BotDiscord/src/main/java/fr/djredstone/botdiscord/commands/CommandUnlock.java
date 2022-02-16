@@ -20,23 +20,21 @@ public class CommandUnlock {
 	public CommandUnlock(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
         
 		Member member;
-		if(event1 != null) {
-			member = event1.getMember();
-		} else {
+		if(event1 != null) member = event1.getMember();
+		else {
+			assert event2 != null;
 			member = event2.getMember();
 		}
-		
+
+		assert member != null;
 		if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
            UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
            return;
         }
         
 		Message message;
-		if(event1 != null) {
-			message = event1.getMessage();
-		} else {
-			message = (Message) event2.getTextChannel();
-		}
+		if(event1 != null) message = event1.getMessage();
+		else message = (Message) event2.getTextChannel();
 		
         if(message.getMentionedChannels().isEmpty()) {
         	UtilsCommands.replyOrSend("Utilisation : " + Main.prefix + "unlock <#channel>", event1, event2);

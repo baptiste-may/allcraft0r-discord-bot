@@ -16,12 +16,13 @@ public class CommandHask {
 	public CommandHask(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
 		Member member;
-		if(event1 != null) {
-			member = event1.getMember();
-		} else {
+		if(event1 != null) member = event1.getMember();
+		else {
+			assert event2 != null;
 			member = event2.getMember();
 		}
-		
+
+		assert member != null;
 		if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
            UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
            return;

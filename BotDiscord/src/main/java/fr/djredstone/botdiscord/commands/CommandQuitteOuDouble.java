@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandQuitteOuDouble extends ListenerAdapter {
 	
-	private static HashMap<User, Integer> mise = new HashMap<>();
+	private static final HashMap<User, Integer> mise = new HashMap<>();
 	public static HashMap<String, User> messagesID = new HashMap<>();
 	
 	Random r = new Random();
@@ -31,56 +31,53 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 		if(user == null) return;
         	
        	if(mise.get(user) == null) {
-       		
-       		try {
-    			
-    			int nb = Integer.parseInt(option);
-    			if(event2 != null) nb = (int) event2.getOption("nb_max").getAsLong();
-    			int userMoney;
+
+			try {
+
+				int nb = Integer.parseInt(option);
+				if (event2 != null) nb = (int) Objects.requireNonNull(event2.getOption("nb_max")).getAsLong();
+				int userMoney;
 				try {
 					userMoney = Main.getMoney(user);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					return;
 				}
-    			
-    			if(nb < userMoney) {
-    				
-    				mise.put(user, nb);
-    				try {
+
+				if (nb < userMoney) {
+
+					mise.put(user, nb);
+					try {
 						Main.setMoney(user, Main.getMoney(user) - nb);
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
-    				
-    				EmbedBuilder embed = new EmbedBuilder();
-    				embed.setTitle("Quitte ou double !");
-    				embed.setDescription(user.getAsMention() + ", tu proposes **" + mise.get(user) + " redstones**. Vas-tu tenter le double ?");
-    				embed.setColor(Color.ORANGE);
-    				
-    				MessageChannel channel;
-    				if(event1 != null) {
-    					channel = event1.getChannel();
-    				} else {
-    					channel = event2.getTextChannel();
-    				}
-    		    		
-    				channel.sendMessageEmbeds(embed.build()).queue(message -> {
-        				messagesID.put(message.getId(), user);
-        				message.addReaction("✅").queue();
-        				message.addReaction("❌").queue();
-        			});
-    				channel.sendTyping().queue();
-    		    	if(event1 != null) event1.getMessage().delete().queue();
-    				
-    			} else {
-    				UtilsCommands.replyOrSend(user.getAsMention() + ", tu n'as pas assez de redstones !", event1, event2);
-    			}
-    			
-    		} catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {
-    		}
+
+					EmbedBuilder embed = new EmbedBuilder();
+					embed.setTitle("Quitte ou double !");
+					embed.setDescription(user.getAsMention() + ", tu proposes **" + mise.get(user) + " redstones**. Vas-tu tenter le double ?");
+					embed.setColor(Color.ORANGE);
+
+					MessageChannel channel;
+					if (event1 != null) channel = event1.getChannel();
+					else {
+						assert event2 != null;
+						channel = event2.getTextChannel();
+					}
+
+					channel.sendMessageEmbeds(embed.build()).queue(message -> {
+						messagesID.put(message.getId(), user);
+						message.addReaction("✅").queue();
+						message.addReaction("❌").queue();
+					});
+					channel.sendTyping().queue();
+					if (event1 != null) event1.getMessage().delete().queue();
+
+				} else UtilsCommands.replyOrSend(user.getAsMention() + ", tu n'as pas assez de redstones !", event1, event2);
+
+			} catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
+			}
 		}
-       	      
 	}
 	
 	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {

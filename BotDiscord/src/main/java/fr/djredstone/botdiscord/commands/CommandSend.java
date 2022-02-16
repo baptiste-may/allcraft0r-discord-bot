@@ -15,7 +15,7 @@ public class CommandSend {
 
 	public CommandSend(User user, String message, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
-		if(event2 != null) message = event2.getOption("send_message").getAsString();
+		if(event2 != null) message = Objects.requireNonNull(event2.getOption("send_message")).getAsString();
 		
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle("  :warning: Message de la hiérarchie :warning:");
@@ -24,9 +24,7 @@ public class CommandSend {
 		embed.setThumbnail("https://images.emojiterra.com/twitter/v13.0/512px/2705.png");
 		embed.setColor(Color.GREEN);
 		
-		if(event2 != null) {
-			message = event2.getOption("send_message").getAsString();
-		}
+		if(event2 != null) message = Objects.requireNonNull(event2.getOption("send_message")).getAsString();
 		
 		UtilsCommands.replyOrSend(embed, event1, event2);
 		Objects.requireNonNull(Main.jda.getTextChannelById("497141089480998912")).sendMessage("Nouveau message de " + user.getName() + " : " + message).queue();

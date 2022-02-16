@@ -60,14 +60,14 @@ public class Main extends JavaPlugin {
 		final Connection connection = dbConnection.getConnection();
 
 		final PreparedStatement preparedStatement = connection.prepareStatement("SELECT uuid, money FROM ALLCRAFT0R_user_money WHERE uuid = ?");
-		preparedStatement.setString(1, user.getId().toString());
+		preparedStatement.setString(1, user.getId());
 		final ResultSet resultSet = preparedStatement.executeQuery();
 
 		if (!resultSet.next()) {
 			final PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO ALLCRAFT0R_user_money VALUES(?, ?, ?, ?)");
 			final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-			preparedStatement1.setString(1, user.getId().toString());
+			preparedStatement1.setString(1, user.getId());
 			preparedStatement1.setFloat(2, 100);
 			preparedStatement1.setTimestamp(3, timestamp);
 			preparedStatement1.setTimestamp(4, timestamp);

@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands;
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -20,11 +21,9 @@ public class CommandFindNumber extends ListenerAdapter {
 	
 	private static String channelID = null;
 	private static int randomNB;
-	private static HashMap<User, Integer> coups = new HashMap<>();
+	private static final HashMap<User, Integer> coups = new HashMap<>();
 	private static int nbDeBase;
 
-	private final Random random = new Random();
-	
 	public CommandFindNumber(@Nullable String option, @Nullable User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 		
 		if(event1 == null && event2 == null) return;
@@ -35,7 +34,7 @@ public class CommandFindNumber extends ListenerAdapter {
 			
 			if(event2 != null) {
 				try {
-					if(event2.getOption("nb_max") != null) max = (int) event2.getOption("nb_max").getAsLong();
+					if(event2.getOption("nb_max") != null) max = (int) Objects.requireNonNull(event2.getOption("nb_max")).getAsLong();
 				} catch (NumberFormatException ignored) {
 				}
 			} else {
@@ -53,10 +52,11 @@ public class CommandFindNumber extends ListenerAdapter {
 			nbDeBase = max;
 			
 			if(event1 != null) {
-				channelID = event1.getChannel().getId().toString();
+				channelID = event1.getChannel().getId();
 			} else {
-				channelID = event2.getChannel().getId().toString();
+				channelID = event2.getChannel().getId();
 			}
+			Random random = new Random();
 			randomNB = random.nextInt(max - 1 + 1) + 1;
 			
 			coups.clear();
@@ -64,6 +64,7 @@ public class CommandFindNumber extends ListenerAdapter {
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
 			embed.setDescription("Tout le monde peut chercher mon nombre :eyes:");
+			assert user != null;
 			embed.setFooter("| Commandé par " + user.getAsTag(), user.getAvatarUrl());
 			embed.setColor(Color.RED);
 			
@@ -72,45 +73,45 @@ public class CommandFindNumber extends ListenerAdapter {
 		}
 		
 	}
-	
+
 	public void onGuildMessageReceived(MessageReceivedEvent event) {
-		
+
 		if(channelID != null) {
-			
+
 			if(channelID.equalsIgnoreCase(event.getChannel().getId())) {
-				
+
 				try {
-				    int proposition = Integer.parseInt(event.getMessage().getContentDisplay());
-				    
-				    if(coups.get(event.getAuthor()) == null) coups.put(event.getAuthor(), 0);
-				    coups.put(event.getAuthor(), coups.get(event.getAuthor()) + 1);
-				    
-				    if(proposition < randomNB) {
-				    	new BukkitRunnable() {
+					int proposition = Integer.parseInt(event.getMessage().getContentDisplay());
+
+					coups.putIfAbsent(event.getAuthor(), 0);
+					coups.put(event.getAuthor(), coups.get(event.getAuthor()) + 1);
+
+					if(proposition < randomNB) {
+						new BukkitRunnable() {
 							@Override
 							public void run() {
 								event.getMessage().delete().queue();
 							}
 						}.runTaskLater(Main.main, 100);
-				    	event.getMessage().addReaction("⬆️").queue();
-				    } else if(proposition > randomNB) {
-				    	new BukkitRunnable() {
+						event.getMessage().addReaction("⬆️").queue();
+					} else if(proposition > randomNB) {
+						new BukkitRunnable() {
 							@Override
 							public void run() {
 								event.getMessage().delete().queue();
 							}
 						}.runTaskLater(Main.main, 100);
-				    	event.getMessage().addReaction("⬇️").queue();
-				    } else {
-				    	channelID = null;
-				    	
-				    	EmbedBuilder embed = new EmbedBuilder();
+						event.getMessage().addReaction("⬇️").queue();
+					} else {
+						channelID = null;
+
+						EmbedBuilder embed = new EmbedBuilder();
 						embed.setTitle("Quelqu'un a trouvé le nombre ! :clap:");
 						embed.setDescription("__**" + event.getAuthor().getAsTag() + "**__ a découvert le nombre **" + randomNB + "** !");
 						embed.setColor(Color.YELLOW);
-						
+
 						event.getChannel().sendMessageEmbeds(embed.build()).queue();
-						
+
 						int x = 1;
 						int essaisMax = 0;
 						while (x < nbDeBase) {
@@ -121,34 +122,34 @@ public class CommandFindNumber extends ListenerAdapter {
 
 						int nb = essaisMax - coups.get(event.getAuthor());
 						if (nb < 0) {
-						    nb = 0;
-				    	}
-						
+							nb = 0;
+						}
+
 						nb = (nb * 100) / essaisMax;
-						
+
 						if(nb > 0) {
 							event.getChannel().sendMessage("Avec " + coups.get(event.getAuthor()) + " coups, tu gagnes **" + nb + " redstones** " + event.getAuthor().getAsMention() + " !").queue();
 						} else {
 							event.getChannel().sendMessage("Comme tu as fait trop de coups, tu ne vas pas récupérer de redstones !").queue();
 						}
-						
+
 						try {
 							Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + nb);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
-						
+
 						event.getMessage().delete().queue();
-						
-				    }
-				    
+
+					}
+
 				} catch (NumberFormatException ignored) {
 				}
-				
+
 			}
-			
+
 		}
-		
+
 	}
 
 }

@@ -1,69 +1,61 @@
 package fr.djredstone.botdiscord.commands;
 
+import javax.annotation.Nullable;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import fr.djredstone.botdiscord.Main;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import fr.djredstone.botdiscord.Main;
+
 public class CommandDashboard extends ListenerAdapter {
+
+	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+
+		HashMap<String, Integer> dashboard = new HashMap<>();
+		for(Object objects : Objects.requireNonNull(Main.main.getConfig().getList("money"))) {
+			String userID = (String) objects;
+
+			try {
+				dashboard.put(Objects.requireNonNull(Main.jda.getUserById(userID)).getAsTag(), Main.getMoney(Objects.requireNonNull(Main.jda.getUserById(userID))));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		Map<String, Integer> dashboardSort = sortByValue(dashboard);
+
+		StringBuilder board = new StringBuilder();
+		for (Map.Entry<String, Integer> en : dashboardSort.entrySet()) {
+			board.append("\n**").append(en.getKey()).append("**: ").append(en.getValue());
+		}
+
+		UtilsCommands.replyOrSend(board.toString(), event1, event2);
+
+	}
 	
 	public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
         // Create a list from elements of HashMap
         List<Map.Entry<String, Integer> > list =
-               new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+				new LinkedList<>(hm.entrySet());
  
         // Sort the list
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2)
-            {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
+        list.sort(Map.Entry.comparingByValue());
          
         // put data from sorted list to hashmap
-        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        HashMap<String, Integer> temp = new LinkedHashMap<>();
         for (Map.Entry<String, Integer> aa : list) {
             temp.put(aa.getKey(), aa.getValue());
         }
         return temp;
     }
-	
-	public void onGuildMessageReceived(MessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split("\\s+");
-		
-		if(args[0].equalsIgnoreCase(Main.prefix + "dashboard")) {
-			
-			HashMap<String, Integer> dashboard = new HashMap<>();
-			for(Object objects : Main.main.getConfig().getList("money")) {
-				String userID = (String) objects;
-				
-				try {
-					dashboard.put(Main.jda.getUserById(userID).getAsTag(), Main.getMoney(Main.jda.getUserById(userID)));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				
-			}
-			
-			Map<String, Integer> dashboardSort = sortByValue(dashboard);
-			
-			String board = "";
-			for (Map.Entry<String, Integer> en : dashboardSort.entrySet()) {
-	            board = board + "\n**" + en.getKey() + "**: " + en.getValue();
-	        }
-			
-			event.getChannel().sendMessage(board).queue();
-			
-		}
-	}
 
 }

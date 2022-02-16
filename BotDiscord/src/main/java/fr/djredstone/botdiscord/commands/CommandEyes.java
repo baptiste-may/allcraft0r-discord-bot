@@ -4,14 +4,7 @@ import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class CommandEyes extends ListenerAdapter {
-	
-	public CommandEyes(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
-			
-		UtilsCommands.replyOrSend(":eye::lips::eye:", event1, event2);
-		
-	}
-
+public class CommandEyes {
+	public CommandEyes(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) { UtilsCommands.replyOrSend(":eye::lips::eye:", event1, event2); }
 }

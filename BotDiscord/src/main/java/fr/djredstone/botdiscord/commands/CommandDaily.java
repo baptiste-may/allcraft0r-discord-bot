@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandDaily {
 	
-	private static Set<String> hadGet = new HashSet<>();
+	private static final Set<String> hadGet = new HashSet<>();
 	
 	public CommandDaily(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
 			
