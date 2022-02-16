@@ -1,10 +1,13 @@
 package fr.djredstone.botdiscord.commands;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
+
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -43,14 +46,22 @@ public class CommandLock {
         
         Guild guild = message.getGuild();
         TextChannel channel = message.getMentionedChannels().get(0);
+		TextChannel channelOriginal;
+		if (event1 != null) channelOriginal = event1.getTextChannel();
+		else channelOriginal = event2.getTextChannel();
         
         ChannelManager cm = new ChannelManagerImpl(channel);
         ArrayList<Permission> list = new ArrayList<>();
         list.add(Permission.MESSAGE_WRITE);
         cm.putRolePermissionOverride(guild.getPublicRole().getIdLong(), null, list).queue();
-        
-        channel.sendMessage("Ce channel a été lock !").queue();
-        UtilsCommands.replyOrSend("Le channel a été lock !", event1, event2);
+
+		EmbedBuilder embed = new EmbedBuilder();
+		embed.setTitle("Ce channel a été lock ⛔️");
+		embed.setAuthor(member.getUser().getAsTag(), null, member.getAvatarUrl());
+		embed.setColor(Color.RED);
+
+		channel.sendMessageEmbeds(embed.build()).queue();
+		if(channel != channelOriginal) UtilsCommands.replyOrSend("Le channel a été lock !", event1, event2);
         
 	}
 
