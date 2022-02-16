@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -20,34 +21,38 @@ import fr.djredstone.botdiscord.Main;
 public class CommandUnlock {
 	
 	public CommandUnlock(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
-        
+
 		Member member;
-		if(event1 != null) member = event1.getMember();
-		else {
+		Message message;
+		Guild guild;
+		TextChannel channel;
+		TextChannel channelOriginal;
+		if(event1 != null) {
+			member = event1.getMember();
+			message = event1.getMessage();
+			if(message.getMentionedChannels().isEmpty()) {
+				UtilsCommands.replyOrSend("Utilisation : " + Main.prefix + "lock <#channel>", event1, event2);
+				return;
+			}
+			guild = event1.getGuild();
+			channel = message.getMentionedChannels().get(0);
+			channelOriginal = event1.getTextChannel();
+		} else {
 			assert event2 != null;
 			member = event2.getMember();
+			guild = event2.getGuild();
+			channel = (TextChannel) Objects.requireNonNull(event2.getOption("lock_channel")).getAsMessageChannel();
+			channelOriginal = event2.getTextChannel();
 		}
 
 		assert member != null;
-		if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
-           UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
-           return;
-        }
+		assert channel != null;
+		assert guild != null;
 
-		Message message;
-		if(event1 != null) message = event1.getMessage();
-		else message = (Message) event2.getTextChannel();
-		
-        if(message.getMentionedChannels().isEmpty()) {
-        	UtilsCommands.replyOrSend("Utilisation : " + Main.prefix + "unlock <#channel>", event1, event2);
-        	return;
-        }
-        
-        Guild guild = message.getGuild();
-        TextChannel channel = message.getMentionedChannels().get(0);
-		TextChannel channelOriginal;
-		if (event1 != null) channelOriginal = event1.getTextChannel();
-		else channelOriginal = event2.getTextChannel();
+		if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
+			UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
+			return;
+		}
         
         ChannelManager cm = new ChannelManagerImpl(channel);
         ArrayList<Permission> list = new ArrayList<>();

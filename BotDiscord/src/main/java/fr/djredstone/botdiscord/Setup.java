@@ -5,18 +5,7 @@ import javax.security.auth.login.LoginException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 
-import fr.djredstone.botdiscord.commands.CommandDashboard;
-import fr.djredstone.botdiscord.commands.CommandFakeBan;
-import fr.djredstone.botdiscord.commands.CommandFakeResetXP;
-import fr.djredstone.botdiscord.commands.CommandFindNumber;
-import fr.djredstone.botdiscord.commands.CommandP4;
-import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
-import fr.djredstone.botdiscord.listener.MessageReceivedListener;
-import fr.djredstone.botdiscord.listener.OnDiscordCommand;
-import fr.djredstone.botdiscord.mysql.DatabaseManager;
-import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.GenericEvent;
@@ -28,6 +17,15 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+
+import fr.djredstone.botdiscord.commands.CommandFindNumber;
+import fr.djredstone.botdiscord.commands.CommandP4;
+import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
+import fr.djredstone.botdiscord.listener.MessageReceivedListener;
+import fr.djredstone.botdiscord.listener.OnDiscordCommand;
+import fr.djredstone.botdiscord.mysql.DatabaseManager;
+import fr.djredstone.botdiscord.tasks.messageByMinuteTest;
+import org.jetbrains.annotations.NotNull;
 
 public class Setup implements EventListener, Listener {
 
@@ -127,6 +125,8 @@ public class Setup implements EventListener, Listener {
 
 		commands.addCommands(new CommandData("fakeban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "User").setRequired(true), new OptionData(OptionType.STRING, "fakeban_raison", "Raison").setRequired(false)));
 	    commands.addCommands(new CommandData("fakeresetxp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "fakeresetxp_user", "User").setRequired(true)));
+		commands.addCommands(new CommandData("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Message").setRequired(false)));
+		commands.addCommands(new CommandData("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel").setRequired(true)));
 
 	    new messageByMinuteTest(main);
 	    
