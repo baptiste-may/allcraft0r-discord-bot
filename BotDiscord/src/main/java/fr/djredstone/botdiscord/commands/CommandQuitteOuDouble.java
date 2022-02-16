@@ -1,23 +1,23 @@
 package fr.djredstone.botdiscord.commands;
 
-import java.awt.Color;
+import javax.annotation.Nullable;
+import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
-import org.jetbrains.annotations.NotNull;
-
-import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
+
+import fr.djredstone.botdiscord.Main;
 
 public class CommandQuitteOuDouble extends ListenerAdapter {
 	
@@ -25,7 +25,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 	public static HashMap<String, User> messagesID = new HashMap<>();
 	
 	Random r = new Random();
-	
+
 	public CommandQuitteOuDouble(User user, String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 		
 		if(user == null) return;
@@ -65,12 +65,10 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 						channel = event2.getTextChannel();
 					}
 
-					channel.sendMessageEmbeds(embed.build()).queue(message -> {
-						messagesID.put(message.getId(), user);
-						message.addReaction("✅").queue();
-						message.addReaction("❌").queue();
-					});
-					channel.sendTyping().queue();
+					channel.sendMessageEmbeds(embed.build()).setActionRow(
+							Button.success("qod_yes", "Oui"),
+							Button.danger("qod_no", "Non")).queue(message -> messagesID.put(message.getId(), user));
+
 					if (event1 != null) event1.getMessage().delete().queue();
 
 				} else UtilsCommands.replyOrSend(user.getAsMention() + ", tu n'as pas assez de redstones !", event1, event2);
@@ -79,12 +77,12 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 			}
 		}
 	}
-	
-	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
+
+	public void onButtonInteraction(ButtonInteractionEvent event) {
 		
 		if(messagesID.get(event.getMessageId()) == event.getUser()) {
 			
-			if(event.getReactionEmote().getEmoji().equalsIgnoreCase("✅")) {
+			if(event.getComponentId().equals("qod_yes")) {
 				
 				if(r.nextBoolean()) {
 					
@@ -94,14 +92,10 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 					embed.setTitle("Quitte ou double !");
 					embed.setDescription("Bravo " + Objects.requireNonNull(event.getUser()).getAsMention() + "! Ta mise est de **" + mise.get(event.getUser()) + " redstones** maintenant. Vas-tu tenter le double ?");
 					embed.setColor(Color.GREEN);
-					
-					event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> messagesID.remove(message.getId()));
-					
-					event.getChannel().sendMessageEmbeds(embed.build()).queue(message -> {
-						messagesID.put(message.getId(), event.getUser());
-						message.addReaction("✅").queue();
-						message.addReaction("❌").queue();
-					});
+
+					event.editMessageEmbeds(embed.build()).setActionRow(
+							Button.success("qod_yes", "Oui"),
+							Button.danger("qod_no", "Non")).queue();
 					
 				} else {
 					
@@ -109,33 +103,21 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 					embed.setTitle("Quitte ou double !");
 					embed.setDescription("Dommage ! " + Objects.requireNonNull(event.getUser()).getAsMention() + ", tu viens de perdre la mise de **" + mise.get(event.getUser()) + " redstones** !");
 					embed.setColor(Color.RED);
-					
-					event.getChannel().sendMessageEmbeds(embed.build()).queue();
+
+					event.editMessageEmbeds(embed.build()).setActionRows(new ArrayList<>()).queue();
 					
 					mise.remove(event.getUser());
 					
-					event.getReaction().clearReactions().queue();
-					event.getChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
-						    for(int i = 0; i != message.getReactions().size(); i++) {
-						    	message.getReactions().get(i).removeReaction().queue();
-						    }
-					});
-					
-					event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
-						messagesID.remove(message.getId());
-						message.delete().queue();
-					});
-					
 				}
 				
-			} else if(event.getReactionEmote().getEmoji().equalsIgnoreCase("❌")) {
+			} else if(event.getComponentId().equals("qod_no")) {
 		
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle("Quitte ou double !");
 				embed.setDescription(Objects.requireNonNull(event.getUser()).getAsMention() + ", tu récupères **" + mise.get(event.getUser()) + " redstones** !");
 				embed.setColor(Color.YELLOW);
-				
-				event.getChannel().sendMessageEmbeds(embed.build()).queue();
+
+				event.editMessageEmbeds(embed.build()).setActionRows(new ArrayList<>()).queue();
 				
 				try {
 					Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + mise.get(event.getUser()));
@@ -144,15 +126,8 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 				}
 				
 				mise.remove(event.getUser());
-				
-				event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
-					messagesID.remove(message.getId());
-					message.delete().queue();
-				});
-				
+
 			}
-			
-			
 		}
 	}
 
