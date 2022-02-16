@@ -74,7 +74,7 @@ public class CommandFindNumber extends ListenerAdapter {
 		
 	}
 
-	public void onGuildMessageReceived(MessageReceivedEvent event) {
+	public void onMessageReceived(MessageReceivedEvent event) {
 
 		if(channelID != null) {
 
