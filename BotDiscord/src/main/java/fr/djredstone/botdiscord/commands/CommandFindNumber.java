@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -24,7 +24,7 @@ public class CommandFindNumber extends ListenerAdapter {
 	private static final HashMap<User, Integer> coups = new HashMap<>();
 	private static int nbDeBase;
 
-	public CommandFindNumber(@Nullable String option, @Nullable User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandFindNumber(@Nullable String option, @Nullable User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 		
 		if(event1 == null && event2 == null) return;
 		

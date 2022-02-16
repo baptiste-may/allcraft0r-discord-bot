@@ -14,7 +14,7 @@ import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -26,7 +26,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 	
 	Random r = new Random();
 	
-	public CommandQuitteOuDouble(User user, String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandQuitteOuDouble(User user, String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 		
 		if(user == null) return;
         	

@@ -8,14 +8,14 @@ import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandDaily {
 	
 	private static final Set<String> hadGet = new HashSet<>();
 	
-	public CommandDaily(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandDaily(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 			
 		if(!hadGet.contains(user.getId())) {
 			

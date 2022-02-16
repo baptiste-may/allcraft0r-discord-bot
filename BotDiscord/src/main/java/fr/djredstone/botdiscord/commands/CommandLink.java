@@ -2,13 +2,13 @@ package fr.djredstone.botdiscord.commands;
 
 import javax.annotation.Nullable;
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class CommandLink {
 	
-	public CommandLink(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandLink(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 			
 		if(event1 != null) {
 	   		
@@ -31,9 +31,5 @@ public class CommandLink {
 					).queue();
 	   		
 	   	}
-		
-		
-		
 	}
-	
 }

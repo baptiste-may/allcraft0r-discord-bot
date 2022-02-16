@@ -2,7 +2,6 @@ package fr.djredstone.botdiscord.commands;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -11,16 +10,14 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.managers.ChannelManager;
-import net.dv8tion.jda.internal.managers.ChannelManagerImpl;
 
 import fr.djredstone.botdiscord.Main;
 
 public class CommandUnlock {
 	
-	public CommandUnlock(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandUnlock(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 
 		Member member;
 		Message message;
@@ -53,11 +50,8 @@ public class CommandUnlock {
 			UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
 			return;
 		}
-        
-        ChannelManager cm = new ChannelManagerImpl(channel);
-        ArrayList<Permission> list = new ArrayList<>();
-        list.add(Permission.MESSAGE_WRITE);
-        cm.putRolePermissionOverride(guild.getPublicRole().getIdLong(), list, null).queue();
+
+		channel.createPermissionOverride(guild.getPublicRole()).setAllow(Permission.MESSAGE_SEND).queue();
 
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle("Ce channel a été unlock ✅");

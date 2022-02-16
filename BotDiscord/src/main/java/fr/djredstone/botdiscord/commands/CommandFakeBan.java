@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import fr.djredstone.botdiscord.Main;
@@ -19,7 +19,7 @@ public class CommandFakeBan {
 
     final String helpMessage = "Utilisation : " + Main.prefix + "fakeban <@user> (raison)";
 
-    public CommandFakeBan(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+    public CommandFakeBan(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 
         if (event1 != null) {
             List<String> args = Arrays.asList(event1.getMessage().getContentDisplay().split(" "));

@@ -29,7 +29,7 @@ dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
 
     // https://mvnrepository.com/artifact/net.dv8tion/JDA
-    implementation 'net.dv8tion:JDA:4.4.0_350'
+    implementation 'net.dv8tion:JDA:5.0.0-alpha.5'
 }
 
 compileJava.options.encoding = 'UTF-8'

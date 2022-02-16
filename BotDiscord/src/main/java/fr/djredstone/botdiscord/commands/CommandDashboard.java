@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -17,7 +17,7 @@ import fr.djredstone.botdiscord.Main;
 
 public class CommandDashboard extends ListenerAdapter {
 
-	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 
 		HashMap<String, Integer> dashboard = new HashMap<>();
 		for(Object objects : Objects.requireNonNull(Main.main.getConfig().getList("money"))) {

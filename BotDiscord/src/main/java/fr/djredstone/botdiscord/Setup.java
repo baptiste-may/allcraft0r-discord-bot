@@ -12,10 +12,9 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import fr.djredstone.botdiscord.commands.CommandFindNumber;
@@ -94,45 +93,39 @@ public class Setup implements EventListener, Listener {
 	    
 	    new P4Game(main);
 	    
-	    CommandListUpdateAction commands = Main.jda.updateCommands();
-	    
 	    Main.jda.addEventListener(this);
 	    
 	    Main.jda.addEventListener(new OnDiscordCommand());
 	    
 	    Main.jda.addEventListener(new CommandP4(main));
-	    Main.jda.addEventListener(new CommandFindNumber(null, null, null, null));
-	    commands.addCommands(new CommandData("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)));
-	    Main.jda.addEventListener(new CommandQuitteOuDouble(null, null, null, null));
-	    commands.addCommands(new CommandData("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)));
-	    
-	    commands.addCommands(new CommandData("money", "Affiche son nombre de redstones"));
-	    commands.addCommands(new CommandData("dashboard", "???"));
-	    commands.addCommands(new CommandData("daily", "Récupère sa redstone quotidienne"));
-	    
-	    commands.addCommands(new CommandData("aide", "Liste des commandes"));
-	    commands.addCommands(new CommandData("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)));
-	    commands.addCommands(new CommandData("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"));
-	    commands.addCommands(new CommandData("link", "Affiche des liens en rapport à allcraft0r"));
-	    
-	    commands.addCommands(new CommandData("ask", "Demande prise en compte"));
-	    commands.addCommands(new CommandData("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message").setRequired(false)));
-	    commands.addCommands(new CommandData("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message").setRequired(false)));
-	    commands.addCommands(new CommandData("text", "Message personnalisé").addOptions(new OptionData(OptionType.CHANNEL, "text_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "text", "Texte").setRequired(true)));
-	    
-	    commands.addCommands(new CommandData("tank", "AMERICA ! F*CK YEAHH !!"));
-	    commands.addCommands(new CommandData("eyes", "I'm watching you..."));
 
-		commands.addCommands(new CommandData("fakeban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "User").setRequired(true), new OptionData(OptionType.STRING, "fakeban_raison", "Raison").setRequired(false)));
-	    commands.addCommands(new CommandData("fakeresetxp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "fakeresetxp_user", "User").setRequired(true)));
-		commands.addCommands(new CommandData("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Message").setRequired(false)));
-		commands.addCommands(new CommandData("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel").setRequired(true)));
+	    Main.jda.addEventListener(new CommandFindNumber(null, null, null, null));
+		Main.jda.addEventListener(new CommandQuitteOuDouble(null, null, null, null));
+
+		Main.jda.updateCommands().addCommands(Commands.slash("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)))
+			.addCommands(Commands.slash("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)))
+	    	.addCommands(Commands.slash("money", "Affiche son nombre de redstones"))
+			.addCommands(Commands.slash("dashboard", "???"))
+	    	.addCommands(Commands.slash("daily", "Récupère sa redstone quotidienne"))
+	    	.addCommands(Commands.slash("aide", "Liste des commandes"))
+	    	.addCommands(Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)))
+	    	.addCommands(Commands.slash("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"))
+	    	.addCommands(Commands.slash("link", "Affiche des liens en rapport à allcraft0r"))
+	    	.addCommands(Commands.slash("ask", "Demande prise en compte"))
+	    	.addCommands(Commands.slash("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message").setRequired(false)))
+	    	.addCommands(Commands.slash("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message").setRequired(false)))
+	    	.addCommands(Commands.slash("text", "Message personnalisé").addOptions(new OptionData(OptionType.CHANNEL, "text_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "text", "Texte").setRequired(true)))
+	    	.addCommands(Commands.slash("tank", "AMERICA ! F*CK YEAHH !!"))
+	    	.addCommands(Commands.slash("eyes", "I'm watching you..."))
+			.addCommands(Commands.slash("fakeban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "User").setRequired(true), new OptionData(OptionType.STRING, "fakeban_raison", "Raison").setRequired(false)))
+	    	.addCommands(Commands.slash("fakeresetxp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "fakeresetxp_user", "User").setRequired(true)))
+			.addCommands(Commands.slash("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Message").setRequired(false)))
+			.addCommands(Commands.slash("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel").setRequired(true)))
+			.queue();
 
 	    new messageByMinuteTest(main);
 	    
 	    Main.jda.addEventListener(new MessageReceivedListener(main));
-	    
-	    commands.queue();
 	    
 	    try {
 	    	Main.jda.awaitReady();

@@ -8,12 +8,12 @@ import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandHask {
 	
-	public CommandHask(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandHask(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 			
 		Member member;
 		if(event1 != null) member = event1.getMember();

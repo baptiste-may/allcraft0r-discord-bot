@@ -3,13 +3,13 @@ package fr.djredstone.botdiscord.listener;
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.*;
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class OnDiscordCommand extends ListenerAdapter {
-	
-	public void onSlashCommand(SlashCommandEvent event) {
+
+	public void onSlashCommand(SlashCommandInteractionEvent event) {
 
 		switch (event.getName()) {
 			case "money" -> new CommandMoney(event.getUser(), null, event);

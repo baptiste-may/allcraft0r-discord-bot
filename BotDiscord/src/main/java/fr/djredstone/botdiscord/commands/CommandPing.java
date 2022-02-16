@@ -6,12 +6,12 @@ import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandPing {
 	
-	public CommandPing(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandEvent event2) {
+	public CommandPing(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 			
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle(":ping_pong: **Pong !**");
