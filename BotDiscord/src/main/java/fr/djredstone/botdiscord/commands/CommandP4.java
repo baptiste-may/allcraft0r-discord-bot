@@ -133,7 +133,7 @@ public class CommandP4 extends ListenerAdapter {
 				try {
 					if(gameVar.get(i).get(j) == bool && gameVar.get(i).get(j)==gameVar.get(i).get(j+1) && gameVar.get(i).get(j)==gameVar.get(i).get(j+2) && gameVar.get(i).get(j)==gameVar.get(i).get(j+3))
 						return true;
-				} catch (NullPointerException ignored) {
+				} catch (IndexOutOfBoundsException | NullPointerException ignored) {
 				}
 
 		//vertical
@@ -142,7 +142,7 @@ public class CommandP4 extends ListenerAdapter {
 				try {
 					if(gameVar.get(i).get(j) == bool && gameVar.get(i).get(j)==gameVar.get(i+1).get(j) && gameVar.get(i).get(j)==gameVar.get(i+2).get(j) && gameVar.get(i).get(j)==gameVar.get(i+3).get(j))
 						return true;
-				} catch (NullPointerException ignored) {
+				} catch (IndexOutOfBoundsException | NullPointerException ignored) {
 				}
 
 		//droite diagonal
@@ -151,7 +151,7 @@ public class CommandP4 extends ListenerAdapter {
 				try {
 					if(gameVar.get(i).get(j) == bool && gameVar.get(i).get(j)==gameVar.get(i+1).get(j+1) && gameVar.get(i).get(j)==gameVar.get(i+2).get(j+2) && gameVar.get(i).get(j)==gameVar.get(i+3).get(j+3))
 						return true;
-				} catch (NullPointerException ignored) {
+				} catch (IndexOutOfBoundsException | NullPointerException ignored) {
 				}
 
 		//gauche diagonal
@@ -160,7 +160,7 @@ public class CommandP4 extends ListenerAdapter {
 				try {
 					if(gameVar.get(i).get(j) == bool && gameVar.get(i).get(j)==gameVar.get(i+1).get(j-1) && gameVar.get(i).get(j)==gameVar.get(i+2).get(j-2) && gameVar.get(i).get(j)==gameVar.get(i+3).get(j-3))
 						return true;
-				} catch (NullPointerException ignored) {
+				} catch (IndexOutOfBoundsException | NullPointerException ignored) {
 				}
 
 		return false;
