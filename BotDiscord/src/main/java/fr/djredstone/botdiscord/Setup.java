@@ -105,7 +105,7 @@ public class Setup implements EventListener, Listener {
 				.addCommands(Commands.slash("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)))
 				.addCommands(Commands.slash("p4", "Démarre une partie de puissance 4"))
 				.addCommands(Commands.slash("money", "Affiche son nombre de redstones"))
-				.addCommands(Commands.slash("dashboard", "???"))
+				.addCommands(Commands.slash("dashboard", "Affiche les 10 membres ayant le plus de redstone"))
 	    		.addCommands(Commands.slash("daily", "Récupère sa redstone quotidienne"))
 	    		.addCommands(Commands.slash("aide", "Liste des commandes"))
 	    		.addCommands(Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)))

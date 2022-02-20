@@ -1,14 +1,14 @@
 package fr.djredstone.botdiscord.commands;
 
 import javax.annotation.Nullable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,45 +17,35 @@ import fr.djredstone.botdiscord.Main;
 
 public class CommandDashboard extends ListenerAdapter {
 
-	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) throws SQLException {
 
-		HashMap<String, Integer> dashboard = new HashMap<>();
-		for(Object objects : Objects.requireNonNull(Main.main.getConfig().getList("money"))) {
-			String userID = (String) objects;
+		LinkedHashMap<String, Integer> dashboard = new LinkedHashMap<>();
 
+		PreparedStatement preparedStatement = Main.databaseManager.getDbConnection().getConnection().prepareStatement("SELECT uuid, money FROM ALLCRAFT0R_user_money ORDER BY money DESC LIMIT 10");
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			dashboard.put(resultSet.getString("uuid"), resultSet.getInt("money"));
+		}
+
+		EmbedBuilder embed = new EmbedBuilder();
+		embed.setTitle("Dashboard de redstone " + Main.redstoneEmoji);
+
+		StringBuilder stringBuilder = new StringBuilder();
+		int i2 = 1;
+		for (Map.Entry<String, Integer> entry : dashboard.entrySet()) {
+			String name;
 			try {
-				dashboard.put(Objects.requireNonNull(Main.jda.getUserById(userID)).getAsTag(), Main.getMoney(Objects.requireNonNull(Main.jda.getUserById(userID))));
-			} catch (SQLException e) {
-				e.printStackTrace();
+				User user = Main.jda.retrieveUserById(entry.getKey()).complete();
+				name = user.getAsMention();
+			} catch (IllegalArgumentException | NullPointerException ignored) {
+				name = "`unknown`";
 			}
-
+			stringBuilder.append("\n").append(i2).append(" - ").append(name).append(" - **").append(entry.getValue()).append("**");
+			i2 ++;
 		}
 
-		Map<String, Integer> dashboardSort = sortByValue(dashboard);
-
-		StringBuilder board = new StringBuilder();
-		for (Map.Entry<String, Integer> en : dashboardSort.entrySet()) {
-			board.append("\n**").append(en.getKey()).append("**: ").append(en.getValue());
-		}
-
-		UtilsCommands.replyOrSend(board.toString(), event1, event2);
+		embed.setDescription(stringBuilder);
+		UtilsCommands.replyOrSend(embed, event1, event2);
 
 	}
-	
-	public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
-        // Create a list from elements of HashMap
-        List<Map.Entry<String, Integer> > list =
-				new LinkedList<>(hm.entrySet());
- 
-        // Sort the list
-        list.sort(Map.Entry.comparingByValue());
-         
-        // put data from sorted list to hashmap
-        HashMap<String, Integer> temp = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> aa : list) {
-            temp.put(aa.getKey(), aa.getValue());
-        }
-        return temp;
-    }
-
 }

@@ -1,5 +1,7 @@
 package fr.djredstone.botdiscord.listener;
 
+import java.sql.SQLException;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -32,7 +34,13 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "unlock" -> new CommandUnlock(null, event);
 			case "fakeban" -> new CommandFakeBan(null, event);
 			case "fakeresetxp" -> new CommandFakeResetXP(null, event);
-			case "dashboard" -> new CommandDashboard(null, event);
+			case "dashboard" -> {
+				try {
+					new CommandDashboard(null, event);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			case "stopp4" -> new CommandStopP4(null, event);
 		}
 	}
@@ -78,7 +86,13 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "unlock" -> new CommandUnlock(event, null);
 			case "fakeban" -> new CommandFakeBan(event, null);
 			case "fakeresetxp" -> new CommandFakeResetXP(event, null);
-			case "dashboard" -> new CommandDashboard(event, null);
+			case "dashboard" -> {
+				try {
+					new CommandDashboard(event, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			case "p4" -> new CommandP4(event, null);
 			case "stopp4" -> new CommandStopP4(event, null);
 		}
