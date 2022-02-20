@@ -71,7 +71,7 @@ public class CommandP4 extends ListenerAdapter {
 
 	}
 
-	private static EmbedBuilder gameToEmbed(ArrayList<ArrayList<Boolean>> gameVar, boolean player) {
+	private static EmbedBuilder gameToEmbed(ArrayList<ArrayList<Boolean>> gameVar, boolean player, boolean showNumber) {
 
 		EmbedBuilder embed = new EmbedBuilder();
 		StringBuilder board = new StringBuilder();
@@ -91,7 +91,7 @@ public class CommandP4 extends ListenerAdapter {
 			}
 			board.append("\n");
 		}
-		for (String emoji : getEmojis()) {
+		if (showNumber) for (String emoji : getEmojis()) {
 			board.append(emoji);
 		}
 		if (player) embed.setColor(Color.YELLOW);
@@ -235,7 +235,7 @@ public class CommandP4 extends ListenerAdapter {
 
 			setSecondUser(event.getUser());
 			setGameMessage(event.getMessage());
-			event.editMessageEmbeds(gameToEmbed(getGame(), true).build()).setActionRows(new ArrayList<>()).queue();
+			event.editMessageEmbeds(gameToEmbed(getGame(), true, true).build()).setActionRows(new ArrayList<>()).queue();
 			addReactions(event.getMessage());
 
 		}
@@ -263,9 +263,9 @@ public class CommandP4 extends ListenerAdapter {
 						}
 						getGame().get(i).set(lastPlace, true);
 						setTour(false);
-						event.getChannel().editMessageEmbedsById(event.getMessageId(), gameToEmbed(getGame(), true).build()).queue();
+						event.getChannel().editMessageEmbedsById(event.getMessageId(), gameToEmbed(getGame(), true, true).build()).queue();
 						event.getReaction().removeReaction(event.getUser()).queue();
-						if (checkResult(getGame(), true)) winAndRestart(new EmbedBuilder(gameToEmbed(getGame(), true)), event, getFirstUser(), getSecondUser());
+						if (checkResult(getGame(), true)) winAndRestart(new EmbedBuilder(gameToEmbed(getGame(), true, false)), event, getFirstUser(), getSecondUser());
 					} else if (!getTour() && user.equals(getSecondUser())) {
 						int lastPlace = getTheLastPlace(getGame().get(i));
 						if (lastPlace == -1) {
@@ -274,9 +274,9 @@ public class CommandP4 extends ListenerAdapter {
 						}
 						getGame().get(i).set(lastPlace, false);
 						setTour(true);
-						event.getChannel().editMessageEmbedsById(event.getMessageId(), gameToEmbed(getGame(), false).build()).queue();
+						event.getChannel().editMessageEmbedsById(event.getMessageId(), gameToEmbed(getGame(), false, true).build()).queue();
 						event.getReaction().removeReaction(event.getUser()).queue();
-						if (checkResult(getGame(), false)) winAndRestart(new EmbedBuilder(gameToEmbed(getGame(), false)), event, getSecondUser(), getFirstUser());
+						if (checkResult(getGame(), false)) winAndRestart(new EmbedBuilder(gameToEmbed(getGame(), false, false)), event, getSecondUser(), getFirstUser());
 					} else {
 						event.getReaction().removeReaction(event.getUser()).queue();
 					}
