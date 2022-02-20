@@ -96,7 +96,7 @@ public class CommandP4 extends ListenerAdapter {
 		}
 		if (player) embed.setColor(Color.YELLOW);
 		else embed.setColor(Color.RED);
-		embed.setAuthor(getFirstUser().getAsTag() + " \uD83D\uDFE1 ⚔ " + getSecondUser().getAsTag() + " \uD83D\uDD34");
+		embed.setAuthor(getFirstUser().getAsTag() + " \uD83D\uDD34 ⚔ " + getSecondUser().getAsTag() + " \uD83D\uDFE1");
 		embed.setTitle("Puissance 4");
 		embed.setDescription(board);
 		if (getTour()) embed.setFooter("C'est au tour de " + getFirstUser().getAsTag() + " \uD83D\uDD34");
