@@ -156,7 +156,7 @@ public class CommandP4 extends ListenerAdapter {
 
 		//gauche diagonal
 		for(i=0;i<7-3;i++)
-			for(j=0;j<6-3;j++)
+			for(j=3;j<6;j++)
 				try {
 					if(gameVar.get(i).get(j) == bool && gameVar.get(i).get(j)==gameVar.get(i+1).get(j-1) && gameVar.get(i).get(j)==gameVar.get(i+2).get(j-2) && gameVar.get(i).get(j)==gameVar.get(i+3).get(j-3))
 						return true;
