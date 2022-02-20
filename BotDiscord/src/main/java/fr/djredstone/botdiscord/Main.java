@@ -24,9 +24,6 @@ public class Main extends JavaPlugin {
 	public static String noPermMessage = "Vous n'étes pas une personne de puissance.";
 	public static String redstoneEmoji = "<:redstone:503978809645727745>";
 	public HashMap<User, Integer> messageByMinute = new HashMap<>();
-	
-	public List<String> P4startMessageID = new ArrayList<>();
-	public HashMap<String, String> P4startMessageUser = new HashMap<>();
 
 	public static DatabaseManager databaseManager;
 	

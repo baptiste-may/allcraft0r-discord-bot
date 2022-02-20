@@ -1,21 +1,23 @@
 package fr.djredstone.botdiscord.listener;
 
-import fr.djredstone.botdiscord.Main;
-import fr.djredstone.botdiscord.commands.*;
-
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import fr.djredstone.botdiscord.Main;
+import fr.djredstone.botdiscord.commands.*;
+
 public class OnDiscordCommand extends ListenerAdapter {
 
-	public void onSlashCommand(SlashCommandInteractionEvent event) {
+	@Override
+	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 
-		switch (event.getName()) {
+		switch (event.getName().toLowerCase()) {
 			case "money" -> new CommandMoney(event.getUser(), null, event);
 			case "daily" -> new CommandDaily(event.getUser(), null, event);
 			case "number" -> new CommandFindNumber(null, event.getUser(), null, event);
 			case "quitteoudouble" -> new CommandQuitteOuDouble(event.getUser(), null, null, event);
+			case "p4" -> new CommandP4(null, event);
 			case "ask" -> new CommandHask(null, event);
 			case "non" -> new CommandNon(null, null, event);
 			case "oui" -> new CommandOui(null, null, event);
@@ -42,7 +44,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 		
 		String cmd = args[0].replace(Main.prefix, "");
 		
-		switch(cmd) {
+		switch(cmd.toLowerCase()) {
 			case "number" -> {
 				if (args.length > 1) new CommandFindNumber(args[1], event.getAuthor(), event, null);
 				else new CommandFindNumber(null, event.getAuthor(), event, null);
@@ -76,6 +78,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "fakeban" -> new CommandFakeBan(event, null);
 			case "fakeresetxp" -> new CommandFakeResetXP(event, null);
 			case "dashboard" -> new CommandDashboard(event, null);
+			case "p4" -> new CommandP4(event, null);
 		}
 	}
 }

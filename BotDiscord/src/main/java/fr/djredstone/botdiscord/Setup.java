@@ -91,20 +91,20 @@ public class Setup implements EventListener, Listener {
 			e.printStackTrace();
 		}
 	    
-	    new P4Game(main);
-	    
 	    Main.jda.addEventListener(this);
 	    
 	    Main.jda.addEventListener(new OnDiscordCommand());
-	    
-	    Main.jda.addEventListener(new CommandP4(main));
 
 	    Main.jda.addEventListener(new CommandFindNumber(null, null, null, null));
 		Main.jda.addEventListener(new CommandQuitteOuDouble(null, null, null, null));
 
+		CommandP4.setup();
+		Main.jda.addEventListener(new CommandP4(null, null));
+
 		Main.jda.updateCommands().addCommands(Commands.slash("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)))
 			.addCommands(Commands.slash("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)))
-	    	.addCommands(Commands.slash("money", "Affiche son nombre de redstones"))
+			.addCommands(Commands.slash("p4", "Démarre une partie de puissance 4"))
+			.addCommands(Commands.slash("money", "Affiche son nombre de redstones"))
 			.addCommands(Commands.slash("dashboard", "???"))
 	    	.addCommands(Commands.slash("daily", "Récupère sa redstone quotidienne"))
 	    	.addCommands(Commands.slash("aide", "Liste des commandes"))

@@ -22,7 +22,7 @@ repositories {
 }
 
 shadowJar {
-    relocate 'net.dv8tion.jda', 'me.mydomain.discordbot.jda'
+    relocate 'net.dv8tion.jda', 'fr.djredstone.botdiscord.Main.jda'
 }
 
 dependencies {
