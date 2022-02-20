@@ -2,6 +2,7 @@ package fr.djredstone.botdiscord.commands;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -16,6 +17,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+
+import fr.djredstone.botdiscord.Main;
 
 public class CommandP4 extends ListenerAdapter {
 
@@ -175,6 +178,15 @@ public class CommandP4 extends ListenerAdapter {
 		setSecondUser(null);
 		setGameMessage(null);
 		setTour(false);
+
+		int nb = 50;
+		event.getChannel().sendMessage("Bravo " + winner.getAsMention() + ", tu gagnes **" + nb + " redstones** !").queue();
+		try {
+			Main.setMoney(winner, Main.getMoney(winner) + nb);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public CommandP4(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
