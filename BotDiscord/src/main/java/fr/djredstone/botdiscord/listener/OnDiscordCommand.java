@@ -33,6 +33,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "fakeban" -> new CommandFakeBan(null, event);
 			case "fakeresetxp" -> new CommandFakeResetXP(null, event);
 			case "dashboard" -> new CommandDashboard(null, event);
+			case "stopp4" -> new CommandStopP4(null, event);
 		}
 	}
 	
@@ -79,6 +80,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "fakeresetxp" -> new CommandFakeResetXP(event, null);
 			case "dashboard" -> new CommandDashboard(event, null);
 			case "p4" -> new CommandP4(event, null);
+			case "stopp4" -> new CommandStopP4(event, null);
 		}
 	}
 }
