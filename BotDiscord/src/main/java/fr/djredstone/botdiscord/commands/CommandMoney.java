@@ -14,7 +14,7 @@ public class CommandMoney {
 	public CommandMoney(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
         	
         try {
-			UtilsCommands.replyOrSend((user.getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones** " + Main.redstoneEmoji), event1, event2);
+			UtilsCommands.replyOrSend((user.getAsMention() + ", tu as **" + Main.getMoney(user) + " redstones** " + Main.getRedstoneEmoji()), event1, event2);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.djredstone.botdiscord.Main;
+import org.jetbrains.annotations.NotNull;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -74,7 +76,7 @@ public class CommandFindNumber extends ListenerAdapter {
 		
 	}
 
-	public void onMessageReceived(MessageReceivedEvent event) {
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
 		if(channelID != null) {
 
@@ -92,7 +94,7 @@ public class CommandFindNumber extends ListenerAdapter {
 							public void run() {
 								event.getMessage().delete().queue();
 							}
-						}.runTaskLater(Main.main, 100);
+						}.runTaskLater(Main.getInstance(), 100);
 						event.getMessage().addReaction("⬆️").queue();
 					} else if(proposition > randomNB) {
 						new BukkitRunnable() {
@@ -100,7 +102,7 @@ public class CommandFindNumber extends ListenerAdapter {
 							public void run() {
 								event.getMessage().delete().queue();
 							}
-						}.runTaskLater(Main.main, 100);
+						}.runTaskLater(Main.getInstance(), 100);
 						event.getMessage().addReaction("⬇️").queue();
 					} else {
 						channelID = null;

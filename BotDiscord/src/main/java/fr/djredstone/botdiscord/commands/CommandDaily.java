@@ -25,7 +25,7 @@ public class CommandDaily {
 				e.printStackTrace();
 			}
 			
-			UtilsCommands.replyOrSend("Tu as reçu **200 redstones** " + Main.redstoneEmoji + user.getAsMention(), event1, event2);
+			UtilsCommands.replyOrSend("Tu as reçu **200 redstones** " + Main.getRedstoneEmoji() + user.getAsMention(), event1, event2);
 			
 			hadGet.add(user.getId());
 			

@@ -27,7 +27,7 @@ public class CommandSend {
 		if(event2 != null) message = Objects.requireNonNull(event2.getOption("send_message")).getAsString();
 		
 		UtilsCommands.replyOrSend(embed, event1, event2);
-		Objects.requireNonNull(Main.jda.getTextChannelById("497141089480998912")).sendMessage("Nouveau message de " + user.getName() + " : " + message).queue();
+		Objects.requireNonNull(Main.getJda().getTextChannelById(Main.getAdminIDChannel())).sendMessage("Nouveau message de " + user.getName() + " : " + message).queue();
 		
 	}
 	

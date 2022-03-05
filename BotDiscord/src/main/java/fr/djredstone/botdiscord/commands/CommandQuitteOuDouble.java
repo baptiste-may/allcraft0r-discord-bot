@@ -73,7 +73,8 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 
 				} else UtilsCommands.replyOrSend(user.getAsMention() + ", tu n'as pas assez de redstones !", event1, event2);
 
-			} catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
+			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+				e.printStackTrace();
 			}
 		}
 	}

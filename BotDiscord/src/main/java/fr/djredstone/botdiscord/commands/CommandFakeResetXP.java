@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,7 +14,7 @@ import fr.djredstone.botdiscord.Main;
 
 public class CommandFakeResetXP extends ListenerAdapter {
 
-    final String helpMessage = "Utilisation : " + Main.prefix + "fakeresetxp <@user>";
+    final String helpMessage = "Utilisation : " + Main.getPrefix() + "fakeresetxp <@user>";
 
     public CommandFakeResetXP(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 
@@ -28,22 +26,12 @@ public class CommandFakeResetXP extends ListenerAdapter {
             }
         }
 
-        Member member;
-        if (event1 != null) member = event1.getMember();
-        else {
-            assert event2 != null;
-            member = event2.getMember();
-        }
-
-        assert member != null;
-        if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
-            UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
-            return;
-        }
-
         User target;
         if (event1 != null) target = event1.getMessage().getMentionedMembers().get(0).getUser();
-        else target = Objects.requireNonNull(event2.getOption("fakeresetxp_user")).getAsUser();
+        else {
+            assert event2 != null;
+            target = Objects.requireNonNull(event2.getOption("fakeresetxp_user")).getAsUser();
+        }
 
         UtilsCommands.replyOrSend("L'xp de **" + target.getAsTag() + "** a bien été réinitialisé ! ✅", event1, event2);
 

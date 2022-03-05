@@ -18,7 +18,7 @@ public class messageByMinuteTest {
 			@Override
 			public void run() {
 
-				main.messageByMinute.clear();
+				Main.getMessageByMinute().clear();
 				
 			}
 		}, 0, 60*1000);

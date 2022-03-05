@@ -15,7 +15,7 @@ public class CommandPing {
 			
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle(":ping_pong: **Pong !**");
-		embed.setDescription(":hourglass_flowing_sand: " + Main.jda.getGatewayPing() + " ms");
+		embed.setDescription(":hourglass_flowing_sand: " + Main.getJda().getGatewayPing() + " ms");
 		embed.setColor(Color.ORANGE);
 		
 		UtilsCommands.replyOrSend(embed, event1, event2);

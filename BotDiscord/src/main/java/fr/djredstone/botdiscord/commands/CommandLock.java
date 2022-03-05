@@ -7,9 +7,9 @@ import java.util.Objects;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -19,18 +19,18 @@ public class CommandLock {
 	
 	public CommandLock(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
         
-		Member member;
+		User user;
 		Message message;
 		Guild guild;
 		TextChannel channel;
 		TextChannel channelOriginal;
 		String messageStr;
 		if(event1 != null) {
-			member = event1.getMember();
+			user = event1.getAuthor();
 			message = event1.getMessage();
 			String[] args = message.getContentRaw().split(" ");
 			if(message.getMentionedChannels().isEmpty()) {
-				UtilsCommands.replyOrSend("Utilisation : " + Main.prefix + "lock <#channel>", event1, event2);
+				UtilsCommands.replyOrSend("Utilisation : " + Main.getPrefix() + "lock <#channel>", event1, event2);
 				return;
 			}
 			guild = event1.getGuild();
@@ -41,28 +41,22 @@ public class CommandLock {
 			messageStr = stringBuilder.toString();
 		} else {
 			assert event2 != null;
-			member = event2.getMember();
+			user = event2.getUser();
 			guild = event2.getGuild();
 			channel = (TextChannel) Objects.requireNonNull(event2.getOption("lock_channel")).getAsMessageChannel();
 			channelOriginal = event2.getTextChannel();
 			messageStr = Objects.requireNonNull(event2.getOption("lock_message")).getAsString();
 		}
 
-		assert member != null;
 		assert channel != null;
 		assert guild != null;
-
-		if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
-           UtilsCommands.replyOrSend(Main.noPermMessage, event1, event2);
-           return;
-        }
 
 		channel.createPermissionOverride(guild.getPublicRole()).setDeny(Permission.MESSAGE_SEND).queue();
 
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle("Ce channel a été lock ⛔️");
 		embed.setDescription(messageStr);
-		embed.setAuthor(member.getUser().getAsTag(), null, member.getAvatarUrl());
+		embed.setAuthor(user.getAsTag(), null, user.getAvatarUrl());
 		embed.setColor(Color.RED);
 
 		channel.sendMessageEmbeds(embed.build()).queue();
