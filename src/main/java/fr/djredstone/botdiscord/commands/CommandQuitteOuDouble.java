@@ -22,114 +22,118 @@ import fr.djredstone.botdiscord.Main;
 public class CommandQuitteOuDouble extends ListenerAdapter {
 	
 	private static final HashMap<User, Integer> mise = new HashMap<>();
-	public static HashMap<String, User> messagesID = new HashMap<>();
+	private static final HashMap<User, String> IDs = new HashMap<>();
 	
-	Random r = new Random();
+	private static final Random r = new Random();
 
-	public CommandQuitteOuDouble(User user, String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+	public CommandQuitteOuDouble(@Nullable String option, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 		
-		if(user == null) return;
+		if (event1 == null && event2 == null) return;
+
+		User user;
+		if (event1 != null) user = event1.getAuthor();
+		else user = event2.getUser();
         	
-       	if(mise.get(user) == null) {
+       	if(!mise.containsKey(user)) {
 
-			try {
-
-				int nb = Integer.parseInt(option);
-				if (event2 != null) nb = (int) Objects.requireNonNull(event2.getOption("nb_max")).getAsLong();
-				int userMoney;
+			int nb = 50;
+			if (option != null) {
 				try {
-					userMoney = Main.getMoney(user);
+					Integer.parseInt(option);
+				} catch (NumberFormatException ignored) {
+				}
+			}
+
+			int userMoney;
+			try {
+				userMoney = Main.getMoney(user);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return;
+			}
+
+			if (nb < userMoney) {
+
+				try {
+					Main.setMoney(user, Main.getMoney(user) - nb);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					return;
 				}
 
-				if (nb < userMoney) {
+				EmbedBuilder embed = new EmbedBuilder();
+				embed.setTitle("Quitte ou double !");
+				embed.setDescription(user.getAsMention() + ", tu proposes **" + nb + " redstones**. Vas-tu tenter le double ?");
+				embed.setColor(Color.ORANGE);
 
-					mise.put(user, nb);
-					try {
-						Main.setMoney(user, Main.getMoney(user) - nb);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
+				MessageChannel messageChannel;
+				if (event1 != null) {
+					messageChannel = event1.getChannel();
+					event1.getMessage().delete().queue();
+				}
+				else messageChannel = event2.getChannel();
+				if (event2 != null) event2.reply("La partie a commencé !").setEphemeral(true).queue();
+				messageChannel.sendMessageEmbeds(embed.build()).setActionRow(
+						Button.success("qod_yes", "Oui"),
+						Button.danger("qod_no", "Non")
+				).queue(message -> IDs.put(user, message.getId()));
 
-					EmbedBuilder embed = new EmbedBuilder();
-					embed.setTitle("Quitte ou double !");
-					embed.setDescription(user.getAsMention() + ", tu proposes **" + mise.get(user) + " redstones**. Vas-tu tenter le double ?");
-					embed.setColor(Color.ORANGE);
+				mise.put(user, nb);
 
-					MessageChannel channel;
-					if (event1 != null) channel = event1.getChannel();
-					else {
-						assert event2 != null;
-						channel = event2.getTextChannel();
-					}
-
-					channel.sendMessageEmbeds(embed.build()).setActionRow(
-							Button.success("qod_yes", "Oui"),
-							Button.danger("qod_no", "Non")).queue(message -> messagesID.put(message.getId(), user));
-
-					if (event1 != null) event1.getMessage().delete().queue();
-
-				} else UtilsCommands.replyOrSend(user.getAsMention() + ", tu n'as pas assez de redstones !", event1, event2);
-
-			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-				e.printStackTrace();
-			}
+			} else UtilsCommands.replyOrSend(user.getAsMention() + ", tu n'as pas assez de redstones !", event1, event2);
 		}
 	}
 
 	public void onButtonInteraction(ButtonInteractionEvent event) {
-		
-		if(messagesID.get(event.getMessageId()) == event.getUser()) {
-			
-			if(event.getComponentId().equals("qod_yes")) {
-				
-				if(r.nextBoolean()) {
-					
-					mise.put(event.getUser(), mise.get(event.getUser())*2);
-					
-					EmbedBuilder embed = new EmbedBuilder();
-					embed.setTitle("Quitte ou double !");
-					embed.setDescription("Bravo " + Objects.requireNonNull(event.getUser()).getAsMention() + "! Ta mise est de **" + mise.get(event.getUser()) + " redstones** maintenant. Vas-tu tenter le double ?");
-					embed.setColor(Color.GREEN);
 
-					event.editMessageEmbeds(embed.build()).setActionRow(
-							Button.success("qod_yes", "Oui"),
-							Button.danger("qod_no", "Non")).queue();
-					
-				} else {
-					
-					EmbedBuilder embed = new EmbedBuilder();
-					embed.setTitle("Quitte ou double !");
-					embed.setDescription("Dommage ! " + Objects.requireNonNull(event.getUser()).getAsMention() + ", tu viens de perdre la mise de **" + mise.get(event.getUser()) + " redstones** !");
-					embed.setColor(Color.RED);
+		if (IDs.containsKey(event.getUser())) if (!Objects.equals(IDs.get(event.getUser()), event.getMessageId())) return;
+		int localMise = mise.get(event.getUser());
 
-					event.editMessageEmbeds(embed.build()).setActionRows(new ArrayList<>()).queue();
-					
-					mise.remove(event.getUser());
-					
-				}
-				
-			} else if(event.getComponentId().equals("qod_no")) {
-		
-				EmbedBuilder embed = new EmbedBuilder();
-				embed.setTitle("Quitte ou double !");
-				embed.setDescription(Objects.requireNonNull(event.getUser()).getAsMention() + ", tu récupères **" + mise.get(event.getUser()) + " redstones** !");
-				embed.setColor(Color.YELLOW);
-
-				event.editMessageEmbeds(embed.build()).setActionRows(new ArrayList<>()).queue();
-				
+		if (event.getComponentId().equals("qod_yes")) {
+			if (r.nextBoolean()) {
 				try {
-					Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + mise.get(event.getUser()));
+					Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) - localMise);
 				} catch (SQLException e) {
 					e.printStackTrace();
+					return;
 				}
-				
-				mise.remove(event.getUser());
+				mise.put(event.getUser(), localMise*2);
 
+				EmbedBuilder embed = new EmbedBuilder();
+				embed.setTitle("Quitte ou double !");
+				embed.setDescription("Bravo " + Objects.requireNonNull(event.getUser()).getAsMention() + "! Ta mise est de **" + mise.get(event.getUser()) + " redstones** maintenant. Vas-tu tenter le double ?");
+				embed.setColor(Color.GREEN);
+
+				event.editMessageEmbeds(embed.build()).setActionRow(
+						Button.success("qod_yes", "Oui"),
+						Button.danger("qod_no", "Non")).queue();
+			} else {
+				EmbedBuilder embed = new EmbedBuilder();
+				embed.setTitle("Quitte ou double !");
+				embed.setDescription("Dommage ! " + Objects.requireNonNull(event.getUser()).getAsMention() + ", tu viens de perdre la mise de **" + mise.get(event.getUser()) + " redstones** !");
+				embed.setColor(Color.RED);
+
+				event.editMessageEmbeds(embed.build()).setActionRows(new ArrayList<>()).queue();
+
+				mise.remove(event.getUser());
 			}
 		}
-	}
 
+		if (event.getComponentId().equals("qod_no")) {
+			EmbedBuilder embed = new EmbedBuilder();
+			embed.setTitle("Quitte ou double !");
+			embed.setDescription(Objects.requireNonNull(event.getUser()).getAsMention() + ", tu récupères **" + mise.get(event.getUser()) + " redstones** !");
+			embed.setColor(Color.YELLOW);
+
+			event.editMessageEmbeds(embed.build()).setActionRows(new ArrayList<>()).queue();
+
+			try {
+				Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + localMise);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			mise.remove(event.getUser());
+		}
+	}
 }

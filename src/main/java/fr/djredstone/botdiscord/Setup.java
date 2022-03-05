@@ -72,7 +72,7 @@ public class Setup implements EventListener, Listener {
 		Main.getMee6().addEventListener(new OnDiscordOPCommand());
 
 	    Main.getJda().addEventListener(new CommandFindNumber(null, null, null, null));
-		Main.getJda().addEventListener(new CommandQuitteOuDouble(null, null, null, null));
+		Main.getJda().addEventListener(new CommandQuitteOuDouble(null, null, null));
 		CommandP4.setup();
 		Main.getJda().addEventListener(new CommandP4(null, null));
 

@@ -1,5 +1,7 @@
 package fr.djredstone.botdiscord.listener;
 
+import java.util.Objects;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -16,7 +18,10 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "money" -> new CommandMoney(event.getUser(), null, event);
 			case "daily" -> new CommandDaily(event.getUser(), null, event);
 			case "number" -> new CommandFindNumber(null, event.getUser(), null, event);
-			case "quitteoudouble" -> new CommandQuitteOuDouble(event.getUser(), null, null, event);
+			case "quitteoudouble" -> {
+				if (event.getOption("nb_depart_mise") != null) new CommandQuitteOuDouble(Objects.requireNonNull(event.getOption("nb_depart_mise")).getAsString(), null, event);
+				else new CommandQuitteOuDouble(null, null, event);
+			}
 			case "p4" -> new CommandP4(null, event);
 			case "send" -> new CommandSend(event.getUser(), null, null, event);
 			case "eyes" -> new CommandEyes(null, event);
@@ -42,7 +47,8 @@ public class OnDiscordCommand extends ListenerAdapter {
 				else new CommandFindNumber(null, event.getAuthor(), event, null);
 			}
 			case "quitteoudouble" -> {
-				if(args.length > 1) new CommandQuitteOuDouble(event.getAuthor(), args[1], event, null);
+				if (args.length > 1) new CommandQuitteOuDouble(args[1], event, null);
+				else new CommandQuitteOuDouble(null, event, null);
 			}
 			case "money" -> new CommandMoney(event.getAuthor(), event, null);
 			case "daily" -> new CommandDaily(event.getAuthor(), event, null);
