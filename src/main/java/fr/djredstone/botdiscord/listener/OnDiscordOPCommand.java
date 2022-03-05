@@ -1,5 +1,7 @@
 package fr.djredstone.botdiscord.listener;
 
+import java.util.Objects;
+
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -40,13 +42,6 @@ public class OnDiscordOPCommand extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
 
-        Member member = event.getMember();
-        assert member != null;
-        if (!member.hasPermission(Permission.NICKNAME_MANAGE)) {
-            UtilsCommands.replyOrSend(Main.getNoPermMessage(), event, null);
-            return;
-        }
-
         String[] args = event.getMessage().getContentRaw().split("\\s+");
 
         if (!args[0].startsWith("!")) return;
@@ -55,27 +50,56 @@ public class OnDiscordOPCommand extends ListenerAdapter {
 
         switch(cmd.toLowerCase()) {
 
-            case "ask" -> new CommandHask(event, null);
+            case "ask" -> {
+                if (testPerm(event)) return;
+                new CommandHask(event, null);
+            }
             case "non" -> {
+                if (testPerm(event)) return;
                 if (args.length > 1) new CommandNon(args[1], event, null);
                 else new CommandNon(null, event, null);
             }
             case "oui" -> {
+                if (testPerm(event)) return;
                 if (args.length > 1) new CommandOui(args[1], event, null);
                 else new CommandOui(null, event, null);
             }
             case "text" -> {
+                if (testPerm(event)) return;
                 if (args.length > 1) new CommandText(args[2], event, null);
                 else new CommandText(null, event, null);
             }
-            case "lock" -> new CommandLock(event, null);
-            case "unlock" -> new CommandUnlock(event, null);
-            case "fakeban" -> new CommandFakeBan(event, null);
-            case "fakeresetxp" -> new CommandFakeResetXP(event, null);
-            case "stopp4" -> new CommandStopP4(event, null);
+            case "lock" -> {
+                if (testPerm(event)) return;
+                new CommandLock(event, null);
+            }
+            case "unlock" -> {
+                if (testPerm(event)) return;
+                new CommandUnlock(event, null);
+            }
+            case "fakeban" -> {
+                if (testPerm(event)) return;
+                new CommandFakeBan(event, null);
+            }
+            case "fakeresetxp" -> {
+                if (testPerm(event)) return;
+                new CommandFakeResetXP(event, null);
+            }
+            case "stopp4" -> {
+                if (testPerm(event)) return;
+                new CommandStopP4(event, null);
+            }
 
         }
 
+    }
+
+    private static boolean testPerm(MessageReceivedEvent event) {
+        if (!Objects.requireNonNull(event.getMember()).hasPermission(Permission.NICKNAME_MANAGE)) {
+            UtilsCommands.replyOrSend(Main.getNoPermMessage(), event, null);
+            return true;
+        }
+        return false;
     }
 
 }

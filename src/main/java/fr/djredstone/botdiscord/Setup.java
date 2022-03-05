@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -62,6 +63,7 @@ public class Setup implements EventListener, Listener {
 		} catch (LoginException e) {
 			e.printStackTrace();
 		}
+		Main.getMee6().getPresence().setStatus(OnlineStatus.INVISIBLE);
 
 		// Listeners and tasks Adds
 	    Main.getJda().addEventListener(this);

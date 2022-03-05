@@ -17,7 +17,7 @@ public class Main extends JavaPlugin {
 	private static final String prefix = "!";
 	public static String getPrefix() { return prefix; }
 
-	private static final String noPermMessage = "Vous n'étes pas une personne de puissance.";
+	private static final String noPermMessage = "Vous n'êtes pas une personne de puissance.";
 	public static String getNoPermMessage() { return noPermMessage; }
 
 	private static String adminIDChannel;
