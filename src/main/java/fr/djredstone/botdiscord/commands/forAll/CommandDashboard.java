@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.commands;
+package fr.djredstone.botdiscord.commands.forAll;
 
 import javax.annotation.Nullable;
 import java.sql.ResultSet;
@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.Utils;
+import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 public class CommandDashboard extends ListenerAdapter {
 

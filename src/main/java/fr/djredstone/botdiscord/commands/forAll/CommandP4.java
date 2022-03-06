@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.commands;
+package fr.djredstone.botdiscord.commands.forAll;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -19,6 +19,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import fr.djredstone.botdiscord.Main;
+import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 public class CommandP4 extends ListenerAdapter {
 

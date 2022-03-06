@@ -7,7 +7,16 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.botdiscord.Main;
-import fr.djredstone.botdiscord.commands.*;
+import fr.djredstone.botdiscord.commands.forAll.*;
+import fr.djredstone.botdiscord.commands.music.CommandDisconnect;
+import fr.djredstone.botdiscord.commands.music.CommandNow;
+import fr.djredstone.botdiscord.commands.music.CommandPause;
+import fr.djredstone.botdiscord.commands.music.CommandPlay;
+import fr.djredstone.botdiscord.commands.music.CommandQueue;
+import fr.djredstone.botdiscord.commands.music.CommandRepeat;
+import fr.djredstone.botdiscord.commands.music.CommandSkip;
+import fr.djredstone.botdiscord.commands.music.CommandStop;
+import fr.djredstone.botdiscord.commands.music.CommandVolume;
 
 public class OnDiscordCommand extends ListenerAdapter {
 
@@ -30,6 +39,21 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "link" -> new CommandLink(null, event);
 			case "ping" -> new CommandPing(null, event);
 			case "dashboard" -> new CommandDashboard(null, event);
+			case "play" -> {
+				if (event.getOption("play_search") != null) new CommandPlay(Objects.requireNonNull(event.getOption("play_search")).getAsString(), null, event);
+				else new CommandPlay(null, null, event);
+			}
+			case "stop" -> new CommandStop(null, event);
+			case "skip" -> new CommandSkip(null, event);
+			case "disconnect" -> new CommandDisconnect(null, event);
+			case "pause" -> new CommandPause(null, event);
+			case "repeat" -> new CommandRepeat(null, event);
+			case "queue" -> new CommandQueue(null, event);
+			case "now" -> new CommandNow(null, event);
+			case "volume" -> {
+				if (event.getOption("volume") != null) new CommandVolume(event.getOption("volume").getAsString(), null, event);
+				else new CommandVolume(null, null, event);
+			}
 		}
 	}
 	
@@ -60,6 +84,27 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "ping" -> new CommandPing(event, null);
 			case "dashboard" -> new CommandDashboard(event, null);
 			case "p4" -> new CommandP4(event, null);
+			case "play" -> {
+				if (args.length > 1) {
+					StringBuilder builder = new StringBuilder();
+					for (int i = 1; i < args.length; i++) {
+						builder.append(args[i]);
+					}
+					new CommandPlay(builder.toString(), event, null);
+				}
+				else new CommandPlay(null, event, null);
+			}
+			case "stop" -> new CommandStop(event, null);
+			case "skip" -> new CommandSkip(event, null);
+			case "disconnect" -> new CommandDisconnect(event, null);
+			case "pause" -> new CommandPause(event, null);
+			case "repeat" -> new CommandRepeat(event, null);
+			case "queue" -> new CommandQueue(event, null);
+			case "now" -> new CommandNow(event, null);
+			case "volume" -> {
+				if (args.length > 1) new CommandVolume(args[1], event, null);
+				else new CommandVolume(null, event, null);
+			}
 
 		}
 	}

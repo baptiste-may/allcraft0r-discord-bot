@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.commands;
+package fr.djredstone.botdiscord.commands.forAll;
 
 import java.awt.Color;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.djredstone.botdiscord.Main;
+import fr.djredstone.botdiscord.commands.UtilsCommands;
 import org.jetbrains.annotations.NotNull;
 
 import net.dv8tion.jda.api.EmbedBuilder;

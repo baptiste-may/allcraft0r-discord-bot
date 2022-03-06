@@ -2,6 +2,8 @@ package fr.djredstone.botdiscord;
 
 import javax.security.auth.login.LoginException;
 
+import java.util.EnumSet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
@@ -19,9 +21,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-import fr.djredstone.botdiscord.commands.CommandFindNumber;
-import fr.djredstone.botdiscord.commands.CommandP4;
-import fr.djredstone.botdiscord.commands.CommandQuitteOuDouble;
+import fr.djredstone.botdiscord.commands.forAll.CommandFindNumber;
+import fr.djredstone.botdiscord.commands.forAll.CommandP4;
+import fr.djredstone.botdiscord.commands.forAll.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.listener.MessageReceivedListener;
 import fr.djredstone.botdiscord.listener.OnDiscordCommand;
 import fr.djredstone.botdiscord.listener.OnDiscordOPCommand;
@@ -44,9 +46,14 @@ public class Setup implements EventListener, Listener {
 		Main.setAdminIDChannel(fc.getString("adminMessageID"));
 
 		// Normal Bot Login
-		JDABuilder builder = JDABuilder.createDefault(fc.getString("token"), GatewayIntent.GUILD_MESSAGES);
+		EnumSet<GatewayIntent> intents = EnumSet.of(
+				GatewayIntent.GUILD_MESSAGES,
+				GatewayIntent.GUILD_VOICE_STATES
+		);
+		JDABuilder builder = JDABuilder.createDefault(fc.getString("token"), intents);
 	    
-	    builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
+	    builder.disableCache(CacheFlag.MEMBER_OVERRIDES);
+		builder.enableCache(CacheFlag.VOICE_STATE);
 	    builder.setActivity(Activity.playing("loading..."));
 	    try {
 			Main.setJda(builder.build());
@@ -93,20 +100,16 @@ public class Setup implements EventListener, Listener {
 	    		Commands.slash("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"),
 	    		Commands.slash("link", "Affiche des liens en rapport à allcraft0r"),
 	    		Commands.slash("tank", "AMERICA ! F*CK YEAHH !!"),
-	    		Commands.slash("eyes", "I'm watching you...")
-				).queue();
-
-		// MEE6 Commands Adds
-		Main.getMee6().updateCommands().addCommands(
-				Commands.slash("ask", "Demande prise en compte"),
-				Commands.slash("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message").setRequired(false)),
-				Commands.slash("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message").setRequired(false)),
-				Commands.slash("text", "Message personnalisé").addOptions(new OptionData(OptionType.CHANNEL, "text_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "text", "Texte").setRequired(true)),
-				Commands.slash("fakeban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "User").setRequired(true), new OptionData(OptionType.STRING, "fakeban_raison", "Raison").setRequired(false)),
-				Commands.slash("fakeresetxp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "fakeresetxp_user", "User").setRequired(true)),
-				Commands.slash("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Message").setRequired(false)),
-				Commands.slash("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel").setRequired(true)),
-				Commands.slash("stopp4", "Arrête la partie de puissance 4 en cours")
+	    		Commands.slash("eyes", "I'm watching you..."),
+				Commands.slash("play", "Démarre une musique depuis le nom de la chanson, ou par son URL").addOptions(new OptionData(OptionType.STRING, "play_search", "Le titre ou l'URL d'une chanson").setRequired(true)),
+				Commands.slash("stop", "Arrête la musique en cours"),
+				Commands.slash("skip", "Passe la musique en cours"),
+				Commands.slash("disconnect", "Se déconnecte du channel"),
+				Commands.slash("pause", "Mette en pause ou remet la musique en cours"),
+				Commands.slash("repeat", "Met ou retire la boucle de la liste"),
+				Commands.slash("now", "Affiche la musique en cours"),
+				Commands.slash("queue", "Affiche les musiques de la liste"),
+				Commands.slash("volume", "Modifie le volume de la musique").addOptions(new OptionData(OptionType.INTEGER, "volume", "Le volume soité"))
 				).queue();
 	    
 	    try {

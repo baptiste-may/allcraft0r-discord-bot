@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.commands;
+package fr.djredstone.botdiscord.commands.forAll;
 
 import javax.annotation.Nullable;
 

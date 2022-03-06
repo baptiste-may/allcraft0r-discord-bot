@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.commands;
+package fr.djredstone.botdiscord.commands.forAll;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -18,6 +18,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import fr.djredstone.botdiscord.Main;
+import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 public class CommandQuitteOuDouble extends ListenerAdapter {
 	
@@ -128,7 +129,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 			event.editMessageEmbeds(embed.build()).setActionRows(new ArrayList<>()).queue();
 
 			try {
-				Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + localMise);
+				Main.setMoney(event.getUser(), Main.getMoney(event.getUser()) + (localMise*2));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

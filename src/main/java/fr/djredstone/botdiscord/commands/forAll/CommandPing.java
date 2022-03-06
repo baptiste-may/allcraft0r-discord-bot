@@ -1,10 +1,12 @@
-package fr.djredstone.botdiscord.commands;
+package fr.djredstone.botdiscord.commands.forAll;
 
 import java.awt.Color;
 
 import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
+import fr.djredstone.botdiscord.commands.UtilsCommands;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
