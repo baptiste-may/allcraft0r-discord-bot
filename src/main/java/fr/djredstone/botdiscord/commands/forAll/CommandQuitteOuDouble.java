@@ -60,7 +60,7 @@ public class CommandQuitteOuDouble extends ListenerAdapter {
 			}
 			else messageChannel = event2.getChannel();
 
-			if (nb < userMoney) {
+			if (nb < userMoney && nb > 0) {
 
 				if (r.nextBoolean()) {
 					try {

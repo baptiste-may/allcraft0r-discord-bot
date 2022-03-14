@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.botdiscord.Main;
+import fr.djredstone.botdiscord.commands.UtilsCommands;
 import fr.djredstone.botdiscord.commands.forAll.*;
 import fr.djredstone.botdiscord.commands.music.CommandDisconnect;
 import fr.djredstone.botdiscord.commands.music.CommandNow;
@@ -27,18 +28,24 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "money" -> new CommandMoney(event.getUser(), null, event);
 			case "daily" -> new CommandDaily(event.getUser(), null, event);
 			case "number" -> new CommandFindNumber(null, event.getUser(), null, event);
-			case "quitteoudouble" -> {
-				if (event.getOption("nb_depart_mise") != null) new CommandQuitteOuDouble(Objects.requireNonNull(event.getOption("nb_depart_mise")).getAsString(), null, event);
-				else new CommandQuitteOuDouble(null, null, event);
-			}
 			case "p4" -> new CommandP4(null, event);
+			case "dashboard" -> new CommandDashboard(null, event);
+			case "quitteoudouble" -> {
+				if (!UtilsCommands.getCommandUsed().containsKey(event.getUser())) UtilsCommands.getCommandUsed().put(event.getUser(), 0);
+				if (UtilsCommands.getCommandUsed().get(event.getUser()) < 20) {
+					UtilsCommands.getCommandUsed().put(event.getUser(), UtilsCommands.getCommandUsed().get(event.getUser()) + 1);
+					if (event.getOption("nb_depart_mise") != null) new CommandQuitteOuDouble(Objects.requireNonNull(event.getOption("nb_depart_mise")).getAsString(), null, event);
+					else new CommandQuitteOuDouble(null, null, event);
+				} else UtilsCommands.replyOrSend("Vous avez atteint votre limite de commande pour aujourd'hui !", null, event);
+			}
+
 			case "send" -> new CommandSend(event.getUser(), null, null, event);
 			case "eyes" -> new CommandEyes(null, event);
 			case "tank" -> new CommandTank(null, event);
 			case "aide" -> new CommandHelp(null, event);
 			case "link" -> new CommandLink(null, event);
 			case "ping" -> new CommandPing(null, event);
-			case "dashboard" -> new CommandDashboard(null, event);
+
 			case "play" -> {
 				if (event.getOption("play_search") != null) new CommandPlay(Objects.requireNonNull(event.getOption("play_search")).getAsString(), null, event);
 				else new CommandPlay(null, null, event);
@@ -51,7 +58,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "queue" -> new CommandQueue(null, event);
 			case "now" -> new CommandNow(null, event);
 			case "volume" -> {
-				if (event.getOption("volume") != null) new CommandVolume(event.getOption("volume").getAsString(), null, event);
+				if (event.getOption("volume") != null) new CommandVolume(Objects.requireNonNull(event.getOption("volume")).getAsString(), null, event);
 				else new CommandVolume(null, null, event);
 			}
 		}
@@ -71,8 +78,12 @@ public class OnDiscordCommand extends ListenerAdapter {
 				else new CommandFindNumber(null, event.getAuthor(), event, null);
 			}
 			case "quitteoudouble" -> {
-				if (args.length > 1) new CommandQuitteOuDouble(args[1], event, null);
-				else new CommandQuitteOuDouble(null, event, null);
+				if (!UtilsCommands.getCommandUsed().containsKey(event.getAuthor())) UtilsCommands.getCommandUsed().put(event.getAuthor(), 0);
+				if (UtilsCommands.getCommandUsed().get(event.getAuthor()) < 20) {
+					UtilsCommands.getCommandUsed().put(event.getAuthor(), UtilsCommands.getCommandUsed().get(event.getAuthor()) + 1);
+					if (args.length > 1) new CommandQuitteOuDouble(args[1], event, null);
+					else new CommandQuitteOuDouble(null, event, null);
+				} else UtilsCommands.replyOrSend("Vous avez atteint votre limite de commande pour aujourd'hui !", event, null);
 			}
 			case "money" -> new CommandMoney(event.getAuthor(), event, null);
 			case "daily" -> new CommandDaily(event.getAuthor(), event, null);

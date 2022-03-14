@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands;
 import javax.annotation.Nullable;
 
 import java.awt.*;
+import java.util.HashMap;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
@@ -10,7 +11,11 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class UtilsCommands {
-	
+
+	private static final HashMap<User, Integer> commandUsed = new HashMap<>();
+
+	public static HashMap<User, Integer> getCommandUsed() { return commandUsed; }
+
 	public static void replyOrSend(String message, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 		
 		if(event1 != null) {
