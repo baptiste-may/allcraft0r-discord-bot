@@ -24,7 +24,8 @@ public class DbCredentials {
                 .append(":")
                 .append(port)
                 .append("/")
-                .append(dbName);
+                .append(dbName)
+                .append("?autoReconnect=true");
 
         return sb.toString();
     }

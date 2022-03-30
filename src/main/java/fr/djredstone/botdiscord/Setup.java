@@ -52,7 +52,7 @@ public class Setup implements EventListener, Listener {
 		);
 		JDABuilder builder = JDABuilder.createDefault(fc.getString("token"), intents);
 	    
-	    builder.disableCache(CacheFlag.MEMBER_OVERRIDES);
+	    builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.EMOTE);
 		builder.enableCache(CacheFlag.VOICE_STATE);
 	    builder.setActivity(Activity.playing("loading..."));
 	    try {
@@ -64,7 +64,7 @@ public class Setup implements EventListener, Listener {
 		// MEE6 Bot Login
 	    JDABuilder builderMEE6 = JDABuilder.createDefault(fc.getString("tokenMEE6"), GatewayIntent.GUILD_MESSAGES);
 	    
-	    builderMEE6.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY);
+	    builderMEE6.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOTE);
 	    try {
 			Main.setMee6(builderMEE6.build());
 		} catch (LoginException e) {
@@ -187,7 +187,7 @@ public class Setup implements EventListener, Listener {
 	
 	@Override
 	public void onEvent(@NotNull GenericEvent event) {
-		if(event instanceof ReadyEvent) Bukkit.getLogger().info("§cBot discord allcraft0r prêt !");
+		if(event instanceof ReadyEvent) Bukkit.getLogger().info("Bots discord allcraft0r prêt !");
     }
 
 }

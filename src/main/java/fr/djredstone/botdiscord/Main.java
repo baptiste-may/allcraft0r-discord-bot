@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.djredstone.botdiscord.mysql.DatabaseManager;
@@ -81,7 +80,7 @@ public class Main extends JavaPlugin {
 			preparedStatement1.setTimestamp(3, timestamp);
 			preparedStatement1.setTimestamp(4, timestamp);
 
-			preparedStatement1.executeQuery();
+			preparedStatement1.executeUpdate();
 			
 			return 100;
 		}
