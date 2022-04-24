@@ -14,7 +14,7 @@ import fr.djredstone.botdiscord.commands.hPrivate.CommandHask;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandLock;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandNon;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandOui;
-import fr.djredstone.botdiscord.commands.hPrivate.CommandStopP4;
+import fr.djredstone.botdiscord.commands.economy.CommandStopP4;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandText;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandUnlock;
 

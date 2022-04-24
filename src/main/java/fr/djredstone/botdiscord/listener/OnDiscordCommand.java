@@ -9,6 +9,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
 import fr.djredstone.botdiscord.commands.forAll.*;
+import fr.djredstone.botdiscord.commands.economy.CommandDaily;
+import fr.djredstone.botdiscord.commands.economy.CommandDashboard;
+import fr.djredstone.botdiscord.commands.economy.CommandFindNumber;
+import fr.djredstone.botdiscord.commands.economy.CommandMoney;
+import fr.djredstone.botdiscord.commands.economy.CommandP4;
+import fr.djredstone.botdiscord.commands.economy.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.commands.music.CommandDisconnect;
 import fr.djredstone.botdiscord.commands.music.CommandNow;
 import fr.djredstone.botdiscord.commands.music.CommandPause;
@@ -61,6 +67,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 				if (event.getOption("volume") != null) new CommandVolume(Objects.requireNonNull(event.getOption("volume")).getAsString(), null, event);
 				else new CommandVolume(null, null, event);
 			}
+			case "8ball" -> new Command8Ball(null, event, Objects.requireNonNull(event.getOption("8ball")).getAsString());
 		}
 	}
 	
@@ -79,11 +86,11 @@ public class OnDiscordCommand extends ListenerAdapter {
 			}
 			case "quitteoudouble" -> {
 				if (!UtilsCommands.getCommandUsed().containsKey(event.getAuthor())) UtilsCommands.getCommandUsed().put(event.getAuthor(), 0);
-				if (UtilsCommands.getCommandUsed().get(event.getAuthor()) < 20) {
+				if (UtilsCommands.getCommandUsed().get(event.getAuthor()) < 5) {
 					UtilsCommands.getCommandUsed().put(event.getAuthor(), UtilsCommands.getCommandUsed().get(event.getAuthor()) + 1);
 					if (args.length > 1) new CommandQuitteOuDouble(args[1], event, null);
 					else new CommandQuitteOuDouble(null, event, null);
-				} else UtilsCommands.replyOrSend("Vous avez atteint votre limite de commande pour aujourd'hui !", event, null);
+				} else UtilsCommands.replyOrSend("Afin de garder une économie stable, le quitte ou double est limité à 5 utilisations par jours.", event, null);
 			}
 			case "money" -> new CommandMoney(event.getAuthor(), event, null);
 			case "daily" -> new CommandDaily(event.getAuthor(), event, null);
@@ -115,6 +122,13 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "volume" -> {
 				if (args.length > 1) new CommandVolume(args[1], event, null);
 				else new CommandVolume(null, event, null);
+			}
+			case "8ball" -> {
+				StringBuilder builder = new StringBuilder();
+				for (int i = 1; i < args.length; i++) {
+					builder.append(args[i]).append(" ");
+				}
+				new Command8Ball(event, null, builder.toString());
 			}
 
 		}

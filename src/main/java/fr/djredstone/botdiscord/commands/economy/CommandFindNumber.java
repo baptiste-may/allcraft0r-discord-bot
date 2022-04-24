@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.commands.forAll;
+package fr.djredstone.botdiscord.commands.economy;
 
 import java.awt.Color;
 import java.sql.SQLException;

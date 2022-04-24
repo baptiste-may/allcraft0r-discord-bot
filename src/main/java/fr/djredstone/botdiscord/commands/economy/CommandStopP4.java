@@ -1,9 +1,9 @@
-package fr.djredstone.botdiscord.commands.hPrivate;
+package fr.djredstone.botdiscord.commands.economy;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import fr.djredstone.botdiscord.commands.UtilsCommands;
-import fr.djredstone.botdiscord.commands.forAll.CommandP4;
+import fr.djredstone.botdiscord.commands.economy.CommandP4;
 
 public class CommandStopP4 {
 

@@ -21,9 +21,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-import fr.djredstone.botdiscord.commands.forAll.CommandFindNumber;
-import fr.djredstone.botdiscord.commands.forAll.CommandP4;
-import fr.djredstone.botdiscord.commands.forAll.CommandQuitteOuDouble;
+import fr.djredstone.botdiscord.commands.economy.CommandFindNumber;
+import fr.djredstone.botdiscord.commands.economy.CommandP4;
+import fr.djredstone.botdiscord.commands.economy.CommandQuitteOuDouble;
 import fr.djredstone.botdiscord.listener.MessageReceivedListener;
 import fr.djredstone.botdiscord.listener.OnDiscordCommand;
 import fr.djredstone.botdiscord.listener.OnDiscordOPCommand;
@@ -109,7 +109,8 @@ public class Setup implements EventListener, Listener {
 				Commands.slash("repeat", "Met ou retire la boucle de la liste"),
 				Commands.slash("now", "Affiche la musique en cours"),
 				Commands.slash("queue", "Affiche les musiques de la liste"),
-				Commands.slash("volume", "Modifie le volume de la musique").addOptions(new OptionData(OptionType.INTEGER, "volume", "Le volume soité"))
+				Commands.slash("volume", "Modifie le volume de la musique").addOptions(new OptionData(OptionType.INTEGER, "volume", "Le volume soité")),
+				Commands.slash("8ball", "Seul l'avenir est ici").addOptions(new OptionData(OptionType.STRING, "8ball", "La phrase de l'avenir"))
 				).queue();
 	    
 	    try {

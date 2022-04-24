@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.commands.forAll;
+package fr.djredstone.botdiscord.commands.economy;
 
 import javax.annotation.Nullable;
 import java.sql.ResultSet;
