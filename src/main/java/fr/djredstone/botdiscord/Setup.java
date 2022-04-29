@@ -23,7 +23,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import fr.djredstone.botdiscord.commands.economy.CommandFindNumber;
 import fr.djredstone.botdiscord.commands.economy.CommandP4;
-import fr.djredstone.botdiscord.commands.economy.CommandQuitteOuDouble;
+import fr.djredstone.botdiscord.commands.economy.CommandSlot;
 import fr.djredstone.botdiscord.listener.MessageReceivedListener;
 import fr.djredstone.botdiscord.listener.OnDiscordCommand;
 import fr.djredstone.botdiscord.listener.OnDiscordOPCommand;
@@ -79,7 +79,7 @@ public class Setup implements EventListener, Listener {
 		Main.getMee6().addEventListener(new OnDiscordOPCommand());
 
 	    Main.getJda().addEventListener(new CommandFindNumber(null, null, null, null));
-		Main.getJda().addEventListener(new CommandQuitteOuDouble(null, null, null));
+		Main.getJda().addEventListener(new CommandSlot(null, null));
 		CommandP4.setup();
 		Main.getJda().addEventListener(new CommandP4(null, null));
 
@@ -90,7 +90,7 @@ public class Setup implements EventListener, Listener {
 		// Normal Commands Adds
 		Main.getJda().updateCommands().addCommands(
 				Commands.slash("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)),
-				Commands.slash("quitteoudouble", "Démarre une partie de quitte ou double").addOptions(new OptionData(OptionType.INTEGER, "nb_depart_mise", "Nombre de départ de la mise").setRequired(true)),
+				Commands.slash("slot", "Démarre une partie de machine à sous"),
 				Commands.slash("p4", "Démarre une partie de puissance 4"),
 				Commands.slash("money", "Affiche son nombre de redstones"),
 				Commands.slash("dashboard", "Affiche les 10 membres ayant le plus de redstone"),

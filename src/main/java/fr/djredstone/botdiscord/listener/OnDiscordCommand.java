@@ -7,14 +7,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.botdiscord.Main;
-import fr.djredstone.botdiscord.commands.UtilsCommands;
 import fr.djredstone.botdiscord.commands.forAll.*;
 import fr.djredstone.botdiscord.commands.economy.CommandDaily;
 import fr.djredstone.botdiscord.commands.economy.CommandDashboard;
 import fr.djredstone.botdiscord.commands.economy.CommandFindNumber;
 import fr.djredstone.botdiscord.commands.economy.CommandMoney;
 import fr.djredstone.botdiscord.commands.economy.CommandP4;
-import fr.djredstone.botdiscord.commands.economy.CommandQuitteOuDouble;
+import fr.djredstone.botdiscord.commands.economy.CommandSlot;
 import fr.djredstone.botdiscord.commands.music.CommandDisconnect;
 import fr.djredstone.botdiscord.commands.music.CommandNow;
 import fr.djredstone.botdiscord.commands.music.CommandPause;
@@ -36,14 +35,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 			case "number" -> new CommandFindNumber(null, event.getUser(), null, event);
 			case "p4" -> new CommandP4(null, event);
 			case "dashboard" -> new CommandDashboard(null, event);
-			case "quitteoudouble" -> {
-				if (!UtilsCommands.getCommandUsed().containsKey(event.getUser())) UtilsCommands.getCommandUsed().put(event.getUser(), 0);
-				if (UtilsCommands.getCommandUsed().get(event.getUser()) < 20) {
-					UtilsCommands.getCommandUsed().put(event.getUser(), UtilsCommands.getCommandUsed().get(event.getUser()) + 1);
-					if (event.getOption("nb_depart_mise") != null) new CommandQuitteOuDouble(Objects.requireNonNull(event.getOption("nb_depart_mise")).getAsString(), null, event);
-					else new CommandQuitteOuDouble(null, null, event);
-				} else UtilsCommands.replyOrSend("Vous avez atteint votre limite de commande pour aujourd'hui !", null, event);
-			}
+			case "slot" -> new CommandSlot(null, event);
 
 			case "send" -> new CommandSend(event.getUser(), null, null, event);
 			case "eyes" -> new CommandEyes(null, event);
@@ -84,14 +76,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 				if (args.length > 1) new CommandFindNumber(args[1], event.getAuthor(), event, null);
 				else new CommandFindNumber(null, event.getAuthor(), event, null);
 			}
-			case "quitteoudouble" -> {
-				if (!UtilsCommands.getCommandUsed().containsKey(event.getAuthor())) UtilsCommands.getCommandUsed().put(event.getAuthor(), 0);
-				if (UtilsCommands.getCommandUsed().get(event.getAuthor()) < 5) {
-					UtilsCommands.getCommandUsed().put(event.getAuthor(), UtilsCommands.getCommandUsed().get(event.getAuthor()) + 1);
-					if (args.length > 1) new CommandQuitteOuDouble(args[1], event, null);
-					else new CommandQuitteOuDouble(null, event, null);
-				} else UtilsCommands.replyOrSend("Afin de garder une économie stable, le quitte ou double est limité à 5 utilisations par jours.", event, null);
-			}
+			case "slot" -> new CommandSlot(event, null);
 			case "money" -> new CommandMoney(event.getAuthor(), event, null);
 			case "daily" -> new CommandDaily(event.getAuthor(), event, null);
 			case "send" -> new CommandSend(event.getAuthor(), args[1], event, null);
