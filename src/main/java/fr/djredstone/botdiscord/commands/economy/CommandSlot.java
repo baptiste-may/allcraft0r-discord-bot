@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.Random;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -20,7 +19,6 @@ import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 public class CommandSlot extends ListenerAdapter {
 
-	private static final Random r = new Random();
 	private static final int max = 250;
 	private static final int min = 100;
 
@@ -42,7 +40,7 @@ public class CommandSlot extends ListenerAdapter {
 
 		if (50 < userMoney) {
 
-			if (r.nextBoolean()) {
+			if (Math.random()*(10)+1 < 5) {
 
 				int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 
@@ -70,7 +68,7 @@ public class CommandSlot extends ListenerAdapter {
 
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle("Machine à sous !");
-				embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50**%2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
+				embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50** %2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
 				embed.setColor(Color.RED);
 
 				UtilsCommands.replyOrSend(embed, event1, event2, Button.primary("slot_replay", "♻️ Rejouer"));
@@ -94,7 +92,7 @@ public class CommandSlot extends ListenerAdapter {
 
 			if (50 < userMoney) {
 
-				if (r.nextBoolean()) {
+				if (Math.random()*(10)+1 < 5) {
 
 					int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 
@@ -122,7 +120,7 @@ public class CommandSlot extends ListenerAdapter {
 
 					EmbedBuilder embed = new EmbedBuilder();
 					embed.setTitle("Machine à sous !");
-					embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50**%2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
+					embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50** %2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
 					embed.setColor(Color.RED);
 
 					event.replyEmbeds(embed.build()).addActionRow(Button.primary("slot_replay", "♻️ Rejouer")).queue();
