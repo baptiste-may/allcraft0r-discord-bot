@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -47,7 +48,7 @@ public class UtilsCommands {
 	public static EmbedBuilder getEmbedBuilderMusic(User user) {
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setColor(Color.BLUE);
-		embed.setTitle("\uD83C\uDFB6 **Musique** \uD83C\uDFB6");
+		embed.setTitle(String.format("%1$s Musique %1$s", Emoji.fromMarkdown("\uD83C\uDFB6")));
 		embed.setFooter("Commandé par " + user.getAsTag(), user.getAvatarUrl());
 		return embed;
 	}
@@ -55,7 +56,7 @@ public class UtilsCommands {
 	public static EmbedBuilder getEmbedBuilderMusic() {
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setColor(Color.BLUE);
-		embed.setTitle("\uD83C\uDFB6 **Musique** \uD83C\uDFB6");
+		embed.setTitle(String.format("%1$s Musique %1$s", Emoji.fromMarkdown("\uD83C\uDFB6")));
 		return embed;
 	}
 
