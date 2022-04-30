@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands.hPrivate;
 import java.awt.*;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,7 +17,7 @@ public class CommandText {
 		User user = event.getAuthor();
 
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setTitle(":warning: Message de la hiérarchie :warning:");
+		embed.setTitle(String.format("  %1$s Message de la hiérarchie %1$s", Emoji.fromMarkdown("⚠️")));
 		embed.setDescription(message);
 		embed.setFooter(" - " + user.getAsTag());
 		embed.setColor(Color.YELLOW);

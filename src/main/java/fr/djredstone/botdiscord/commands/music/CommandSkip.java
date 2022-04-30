@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands.music;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -31,7 +32,7 @@ public class CommandSkip {
         final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
         if (musicManager.audioPlayer.getPlayingTrack() == null) {
             EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-            embed.setDescription("\uD83D\uDED1 Il n'y a pas de musique en ce moment");
+            embed.setDescription(Emoji.fromMarkdown("\uD83D\uDED1") + " Il n'y a pas de musique en ce moment");
             UtilsCommands.replyOrSend(embed, event1, event2);
             return;
         }
@@ -39,7 +40,7 @@ public class CommandSkip {
         musicManager.scheduler.nextTrack();
 
         EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-        embed.setDescription("⏩ Musique suivante !");
+        embed.setDescription(Emoji.fromMarkdown("⏩") + " Musique suivante !");
         UtilsCommands.replyOrSend(embed, event1, event2);
 
     }

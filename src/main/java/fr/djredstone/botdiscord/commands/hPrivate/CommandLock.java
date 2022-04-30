@@ -4,6 +4,7 @@ import java.awt.*;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -21,7 +22,7 @@ public class CommandLock {
 		String[] args = message.getContentRaw().split(" ");
 
 		if(message.getMentionedChannels().isEmpty()) {
-			UtilsCommands.replyOrSend("Utilisation : " + Main.getPrefix() + "lock <#channel>", event, null);
+			UtilsCommands.replyOrSend(String.format("Utilisation : %1$slock <#channel>", Main.getPrefix()), event, null);
 			return;
 		}
 
@@ -37,7 +38,7 @@ public class CommandLock {
 		channel.createPermissionOverride(guild.getPublicRole()).setDeny(Permission.MESSAGE_SEND).queue();
 
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setTitle("Ce channel a été lock ⛔️");
+		embed.setTitle("Ce channel a été lock " + Emoji.fromMarkdown("⛔️"));
 		embed.setDescription(messageStr);
 		embed.setAuthor(user.getAsTag(), null, user.getAvatarUrl());
 		embed.setColor(Color.RED);

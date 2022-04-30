@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands.music;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -33,7 +34,7 @@ public class CommandVolume {
 
         if (option == null) {
             EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-            embed.setDescription("\uD83D\uDD0A Le volume de la musique est actuellement à " + musicManager.audioPlayer.getVolume() + "%");
+            embed.setDescription(String.format("%1$s Le volume de la musique est actuellement à %2$s", Emoji.fromMarkdown("\uD83D\uDD0A"), musicManager.audioPlayer.getVolume()) + "%");
             UtilsCommands.replyOrSend(embed, event1, event2);
             return;
         }
@@ -49,7 +50,7 @@ public class CommandVolume {
         musicManager.audioPlayer.setVolume(volume);
 
         EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-        embed.setDescription("\uD83D\uDD0A Le volume de la musique a été mis à jour à " + volume + "%");
+        embed.setDescription(String.format("%1$s Le volume de la musique a été mis à jour à %2$s", Emoji.fromMarkdown("\uD83D\uDD0A"), volume) + "%");
         UtilsCommands.replyOrSend(embed, event1, event2);
 
     }

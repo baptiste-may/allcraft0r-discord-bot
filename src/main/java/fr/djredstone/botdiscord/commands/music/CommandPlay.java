@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -57,7 +58,7 @@ public class CommandPlay {
         if (URL.equalsIgnoreCase("")) {
             EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(member.getUser());
             embed.setColor(Color.RED);
-            embed.setDescription("Aucune musique trouvé ⚠️");
+            embed.setDescription("Aucune musique trouvé " + Emoji.fromMarkdown("⚠️"));
             UtilsCommands.replyOrSend(embed, event1, event2);
         }
         else {

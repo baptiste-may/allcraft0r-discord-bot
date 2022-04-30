@@ -15,6 +15,7 @@ import fr.djredstone.botdiscord.commands.UtilsCommands;
 import org.jetbrains.annotations.NotNull;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -65,10 +66,10 @@ public class CommandFindNumber extends ListenerAdapter {
 			coups.clear();
 			
 			EmbedBuilder embed = new EmbedBuilder();
-			embed.setTitle("Un nombre aléatoire a été génréré entre 1 et " + max + " :game_die:");
-			embed.setDescription("Tout le monde peut chercher mon nombre :eyes:");
+			embed.setTitle(String.format("Un nombre aléatoire a été génréré entre 1 et %1$s :game_die:", max));
+			embed.setDescription(String.format("Tout le monde peut chercher mon nombre %1$s", Emoji.fromMarkdown("\uD83D\uDC40")));
 			assert user != null;
-			embed.setFooter("| Commandé par " + user.getAsTag(), user.getAvatarUrl());
+			embed.setFooter("Commandé par " + user.getAsTag(), user.getAvatarUrl());
 			embed.setColor(Color.RED);
 			
 			UtilsCommands.replyOrSend(embed, event1, event2);
@@ -109,8 +110,8 @@ public class CommandFindNumber extends ListenerAdapter {
 						channelID = null;
 
 						EmbedBuilder embed = new EmbedBuilder();
-						embed.setTitle("Quelqu'un a trouvé le nombre ! :clap:");
-						embed.setDescription("__**" + event.getAuthor().getAsTag() + "**__ a découvert le nombre **" + randomNB + "** !");
+						embed.setTitle(String.format("Quelqu'un a trouvé le nombre ! %1$s", Emoji.fromMarkdown("\uD83D\uDC4F")));
+						embed.setDescription(String.format("__**%1$s**__ a découvert le nombre **%2$s** !", event.getAuthor().getAsTag(), randomNB));
 						embed.setColor(Color.YELLOW);
 
 						event.getChannel().sendMessageEmbeds(embed.build()).queue();
@@ -131,7 +132,7 @@ public class CommandFindNumber extends ListenerAdapter {
 						nb = (nb * 100) / essaisMax;
 
 						if(nb > 0) {
-							event.getChannel().sendMessage("Avec " + coups.get(event.getAuthor()) + " coups, tu gagnes **" + nb + " redstones** " + event.getAuthor().getAsMention() + " !").queue();
+							event.getChannel().sendMessage(String.format("Avec %1$s coups, tu gagnes **%2$s** %3$s !", coups.get(event.getAuthor()), nb, Main.getRedstoneEmoji())).queue();
 						} else {
 							event.getChannel().sendMessage("Comme tu as fait trop de coups, tu ne vas pas récupérer de redstones !").queue();
 						}

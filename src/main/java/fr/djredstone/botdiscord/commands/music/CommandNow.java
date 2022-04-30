@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands.music;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -32,7 +33,7 @@ public class CommandNow {
 
         if (PlayerManager.getInstance().getMusicManager(guild).audioPlayer.getPlayingTrack() == null) {
             EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-            embed.setDescription("\uD83D\uDED1 Il n'y a pas de musique en ce moment");
+            embed.setDescription(Emoji.fromMarkdown("\uD83D\uDED1") + " Il n'y a pas de musique en ce moment");
             UtilsCommands.replyOrSend(embed, event1, event2);
             return;
         }
@@ -40,7 +41,7 @@ public class CommandNow {
         final AudioTrack track = PlayerManager.getInstance().getMusicManager(guild).audioPlayer.getPlayingTrack();
 
         EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-        embed.setDescription("\uD83D\uDCCB Informations de la musique en cours :");
+        embed.setDescription(Emoji.fromMarkdown("\uD83D\uDCCB") + " Informations de la musique en cours :");
         embed.addField("Titre", "**" + track.getInfo().title + "**", true);
         embed.addField("Auteur", "**" + track.getInfo().author + "**", true);
         embed.addField("Durée", "**" + Utils.getTimestamp(track.getInfo().length) + "**", true);

@@ -19,8 +19,8 @@ import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 public class CommandSlot extends ListenerAdapter {
 
-	private static final int max = 250;
-	private static final int min = 100;
+	private static final int max = 200;
+	private static final int min = 75;
 
 	public CommandSlot(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 		
@@ -40,7 +40,7 @@ public class CommandSlot extends ListenerAdapter {
 
 		if (50 < userMoney) {
 
-			if (Math.random()*(10)+1 < 5) {
+			if (Math.random()*(10)+1 < 4) {
 
 				int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 
@@ -92,7 +92,7 @@ public class CommandSlot extends ListenerAdapter {
 
 			if (50 < userMoney) {
 
-				if (Math.random()*(10)+1 < 5) {
+				if (Math.random()*(10)+1 < 4) {
 
 					int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import java.util.Queue;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -36,12 +37,12 @@ public class CommandQueue {
         synchronized (queue) {
             if (queue.isEmpty()) {
                 EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-                embed.setDescription("❔ Il n'y a pas de musique dans la liste");
+                embed.setDescription(Emoji.fromMarkdown("❔") + " Il n'y a pas de musique dans la liste");
                 UtilsCommands.replyOrSend(embed, event1, event2);
             } else {
                 int trackCount = (int) musicManager.scheduler.player.getPlayingTrack().getPosition();
                 EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-                embed.setDescription("\uD83D\uDCC3 Liste des 10 prochaines musiques :");
+                embed.setDescription(Emoji.fromMarkdown("\uD83D\uDCC3") + " Liste des 10 prochaines musiques :");
                 for (AudioTrack track : queue) {
                     if (trackCount < musicManager.scheduler.player.getPlayingTrack().getPosition() + 10) {
                         embed.addField("**" + track.getInfo().title + "**", track.getInfo().author, false);

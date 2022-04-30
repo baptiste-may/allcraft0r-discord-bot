@@ -46,6 +46,9 @@ public class CommandP4 extends ListenerAdapter {
 	public static ArrayList<ArrayList<Boolean>> getGame() { return game; }
 	public static ArrayList<String> getEmojis() { return emojis; }
 
+	private static final Emoji red = Emoji.fromMarkdown("\uD83D\uDD34");
+	private static final Emoji yellow = Emoji.fromMarkdown("\uD83D\uDFE1");
+
 	public static void setup() {
 
 		setEmojis(new ArrayList<>());
@@ -82,12 +85,12 @@ public class CommandP4 extends ListenerAdapter {
 				try {
 					Boolean bool = gameVar.get(i2).get(i);
 					if (bool) {
-						board.append(":red_circle:");
+						board.append(red);
 					} else {
-						board.append(":yellow_circle:");
+						board.append(yellow);
 					}
 				} catch (NullPointerException ignored) {
-					board.append(":black_small_square:");
+					board.append(Emoji.fromMarkdown("◾️"));
 				}
 			}
 			board.append("\n");
@@ -97,11 +100,11 @@ public class CommandP4 extends ListenerAdapter {
 		}
 		if (player) embed.setColor(Color.YELLOW);
 		else embed.setColor(Color.RED);
-		embed.setAuthor(getFirstUser().getAsTag() + " \uD83D\uDD34 ⚔ " + getSecondUser().getAsTag() + " \uD83D\uDFE1");
-		embed.setTitle("Puissance 4");
+		embed.setAuthor(String.format("%1$s %2$s  %3$s  %4$s %5$s", getFirstUser().getAsTag(), red, Emoji.fromMarkdown("⚔"), getSecondUser().getAsTag(), yellow));
+		embed.setTitle(String.format("%1$s Puissance 4 %2$s", red, yellow));
 		embed.setDescription(board);
-		if (getTour()) embed.setFooter("C'est au tour de " + getFirstUser().getAsTag() + " \uD83D\uDD34");
-		else embed.setFooter("C'est au tour de " + getSecondUser().getAsTag() + " \uD83D\uDFE1");
+		if (getTour()) embed.setFooter(String.format("C'est au tour de %1$s %2$s", getFirstUser().getAsTag(), red));
+		else embed.setFooter(String.format("C'est au tour de %1$s %2$s", getFirstUser().getAsTag(), yellow));
 		return embed;
 
 	}
@@ -169,7 +172,7 @@ public class CommandP4 extends ListenerAdapter {
 
 	private static void winAndRestart(EmbedBuilder embed, MessageReactionAddEvent event, User winner, User loser) {
 		embed.setColor(Color.GREEN);
-		embed.setAuthor(winner.getAsTag() + " a gagné contre " + loser.getAsTag() + " !");
+		embed.setAuthor(String.format("%1$s a gagné contre %2$s !", winner.getAsTag(), loser.getAsTag()));
 		embed.setFooter(null);
 		embed.setThumbnail(winner.getAvatarUrl());
 		event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> message.clearReactions().queue());
@@ -181,7 +184,7 @@ public class CommandP4 extends ListenerAdapter {
 		setTour(false);
 
 		int nb = 50;
-		event.getChannel().sendMessage("Bravo " + winner.getAsMention() + ", tu gagnes **" + nb + " redstones** !").queue();
+		event.getChannel().sendMessage(String.format("Bravo %1$s, tu gagnes **%2$s** %3$s !", winner.getAsMention(), nb, Main.getRedstoneEmoji())).queue();
 		try {
 			Main.setMoney(winner, Main.getMoney(winner) + nb);
 		} catch (SQLException e) {
@@ -211,13 +214,13 @@ public class CommandP4 extends ListenerAdapter {
 		}
 
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setTitle("**" + user.getName() + "** commence une partie de puissance 4 !");
-		embed.setDescription("Clickez sur l'émoji :crossed_swords: pour l'affronter !");
+		embed.setTitle(String.format("**%1$s** commence une partie de puissance 4 !", user.getName()));
+		embed.setDescription(String.format("Clickez sur l'émoji %1$s pour l'affronter !", Emoji.fromMarkdown("⚔️")));
 		embed.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/1200px-Puissance4_01.svg.png");
 		embed.setColor(Color.ORANGE);
 
 		setFirstUser(user);
-		textChannel.sendMessageEmbeds(embed.build()).setActionRow(Button.success("P4_start", Emoji.fromUnicode("⚔️"))).queue();
+		textChannel.sendMessageEmbeds(embed.build()).setActionRow(Button.success("P4_start", Emoji.fromMarkdown("⚔️"))).queue();
 		if (event1 != null) event1.getMessage().delete().queue();
 	}
 

@@ -8,6 +8,7 @@ import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -16,8 +17,8 @@ public class CommandPing {
 	public CommandPing(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 			
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setTitle(":ping_pong: **Pong !**");
-		embed.setDescription(":hourglass_flowing_sand: " + Main.getJda().getGatewayPing() + " ms");
+		embed.setTitle(String.format("%1$s Pong !", Emoji.fromMarkdown("\uD83C\uDFD3")));
+		embed.setDescription(String.format("%1$s %2$s ms", Emoji.fromMarkdown("⏳"), Main.getJda().getGatewayPing()));
 		embed.setColor(Color.ORANGE);
 		
 		UtilsCommands.replyOrSend(embed, event1, event2);

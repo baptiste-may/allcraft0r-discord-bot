@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -52,7 +53,7 @@ public class PlayerManager {
                 musicManager.scheduler.queue(track);
 
                 EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic();
-                embed.setDescription("\uD83D\uDCBF Une musique a été ajouté à la liste :");
+                embed.setDescription(Emoji.fromMarkdown("\uD83D\uDCBF") + " Une musique a été ajouté à la liste :");
                 embed.addField("Titre", "**" + track.getInfo().title + "**", true);
                 embed.addField("Auteur", "**" + track.getInfo().author + "**", true);
                 embed.addField("Durée", "**" + Utils.getTimestamp(track.getInfo().length) + "**", true);
@@ -66,7 +67,7 @@ public class PlayerManager {
                 if (playlist.isSearchResult()) {
                     AudioTrack track = playlist.getTracks().get(0);
                     EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic();
-                    embed.setDescription("\uD83D\uDCBF Une musique a été ajouté à la liste :");
+                    embed.setDescription(Emoji.fromMarkdown("\uD83D\uDCBF") + " Une musique a été ajouté à la liste :");
                     embed.addField("Titre", "**" + track.getInfo().title + "**", true);
                     embed.addField("Auteur", "**" + track.getInfo().author + "**", true);
                     embed.addField("Durée", "**" + Utils.getTimestamp(track.getInfo().length) + "**", true);
@@ -81,7 +82,7 @@ public class PlayerManager {
             public void noMatches() {
                 EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic();
                 embed.setColor(Color.RED);
-                embed.setDescription("Aucune musique trouvé ⚠️");
+                embed.setDescription("Aucune musique trouvé " + Emoji.fromMarkdown("⚠️"));
                 channel.sendMessageEmbeds(embed.build()).queue();
             }
 
@@ -89,7 +90,7 @@ public class PlayerManager {
             public void loadFailed(FriendlyException exception) {
                 EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic();
                 embed.setColor(Color.RED);
-                embed.setDescription("Erreur lors du chargement de la chanson ⚠️");
+                embed.setDescription("Erreur lors du chargement de la chanson " + Emoji.fromMarkdown("⚠️"));
                 channel.sendMessageEmbeds(embed.build()).queue();
             }
         });

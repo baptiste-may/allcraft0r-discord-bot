@@ -13,7 +13,7 @@ import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 public class CommandFakeBan {
 
-    final String helpMessage = "Utilisation : " + Main.getPrefix() + "fakeban <@user> (raison)";
+    final String helpMessage = String.format("Utilisation : %1$sfakeban <@user> (raison)", Main.getPrefix());
 
     public CommandFakeBan(MessageReceivedEvent event) {
 
@@ -36,7 +36,7 @@ public class CommandFakeBan {
         }
 
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(target.getAsTag() + " a été banni", null, target.getAvatarUrl());
+        embed.setAuthor(String.format("%1$s a été banni", target.getAsTag()), null, target.getAvatarUrl());
         embed.setDescription("**Raison :** " + reason);
         embed.setColor(Color.DARK_GRAY);
 

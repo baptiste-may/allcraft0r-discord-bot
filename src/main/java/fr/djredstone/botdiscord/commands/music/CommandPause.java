@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands.music;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -31,15 +32,15 @@ public class CommandPause {
         final AudioPlayer player = PlayerManager.getInstance().getMusicManager(guild).audioPlayer;
         if (player.getPlayingTrack() == null) {
             EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-            embed.setDescription("\uD83D\uDED1 Il n'y a pas de musique en ce moment");
+            embed.setDescription(Emoji.fromMarkdown("\uD83D\uDED1") + " Il n'y a pas de musique en ce moment");
             UtilsCommands.replyOrSend(embed, event1, event2);
             return;
         }
 
         EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
         player.setPaused(!player.isPaused());
-        if (player.isPaused()) embed.setDescription("⏸ La musique en cours a été mise en pause !");
-        else embed.setDescription("▶️ La musique en cours a été remise en route !");
+        if (player.isPaused()) embed.setDescription(Emoji.fromMarkdown("⏸") + " La musique en cours a été mise en pause !");
+        else embed.setDescription(Emoji.fromMarkdown("▶️") + " La musique en cours a été remise en route !");
         UtilsCommands.replyOrSend(embed, event1, event2);
 
     }

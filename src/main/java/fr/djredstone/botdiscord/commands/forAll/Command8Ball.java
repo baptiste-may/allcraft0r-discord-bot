@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -49,9 +50,9 @@ public class Command8Ball {
         }
 
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("\uD83D\uDD2E 8 Ball \uD83D\uDD2E")
+                .setTitle(String.format("%1$s 8 Ball %1$s", Emoji.fromMarkdown("\uD83D\uDD2E")))
                 .setColor(new Color(170, 8, 239))
-                .addField("__" + message + "__", messages.get(new Random().nextInt(messages.size())), true)
+                .addField(String.format("__%1$s__", message), messages.get(new Random().nextInt(messages.size())), true)
                 .setFooter("Commandé par " + user.getAsTag(), user.getAvatarUrl());
 
         UtilsCommands.replyOrSend(embed, event1 ,event2);

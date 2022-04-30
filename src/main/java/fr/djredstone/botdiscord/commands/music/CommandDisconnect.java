@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands.music;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -36,7 +37,7 @@ public class CommandDisconnect {
         guild.getAudioManager().closeAudioConnection();
 
         EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-        embed.setDescription("Déconnecté du salon vocal ✅");
+        embed.setDescription("Déconnecté du salon vocal " + Emoji.fromMarkdown("✅"));
         UtilsCommands.replyOrSend(embed, event1, event2);
 
     }

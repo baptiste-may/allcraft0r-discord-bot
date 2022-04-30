@@ -27,13 +27,13 @@ public class CommandDaily {
 				e.printStackTrace();
 			}
 			
-			UtilsCommands.replyOrSend("Tu as reçu **200 redstones** " + Main.getRedstoneEmoji() + user.getAsMention(), event1, event2);
+			UtilsCommands.replyOrSend(String.format("Tu as reçu **200** %1$s %2$s", Main.getRedstoneEmoji(), user.getAsMention()), event1, event2);
 			
 			hadGet.add(user.getId());
 			
 		} else {
 			
-			UtilsCommands.replyOrSend("Vous avez déjà récupéré votre redstone quotidienne, " + user.getAsMention(), event1, event2);
+			UtilsCommands.replyOrSend(String.format("Vous avez déjà récupéré votre redstone quotidienne, %1$s", user.getAsMention()), event1, event2);
 			
 		}
 		

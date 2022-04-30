@@ -3,6 +3,7 @@ package fr.djredstone.botdiscord.commands.music;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -34,7 +35,7 @@ public class CommandStop {
         musicManager.scheduler.queue.clear();
 
         EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
-        embed.setDescription("⏹ Les musiques ont été arrêté !");
+        embed.setDescription(Emoji.fromMarkdown("⏹") + " Les musiques ont été arrêté !");
         UtilsCommands.replyOrSend(embed, event1, event2);
 
     }
