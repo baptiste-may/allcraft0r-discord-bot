@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
+import fr.djredstone.botdiscord.money;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -22,7 +23,7 @@ public class CommandDaily {
 		if(!hadGet.contains(user.getId())) {
 			
 			try {
-				Main.setMoney(user, Main.getMoney(user) + 200);
+				money.add(user, 200);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

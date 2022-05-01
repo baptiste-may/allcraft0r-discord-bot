@@ -64,41 +64,5 @@ public class Main extends JavaPlugin {
 		mee6.shutdownNow();
 		
 	}
-	
-	public static int getMoney(User user) throws SQLException {
-
-		final PreparedStatement preparedStatement = Utils.createPreparedStatement("SELECT uuid, money FROM ALLCRAFT0R_user_money WHERE uuid = ?");
-		preparedStatement.setString(1, user.getId());
-		final ResultSet resultSet = preparedStatement.executeQuery();
-
-		if (!resultSet.next()) {
-
-			final PreparedStatement preparedStatement1 = Utils.createPreparedStatement("INSERT INTO ALLCRAFT0R_user_money VALUES(?, ?, ?, ?)");
-			preparedStatement1.setString(1, user.getId());
-			preparedStatement1.setInt(2, 100);
-			final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			preparedStatement1.setTimestamp(3, timestamp);
-			preparedStatement1.setTimestamp(4, timestamp);
-
-			preparedStatement1.executeUpdate();
-			
-			return 100;
-		}
-		
-		return resultSet.getInt("money");
-	}
-	
-	public static void setMoney(User user, int money) throws SQLException {
-		
-		getMoney(user);
-
-		PreparedStatement preparedStatement = Utils.createPreparedStatement("UPDATE ALLCRAFT0R_user_money SET money = ?, updated_at = ? WHERE uuid = ?");
-		preparedStatement.setInt(1, money);
-		preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-		preparedStatement.setString(3, user.getId());
-
-		preparedStatement.executeUpdate();
-
-	}
 
 }

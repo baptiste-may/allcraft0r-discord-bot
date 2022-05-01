@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
+import fr.djredstone.botdiscord.money;
 
 public class CommandP4 extends ListenerAdapter {
 
@@ -186,7 +187,7 @@ public class CommandP4 extends ListenerAdapter {
 		int nb = 50;
 		event.getChannel().sendMessage(String.format("Bravo %1$s, tu gagnes **%2$s** %3$s !", winner.getAsMention(), nb, Main.getRedstoneEmoji())).queue();
 		try {
-			Main.setMoney(winner, Main.getMoney(winner) + nb);
+			money.add(winner, nb);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
+import fr.djredstone.botdiscord.money;
 
 public class CommandSlot extends ListenerAdapter {
 
@@ -32,7 +33,7 @@ public class CommandSlot extends ListenerAdapter {
 
 		int userMoney;
 		try {
-			userMoney = Main.getMoney(user);
+			userMoney = money.get(user);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
@@ -45,7 +46,7 @@ public class CommandSlot extends ListenerAdapter {
 				int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 
 				try {
-					Main.setMoney(user, Main.getMoney(user) + randomNB);
+					money.add(user, randomNB);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					return;
@@ -60,7 +61,7 @@ public class CommandSlot extends ListenerAdapter {
 
 			} else {
 				try {
-					Main.setMoney(user, Main.getMoney(user) - 50);
+					money.remove(user, 50);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					return;
@@ -84,7 +85,7 @@ public class CommandSlot extends ListenerAdapter {
 
 			int userMoney;
 			try {
-				userMoney = Main.getMoney(user);
+				userMoney = money.get(user);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return;
@@ -97,7 +98,7 @@ public class CommandSlot extends ListenerAdapter {
 					int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 
 					try {
-						Main.setMoney(user, Main.getMoney(user) + randomNB);
+						money.add(user, randomNB);
 					} catch (SQLException e) {
 						e.printStackTrace();
 						return;
@@ -112,7 +113,7 @@ public class CommandSlot extends ListenerAdapter {
 
 				} else {
 					try {
-						Main.setMoney(user, Main.getMoney(user) - 50);
+						money.remove(user, 50);
 					} catch (SQLException e) {
 						e.printStackTrace();
 						return;

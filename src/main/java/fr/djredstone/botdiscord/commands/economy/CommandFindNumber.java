@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
+import fr.djredstone.botdiscord.money;
 import org.jetbrains.annotations.NotNull;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -138,7 +139,7 @@ public class CommandFindNumber extends ListenerAdapter {
 						}
 
 						try {
-							Main.setMoney(event.getAuthor(), Main.getMoney(event.getAuthor()) + nb);
+							money.add(event.getAuthor(), nb);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
