@@ -53,7 +53,7 @@ public class CommandSlot extends ListenerAdapter {
 				}
 
 				EmbedBuilder embed = new EmbedBuilder();
-				embed.setTitle(String.format("%1$s Quitte ou double ! %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
+				embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
 				embed.setDescription(String.format("Bravo %1$s ! Tu as gagner une mise est de **%2$s** %3$s !", Objects.requireNonNull(user).getAsMention(), randomNB, Main.getRedstoneEmoji()));
 				embed.setColor(Color.GREEN);
 
@@ -68,7 +68,7 @@ public class CommandSlot extends ListenerAdapter {
 				}
 
 				EmbedBuilder embed = new EmbedBuilder();
-				embed.setTitle("Machine à sous !");
+				embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
 				embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50** %2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
 				embed.setColor(Color.RED);
 
@@ -105,7 +105,7 @@ public class CommandSlot extends ListenerAdapter {
 					}
 
 					EmbedBuilder embed = new EmbedBuilder();
-					embed.setTitle(String.format("%1$s Quitte ou double ! %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
+					embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
 					embed.setDescription(String.format("Bravo %1$s ! Tu as gagner une mise est de **%2$s** %3$s !", Objects.requireNonNull(user).getAsMention(), randomNB, Main.getRedstoneEmoji()));
 					embed.setColor(Color.GREEN);
 
@@ -120,7 +120,7 @@ public class CommandSlot extends ListenerAdapter {
 					}
 
 					EmbedBuilder embed = new EmbedBuilder();
-					embed.setTitle("Machine à sous !");
+					embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
 					embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50** %2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
 					embed.setColor(Color.RED);
 
