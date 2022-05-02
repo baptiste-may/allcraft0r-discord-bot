@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.Random;
 
 import fr.djredstone.botdiscord.Main;
-import fr.djredstone.botdiscord.money;
+import fr.djredstone.botdiscord.classes.money;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

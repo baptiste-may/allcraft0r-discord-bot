@@ -5,7 +5,6 @@ import java.awt.Color;
 import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
-import fr.djredstone.botdiscord.commands.UtilsCommands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -43,7 +42,7 @@ public class CommandHelp {
 			embedStaff.addField(String.format("%1$s: **%2$sreset-xp (<@membre>)**", emoji, prefix), "> Faux message de reset d'XP", true);
 			embedStaff.addField(String.format("%1$s: **%2$sstopP4**", emoji, prefix), "> Arrête la partie de puissance 4 en cours", true);
 			embedStaff.addField(String.format("%1$s: **%2$slock <#channel> (raison)", emoji, prefix), "> Lock un channel", true);
-			
+			embedStaff.addField(String.format("%1$s: **%2$sblacklist add/remove <@membre>", emoji, prefix), "> Blacklist un membre", true);
 			member.getUser().openPrivateChannel().queue(channel -> channel.sendMessageEmbeds(embedStaff.build()).queue());
 			
 		}

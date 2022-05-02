@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
-import fr.djredstone.botdiscord.money;
+import fr.djredstone.botdiscord.classes.money;
 
 public class CommandP4 extends ListenerAdapter {
 

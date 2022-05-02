@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
-import fr.djredstone.botdiscord.money;
+import fr.djredstone.botdiscord.classes.money;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

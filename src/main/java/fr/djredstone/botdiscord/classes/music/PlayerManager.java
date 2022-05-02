@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.music;
+package fr.djredstone.botdiscord.classes.music;
 
 import java.awt.*;
 import java.util.HashMap;

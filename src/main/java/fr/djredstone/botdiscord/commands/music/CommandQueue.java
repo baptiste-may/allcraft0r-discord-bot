@@ -13,8 +13,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.djredstone.botdiscord.commands.UtilsCommands;
-import fr.djredstone.botdiscord.music.GuildMusicManager;
-import fr.djredstone.botdiscord.music.PlayerManager;
+import fr.djredstone.botdiscord.classes.music.GuildMusicManager;
+import fr.djredstone.botdiscord.classes.music.PlayerManager;
 
 public class CommandQueue {
 

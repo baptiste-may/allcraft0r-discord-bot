@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord;
+package fr.djredstone.botdiscord.classes;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +8,9 @@ import java.util.Objects;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+
+import fr.djredstone.botdiscord.Main;
+import fr.djredstone.botdiscord.Utils;
 
 public class money {
 
@@ -47,7 +50,7 @@ public class money {
 
         preparedStatement.executeUpdate();
 
-        Objects.requireNonNull(logChannel).sendMessage(String.format("Money [+] | %1$s - `%2$s + %3$s = %4$s`", user.getAsTag(), userMoney, money, userMoney + money)).queue();
+        Objects.requireNonNull(logChannel).sendMessage(String.format("Money [+] %1$s - `%2$s + %3$s = %4$s`", user.getAsTag(), userMoney, money, userMoney + money)).queue();
 
     }
 
@@ -62,7 +65,7 @@ public class money {
 
         preparedStatement.executeUpdate();
 
-        Objects.requireNonNull(logChannel).sendMessage(String.format("Money [+] | %1$s - `%2$s - %3$s = %4$s`", user.getAsTag(), userMoney, money, userMoney - money)).queue();
+        Objects.requireNonNull(logChannel).sendMessage(String.format("Money [-] %1$s - `%2$s - %3$s = %4$s`", user.getAsTag(), userMoney, money, userMoney - money)).queue();
 
     }
 

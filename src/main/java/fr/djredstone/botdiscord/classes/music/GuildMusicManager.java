@@ -1,4 +1,4 @@
-package fr.djredstone.botdiscord.music;
+package fr.djredstone.botdiscord.classes.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;

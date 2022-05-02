@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.botdiscord.Main;
 import fr.djredstone.botdiscord.commands.*;
+import fr.djredstone.botdiscord.commands.hPrivate.CommandBlacklist;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandFakeBan;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandFakeResetXP;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandHask;
@@ -17,11 +18,12 @@ import fr.djredstone.botdiscord.commands.hPrivate.CommandOui;
 import fr.djredstone.botdiscord.commands.economy.CommandStopP4;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandText;
 import fr.djredstone.botdiscord.commands.hPrivate.CommandUnlock;
+import org.jetbrains.annotations.NotNull;
 
 public class OnDiscordOPCommand extends ListenerAdapter {
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
         String[] args = event.getMessage().getContentRaw().split("\\s+");
 
@@ -69,6 +71,10 @@ public class OnDiscordOPCommand extends ListenerAdapter {
             case "stopp4" -> {
                 if (testPerm(event)) return;
                 new CommandStopP4(event);
+            }
+            case "blacklist"-> {
+                if (testPerm(event)) return;
+                new CommandBlacklist(event);
             }
 
         }

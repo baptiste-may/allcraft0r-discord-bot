@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import fr.djredstone.botdiscord.commands.UtilsCommands;
-import fr.djredstone.botdiscord.music.GuildMusicManager;
-import fr.djredstone.botdiscord.music.PlayerManager;
+import fr.djredstone.botdiscord.classes.music.GuildMusicManager;
+import fr.djredstone.botdiscord.classes.music.PlayerManager;
 
 public class CommandSkip {
 
