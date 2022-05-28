@@ -23,7 +23,7 @@ public class CommandDaily {
 		if(!hadGet.contains(user.getId())) {
 			
 			try {
-				money.add(user, 200);
+				money.add(user, 250);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

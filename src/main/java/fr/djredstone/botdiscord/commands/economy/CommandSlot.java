@@ -20,7 +20,7 @@ import fr.djredstone.botdiscord.classes.money;
 
 public class CommandSlot extends ListenerAdapter {
 
-	private static final int max = 200;
+	private static final int max = 125;
 	private static final int min = 75;
 
 	public CommandSlot(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
