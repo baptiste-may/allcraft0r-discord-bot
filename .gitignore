@@ -3,6 +3,7 @@ bin
 dist
 
 # User-specific stuff
+*.idea
 .idea/
 
 *.iml
@@ -110,7 +111,9 @@ $RECYCLE.BIN/
 *.lnk
 
 .gradle
+*.gradle
 build/
+*build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
