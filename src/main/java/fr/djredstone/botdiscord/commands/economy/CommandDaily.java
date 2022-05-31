@@ -17,18 +17,19 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class CommandDaily {
 	
 	private static final Set<String> hadGet = new HashSet<>();
+	private static final int value = 250;
 	
 	public CommandDaily(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 			
 		if(!hadGet.contains(user.getId())) {
 			
 			try {
-				money.add(user, 250);
+				money.add(user, value);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			
-			UtilsCommands.replyOrSend(String.format("Tu as reçu **200** %1$s %2$s", Main.getRedstoneEmoji(), user.getAsMention()), event1, event2);
+			UtilsCommands.replyOrSend(String.format("Tu as reçu **%1$s** %2$s %3$s", value, Main.getRedstoneEmoji(), user.getAsMention()), event1, event2);
 			
 			hadGet.add(user.getId());
 			
