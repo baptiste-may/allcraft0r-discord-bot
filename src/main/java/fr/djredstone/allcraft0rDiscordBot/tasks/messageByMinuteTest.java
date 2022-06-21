@@ -6,8 +6,6 @@ import java.util.TimerTask;
 import fr.djredstone.allcraft0rDiscordBot.Main;
 
 public class messageByMinuteTest {
-	
-	Timer timer;
 
 	public messageByMinuteTest() {
 
