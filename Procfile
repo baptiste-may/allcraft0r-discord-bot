@@ -1,0 +1,1 @@
+worker: java -jar build/libs/allcraft0r-discord-bot-1.0-all.jar
