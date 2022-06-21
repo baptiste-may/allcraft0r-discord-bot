@@ -42,36 +42,76 @@ public class OnDiscordCommand extends ListenerAdapter {
 		}
 
 		switch (event.getName().toLowerCase()) {
-			case "money" -> new CommandMoney(event.getUser(), null, event);
-			case "daily" -> new CommandDaily(event.getUser(), null, event);
-			case "number" -> new CommandFindNumber(null, event.getUser(), null, event);
-			case "p4" -> new CommandP4(null, event);
-			case "dashboard" -> new CommandDashboard(null, event);
-			case "slot" -> new CommandSlot(null, event);
+			case "money":
+				new CommandMoney(event.getUser(), null, event);
+				break;
+			case "daily":
+				new CommandDaily(event.getUser(), null, event);
+				break;
+			case "number":
+				new CommandFindNumber(null, event.getUser(), null, event);
+				break;
+			case "p4":
+				new CommandP4(null, event);
+				break;
+			case "dashboard":
+				new CommandDashboard(null, event);
+				break;
+			case "slot":
+				new CommandSlot(null, event);
+				break;
 
-			case "send" -> new CommandSend(event.getUser(), null, null, event);
-			case "eyes" -> new CommandEyes(null, event);
-			case "tank" -> new CommandTank(null, event);
-			case "aide" -> new CommandHelp(null, event);
-			case "link" -> new CommandLink(null, event);
-			case "ping" -> new CommandPing(null, event);
+			case "send":
+				new CommandSend(event.getUser(), null, null, event);
+				break;
+			case "eyes":
+				new CommandEyes(null, event);
+				break;
+			case "tank":
+				new CommandTank(null, event);
+				break;
+			case "aide":
+				new CommandHelp(null, event);
+				break;
+			case "link":
+				new CommandLink(null, event);
+				break;
+			case "ping":
+				new CommandPing(null, event);
+				break;
 
-			case "play" -> {
+			case "play":
 				if (event.getOption("play_search") != null) new CommandPlay(Objects.requireNonNull(event.getOption("play_search")).getAsString(), null, event);
 				else new CommandPlay(null, null, event);
-			}
-			case "stop" -> new CommandStop(null, event);
-			case "skip" -> new CommandSkip(null, event);
-			case "disconnect" -> new CommandDisconnect(null, event);
-			case "pause" -> new CommandPause(null, event);
-			case "repeat" -> new CommandRepeat(null, event);
-			case "queue" -> new CommandQueue(null, event);
-			case "now" -> new CommandNow(null, event);
-			case "volume" -> {
+				break;
+			case "stop":
+				new CommandStop(null, event);
+				break;
+			case "skip":
+				new CommandSkip(null, event);
+				break;
+			case "disconnect":
+				new CommandDisconnect(null, event);
+				break;
+			case "pause":
+				new CommandPause(null, event);
+				break;
+			case "repeat":
+				new CommandRepeat(null, event);
+				break;
+			case "queue":
+				new CommandQueue(null, event);
+				break;
+			case "now":
+				new CommandNow(null, event);
+				break;
+			case "volume":
 				if (event.getOption("volume") != null) new CommandVolume(Objects.requireNonNull(event.getOption("volume")).getAsString(), null, event);
 				else new CommandVolume(null, null, event);
-			}
-			case "8ball" -> new Command8Ball(null, event, Objects.requireNonNull(event.getOption("8ball")).getAsString());
+				break;
+			case "8ball":
+				new Command8Ball(null, event, Objects.requireNonNull(event.getOption("8ball")).getAsString());
+				break;
 		}
 	}
 	
@@ -85,56 +125,68 @@ public class OnDiscordCommand extends ListenerAdapter {
 		String cmd = args[0].replace(Main.getPrefix(), "");
 
 		switch(cmd.toLowerCase()) {
-			case "number" -> {
+			case "number":
 				if (chekBlacklist(event)) return;
 				if (args.length > 1) new CommandFindNumber(args[1], event.getAuthor(), event, null);
 				else new CommandFindNumber(null, event.getAuthor(), event, null);
-			}
-			case "slot" -> {
+				break;
+
+			case "slot":
 				if (chekBlacklist(event)) return;
 				new CommandSlot(event, null);
-			}
-			case "money" -> {
+				break;
+
+			case "money":
 				if (chekBlacklist(event)) return;
 				new CommandMoney(event.getAuthor(), event, null);
-			}
-			case "daily" -> {
+				break;
+
+			case "daily":
 				if (chekBlacklist(event)) return;
 				new CommandDaily(event.getAuthor(), event, null);
-			}
-			case "send" -> {
+				break;
+
+			case "send":
 				if (chekBlacklist(event)) return;
 				new CommandSend(event.getAuthor(), args[1], event, null);
-			}
-			case "eyes" -> {
+				break;
+
+			case "eyes":
 				if (chekBlacklist(event)) return;
 				new CommandEyes(event, null);
-			}
-			case "tank" -> {
+				break;
+
+			case "tank":
 				if (chekBlacklist(event)) return;
 				new CommandTank(event, null);
-			}
-			case "aide" -> {
+				break;
+
+			case "aide":
 				if (chekBlacklist(event)) return;
 				new CommandHelp(event, null);
-			}
-			case "link" -> {
+				break;
+
+			case "link":
 				if (chekBlacklist(event)) return;
 				new CommandLink(event, null);
-			}
-			case "ping" -> {
+				break;
+
+			case "ping":
 				if (chekBlacklist(event)) return;
 				new CommandPing(event, null);
-			}
-			case "dashboard" -> {
+				break;
+
+			case "dashboard":
 				if (chekBlacklist(event)) return;
 				new CommandDashboard(event, null);
-			}
-			case "p4" -> {
+				break;
+
+			case "p4":
 				if (chekBlacklist(event)) return;
 				new CommandP4(event, null);
-			}
-			case "play" -> {
+				break;
+
+			case "play":
 				if (chekBlacklist(event)) return;
 				if (args.length > 1) {
 					StringBuilder builder = new StringBuilder();
@@ -144,48 +196,57 @@ public class OnDiscordCommand extends ListenerAdapter {
 					new CommandPlay(builder.toString(), event, null);
 				}
 				else new CommandPlay(null, event, null);
-			}
-			case "stop" -> {
+				break;
+
+			case "stop":
 				if (chekBlacklist(event)) return;
 				new CommandStop(event, null);
-			}
-			case "skip" -> {
+				break;
+
+			case "skip":
 				if (chekBlacklist(event)) return;
 				new CommandSkip(event, null);
-			}
-			case "disconnect" -> {
+				break;
+
+			case "disconnect":
 				if (chekBlacklist(event)) return;
 				new CommandDisconnect(event, null);
-			}
-			case "pause" -> {
+				break;
+
+			case "pause":
 				if (chekBlacklist(event)) return;
 				new CommandPause(event, null);
-			}
-			case "repeat" -> {
+				break;
+
+			case "repeat":
 				if (chekBlacklist(event)) return;
 				new CommandRepeat(event, null);
-			}
-			case "queue" -> {
+				break;
+
+			case "queue":
 				if (chekBlacklist(event)) return;
 				new CommandQueue(event, null);
-			}
-			case "now" -> {
+				break;
+
+			case "now":
 				if (chekBlacklist(event)) return;
 				new CommandNow(event, null);
-			}
-			case "volume" -> {
+				break;
+
+			case "volume":
 				if (chekBlacklist(event)) return;
 				if (args.length > 1) new CommandVolume(args[1], event, null);
 				else new CommandVolume(null, event, null);
-			}
-			case "8ball" -> {
+				break;
+
+			case "8ball":
 				if (chekBlacklist(event)) return;
 				StringBuilder builder = new StringBuilder();
 				for (int i = 1; i < args.length; i++) {
 					builder.append(args[i]).append(" ");
 				}
 				new Command8Ball(event, null, builder.toString());
-			}
+				break;
 
 		}
 	}
