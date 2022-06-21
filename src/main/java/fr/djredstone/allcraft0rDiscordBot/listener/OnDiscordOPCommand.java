@@ -33,49 +33,58 @@ public class OnDiscordOPCommand extends ListenerAdapter {
 
         switch(cmd.toLowerCase()) {
 
-            case "ask" -> {
+            case "ask":
                 if (testPerm(event)) return;
                 new CommandHask(event);
-            }
-            case "non" -> {
+                break;
+
+            case "non":
                 if (testPerm(event)) return;
                 if (args.length > 1) new CommandNon(args[1], event);
                 else new CommandNon(null, event);
-            }
-            case "oui" -> {
+                break;
+
+            case "oui":
                 if (testPerm(event)) return;
                 if (args.length > 1) new CommandOui(args[1], event);
                 else new CommandOui(null, event);
-            }
-            case "text" -> {
+                break;
+
+            case "text":
                 if (testPerm(event)) return;
                 if (args.length > 1) new CommandText(args[2], event);
                 else new CommandText(null, event);
-            }
-            case "lock" -> {
+                break;
+
+            case "lock":
                 if (testPerm(event)) return;
                 new CommandLock(event);
-            }
-            case "unlock" -> {
+                break;
+
+            case "unlock":
                 if (testPerm(event)) return;
                 new CommandUnlock(event);
-            }
-            case "fakeban" -> {
+                break;
+
+            case "fakeban":
                 if (testPerm(event)) return;
                 new CommandFakeBan(event);
-            }
-            case "fakeresetxp" -> {
+                break;
+
+            case "fakeresetxp":
                 if (testPerm(event)) return;
                 new CommandFakeResetXP(event);
-            }
-            case "stopp4" -> {
+                break;
+
+            case "stopp4":
                 if (testPerm(event)) return;
                 new CommandStopP4(event);
-            }
-            case "blacklist"-> {
+                break;
+
+            case "blacklist":
                 if (testPerm(event)) return;
                 new CommandBlacklist(event);
-            }
+                break;
 
         }
 
