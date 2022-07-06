@@ -13,7 +13,7 @@ public class blacklist {
     public static boolean add(User user) throws SQLException {
         if (!contains(user)) {
 
-            final PreparedStatement preparedStatement1 = Utils.createPreparedStatement("INSERT INTO ALLCRAFT0R_blacklist VALUES ( ? )");
+            final PreparedStatement preparedStatement1 = Utils.createPreparedStatement("INSERT INTO blacklist VALUES ( ? )");
             preparedStatement1.setString(1, user.getId());
 
             preparedStatement1.executeUpdate();
@@ -26,7 +26,7 @@ public class blacklist {
     public static boolean remove(User user) throws SQLException {
         if (contains(user)) {
 
-            final PreparedStatement preparedStatement1 = Utils.createPreparedStatement("DELETE FROM ALLCRAFT0R_blacklist WHERE ?");
+            final PreparedStatement preparedStatement1 = Utils.createPreparedStatement("DELETE FROM blacklist WHERE ?");
             preparedStatement1.setString(1, user.getId());
 
             preparedStatement1.executeUpdate();
@@ -37,7 +37,7 @@ public class blacklist {
     }
 
     public static boolean contains(User user) throws SQLException {
-        final PreparedStatement preparedStatement = Utils.createPreparedStatement("SELECT * FROM ALLCRAFT0R_blacklist WHERE uuid = ?");
+        final PreparedStatement preparedStatement = Utils.createPreparedStatement("SELECT * FROM blacklist WHERE uuid = ?");
         preparedStatement.setString(1, user.getId());
         final ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet.next();

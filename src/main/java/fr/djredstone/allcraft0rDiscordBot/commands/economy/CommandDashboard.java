@@ -25,7 +25,7 @@ public class CommandDashboard extends ListenerAdapter {
 
 			final StringBuilder stringBuilder = new StringBuilder();
 
-			final ResultSet resultSet = Utils.createPreparedStatement("SELECT uuid, money FROM ALLCRAFT0R_user_money ORDER BY money DESC LIMIT 10").executeQuery();
+			final ResultSet resultSet = Utils.createPreparedStatement("SELECT uuid, money FROM user_money ORDER BY money DESC LIMIT 10").executeQuery();
 
 			int i2 = 1;
 			while (resultSet.next()) {

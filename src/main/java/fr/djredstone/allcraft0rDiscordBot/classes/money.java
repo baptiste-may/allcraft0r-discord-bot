@@ -18,13 +18,13 @@ public class money {
 
     public static int get(User user) throws SQLException {
 
-        final PreparedStatement preparedStatement = Utils.createPreparedStatement("SELECT uuid, money FROM ALLCRAFT0R_user_money WHERE uuid = ?");
+        final PreparedStatement preparedStatement = Utils.createPreparedStatement("SELECT uuid, money FROM user_money WHERE uuid = ?");
         preparedStatement.setString(1, user.getId());
         final ResultSet resultSet = preparedStatement.executeQuery();
 
         if (!resultSet.next()) {
 
-            final PreparedStatement preparedStatement1 = Utils.createPreparedStatement("INSERT INTO ALLCRAFT0R_user_money VALUES(?, ?, ?, ?)");
+            final PreparedStatement preparedStatement1 = Utils.createPreparedStatement("INSERT INTO user_money VALUES(?, ?, ?, ?)");
             preparedStatement1.setString(1, user.getId());
             preparedStatement1.setInt(2, 100);
             final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -43,7 +43,7 @@ public class money {
 
         int userMoney = get(user);
 
-        PreparedStatement preparedStatement = Utils.createPreparedStatement("UPDATE ALLCRAFT0R_user_money SET money = ?, updated_at = ? WHERE uuid = ?");
+        PreparedStatement preparedStatement = Utils.createPreparedStatement("UPDATE user_money SET money = ?, updated_at = ? WHERE uuid = ?");
         preparedStatement.setInt(1, userMoney + money);
         preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
         preparedStatement.setString(3, user.getId());
@@ -58,7 +58,7 @@ public class money {
 
         int userMoney = get(user);
 
-        PreparedStatement preparedStatement = Utils.createPreparedStatement("UPDATE ALLCRAFT0R_user_money SET money = ?, updated_at = ? WHERE uuid = ?");
+        PreparedStatement preparedStatement = Utils.createPreparedStatement("UPDATE user_money SET money = ?, updated_at = ? WHERE uuid = ?");
         preparedStatement.setInt(1, userMoney - money);
         preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
         preparedStatement.setString(3, user.getId());

@@ -25,7 +25,8 @@ public class DbCredentials {
                 .append(port)
                 .append("/")
                 .append(dbName)
-                .append("?autoReconnect=true");
+                .append("?autoReconnect=true")
+                .append("&useSSL=false");
 
         return sb.toString();
     }

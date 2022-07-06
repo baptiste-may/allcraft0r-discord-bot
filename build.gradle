@@ -26,7 +26,7 @@ dependencies {
     implementation group: 'net.dv8tion', name: 'JDA', version: '5.0.0-alpha.12'
     implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
     implementation group: 'com.sedmelluq', name: 'lavaplayer', version: '1.3.78'
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.39'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
 }
 
 task stage(dependsOn: ['build', 'shadowJar', 'test'])
