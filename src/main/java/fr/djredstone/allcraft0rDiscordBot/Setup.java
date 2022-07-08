@@ -97,7 +97,7 @@ public class Setup implements EventListener {
 				Commands.slash("money", "Affiche son nombre de redstones"),
 				Commands.slash("dashboard", "Affiche les 10 membres ayant le plus de redstone"),
 	    		Commands.slash("daily", "Récupère sa redstone quotidienne"),
-	    		Commands.slash("aide", "Liste des commandos"),
+	    		Commands.slash("aide", "Liste des commandos").addOptions(new OptionData(OptionType.STRING, "help_arg", "Type de commande").setRequired(true)),
 	    		Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)),
 	    		Commands.slash("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"),
 	    		Commands.slash("link", "Affiche des liens en rapport à allcraft0r"),

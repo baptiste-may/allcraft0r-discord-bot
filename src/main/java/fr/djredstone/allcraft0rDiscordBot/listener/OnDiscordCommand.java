@@ -73,7 +73,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 					new CommandTank(null, event);
 					break;
 				case "aide":
-					new CommandHelp(null, event);
+					new CommandHelp(Objects.requireNonNull(event.getOption("help_arg")).getAsString(), null, event);
 					break;
 				case "link":
 					new CommandLink(null, event);
@@ -170,7 +170,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 
 				case "aide":
 					if (chekBlacklist(event)) return;
-					new CommandHelp(event, null);
+					new CommandHelp(args[1], event, null);
 					break;
 
 				case "link":

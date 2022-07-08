@@ -7,7 +7,7 @@ Ce bot est propre au serveur discord d'allcraft0r
 - Pour tout le monde
   - 8 Ball | `!8ball [Message]`
   - Eyes | `!eyes`
-  - Aide | `!aide`
+  - Aide | `!aide (utils) / (fun) / (economy) / (staff)`
   - Liens | `!link`
   - Ping | `!ping`
   - Send | `!send [Message]`
