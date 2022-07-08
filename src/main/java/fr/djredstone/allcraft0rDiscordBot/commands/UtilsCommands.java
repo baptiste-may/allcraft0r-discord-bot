@@ -13,6 +13,9 @@ import net.dv8tion.jda.api.interactions.components.ItemComponent;
 
 public class UtilsCommands {
 
+	private static final String SQLErrorMessage = "Une erreur vient d'apparaître dans la base de donnée !";
+	public static String getSQLErrorMessage() { return SQLErrorMessage; }
+
 	public static void replyOrSend(String message, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2, ItemComponent... components) {
 		
 		if(event1 != null) {

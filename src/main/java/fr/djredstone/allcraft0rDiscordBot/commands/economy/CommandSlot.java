@@ -23,7 +23,7 @@ public class CommandSlot extends ListenerAdapter {
 	private static final int max = 125;
 	private static final int min = 75;
 
-	public CommandSlot(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+	public CommandSlot(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) throws SQLException {
 		
 		if (event1 == null && event2 == null) return;
 
@@ -31,13 +31,7 @@ public class CommandSlot extends ListenerAdapter {
 		if (event1 != null) user = event1.getAuthor();
 		else user = event2.getUser();
 
-		int userMoney;
-		try {
-			userMoney = money.get(user);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}
+		final int userMoney = money.get(user);
 
 		if (50 < userMoney) {
 
@@ -45,12 +39,7 @@ public class CommandSlot extends ListenerAdapter {
 
 				int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 
-				try {
-					money.add(user, randomNB);
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return;
-				}
+				money.add(user, randomNB);
 
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
@@ -60,12 +49,7 @@ public class CommandSlot extends ListenerAdapter {
 				UtilsCommands.replyOrSend(embed, event1, event2, Button.primary("slot_replay", "♻️ Rejouer"));
 
 			} else {
-				try {
-					money.remove(user, 50);
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return;
-				}
+				money.remove(user, 50);
 
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));

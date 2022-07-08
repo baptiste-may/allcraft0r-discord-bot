@@ -16,36 +16,30 @@ import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 
 public class CommandDashboard extends ListenerAdapter {
 
-	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) throws SQLException {
 
-		try {
+		final EmbedBuilder embed = new EmbedBuilder();
+		embed.setTitle("Dashboard de redstone " + Main.getRedstoneEmoji());
 
-			final EmbedBuilder embed = new EmbedBuilder();
-			embed.setTitle("Dashboard de redstone " + Main.getRedstoneEmoji());
+		final StringBuilder stringBuilder = new StringBuilder();
 
-			final StringBuilder stringBuilder = new StringBuilder();
+		final ResultSet resultSet = Utils.createPreparedStatement("SELECT uuid, money FROM user_money ORDER BY money DESC LIMIT 10").executeQuery();
 
-			final ResultSet resultSet = Utils.createPreparedStatement("SELECT uuid, money FROM user_money ORDER BY money DESC LIMIT 10").executeQuery();
-
-			int i2 = 1;
-			while (resultSet.next()) {
-				String name;
-				try {
-					User user = Main.getJda().retrieveUserById(resultSet.getString("uuid")).complete();
-					name = user.getAsMention();
-				} catch (NullPointerException ignored) {
-					name = "`unknown`";
-				}
-				stringBuilder.append("\n").append(i2).append(" - ").append(name).append(" - **").append(resultSet.getInt("money")).append("**");
-				i2 ++;
+		int i2 = 1;
+		while (resultSet.next()) {
+			String name;
+			try {
+				User user = Main.getJda().retrieveUserById(resultSet.getString("uuid")).complete();
+				name = user.getAsMention();
+			} catch (NullPointerException ignored) {
+				name = "`unknown`";
 			}
-
-			embed.setDescription(stringBuilder);
-			UtilsCommands.replyOrSend(embed, event1, event2);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
+			stringBuilder.append("\n").append(i2).append(" - ").append(name).append(" - **").append(resultSet.getInt("money")).append("**");
+			i2 ++;
 		}
+
+		embed.setDescription(stringBuilder);
+		UtilsCommands.replyOrSend(embed, event1, event2);
 
 	}
 }

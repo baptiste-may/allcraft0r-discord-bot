@@ -2,6 +2,7 @@ package fr.djredstone.allcraft0rDiscordBot;
 
 import javax.security.auth.login.LoginException;
 
+import java.sql.SQLException;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Timer;
@@ -75,7 +76,12 @@ public class Setup implements EventListener {
 		Main.getMee6().addEventListener(new OnDiscordOPCommand());
 
 	    Main.getJda().addEventListener(new CommandFindNumber(null, null, null, null));
-		Main.getJda().addEventListener(new CommandSlot(null, null));
+		try {
+			Main.getJda().addEventListener(new CommandSlot(null, null));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
 		CommandP4.setup();
 		Main.getJda().addEventListener(new CommandP4(null, null));
 

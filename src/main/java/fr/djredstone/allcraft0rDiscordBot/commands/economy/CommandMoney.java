@@ -14,13 +14,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandMoney {
 	
-	public CommandMoney(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
-        	
-        try {
-			UtilsCommands.replyOrSend(String.format("%1$s, tu as actuellement **%2$s** %3$s", user.getAsMention(), money.get(user), Main.getRedstoneEmoji()), event1, event2);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public CommandMoney(User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) throws SQLException {
+
+		UtilsCommands.replyOrSend(String.format("%1$s, tu as actuellement **%2$s** %3$s", user.getAsMention(), money.get(user), Main.getRedstoneEmoji()), event1, event2);
 		
 	}
 
