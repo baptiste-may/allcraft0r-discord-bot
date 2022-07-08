@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.allcraft0rDiscordBot.Main;
 import fr.djredstone.allcraft0rDiscordBot.classes.blacklist;
+import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 import fr.djredstone.allcraft0rDiscordBot.commands.forAll.*;
 import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandDaily;
 import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandDashboard;
@@ -28,6 +29,8 @@ import fr.djredstone.allcraft0rDiscordBot.commands.music.CommandVolume;
 
 public class OnDiscordCommand extends ListenerAdapter {
 
+	private static final String SQLErrorMessage = "Une erreur vient d'apparaître dans la base de donnée !";
+
 	@Override
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 
@@ -46,7 +49,12 @@ public class OnDiscordCommand extends ListenerAdapter {
 				new CommandMoney(event.getUser(), null, event);
 				break;
 			case "daily":
-				new CommandDaily(event.getUser(), null, event);
+				try {
+					new CommandDaily(event.getUser(), null, event);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					UtilsCommands.replyOrSend(SQLErrorMessage, null, event);
+				}
 				break;
 			case "number":
 				new CommandFindNumber(null, event.getUser(), null, event);
@@ -143,7 +151,12 @@ public class OnDiscordCommand extends ListenerAdapter {
 
 			case "daily":
 				if (chekBlacklist(event)) return;
-				new CommandDaily(event.getAuthor(), event, null);
+				try {
+					new CommandDaily(event.getAuthor(), event, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					UtilsCommands.replyOrSend(SQLErrorMessage, event, null);
+				}
 				break;
 
 			case "send":

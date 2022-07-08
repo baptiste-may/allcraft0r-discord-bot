@@ -14,7 +14,7 @@ import fr.djredstone.allcraft0rDiscordBot.Utils;
 
 public class money {
 
-    private static final TextChannel logChannel = Main.getJda().getTextChannelById("877824690452840488");
+    private static final TextChannel logChannel = Main.getJda().getTextChannelById(System.getenv("LOGS_CHANNEL_ID"));
 
     public static int get(User user) throws SQLException {
 
