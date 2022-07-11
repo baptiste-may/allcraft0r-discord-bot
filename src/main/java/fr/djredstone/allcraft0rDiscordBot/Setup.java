@@ -91,28 +91,43 @@ public class Setup implements EventListener {
 
 		// Normal Commands Adds
 		Main.getJda().updateCommands().addCommands(
+				// Staff
+				Commands.slash("ask", "Demande prise en compte"),
+				Commands.slash("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message")),
+				Commands.slash("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message")),
+				Commands.slash("text", "Message personnalisé").addOptions(new OptionData(OptionType.STRING, "text_message", "Message").setRequired(true), new OptionData(OptionType.CHANNEL, "text_channel", "Channel cible")),
+				Commands.slash("fakeban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "Utilisateur cible").setRequired(true), new OptionData(OptionType.STRING, "fakeban_message", "Raison")),
+				Commands.slash("reset-xp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "reset_xp_user", "Utilisateur cible")),
+				Commands.slash("stopP4", "Arrête la partie de puissance 4 en cours"),
+				Commands.slash("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Raison")),
+				Commands.slash("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "unlock_message", "Raison")),
+				Commands.slash("blacklist", "Blacklist un membre").addOptions(new OptionData(OptionType.STRING, "blacklist_action", "Action de la commande").setRequired(true), new OptionData(OptionType.USER, "blacklist_user", "Utilisateur cible").setRequired(true)),
+				// Utils
+				Commands.slash("aide", "Liste des commandos").addOptions(new OptionData(OptionType.STRING, "help_arg", "Type de commande").setRequired(true)),
+				Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)),
+				Commands.slash("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"),
+				Commands.slash("link", "Affiche des liens en rapport à allcraft0r"),
+				// Fun
+				Commands.slash("tank", "AMERICA ! F*CK YEAHH !!"),
+				Commands.slash("eyes", "I'm watching you..."),
+				Commands.slash("8ball", "Seul l'avenir est ici").addOptions(new OptionData(OptionType.STRING, "8ball", "La phrase de l'avenir")),
+				// Economy
+				Commands.slash("money", "Affiche son nombre de redstones"),
+				Commands.slash("dashboard", "Affiche les 10 membres ayant le plus de redstone"),
+				Commands.slash("daily", "Récupère sa redstone quotidienne"),
 				Commands.slash("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)),
 				Commands.slash("slot", "Démarre une partie de machine à sous"),
 				Commands.slash("p4", "Démarre une partie de puissance 4"),
-				Commands.slash("money", "Affiche son nombre de redstones"),
-				Commands.slash("dashboard", "Affiche les 10 membres ayant le plus de redstone"),
-	    		Commands.slash("daily", "Récupère sa redstone quotidienne"),
-	    		Commands.slash("aide", "Liste des commandos").addOptions(new OptionData(OptionType.STRING, "help_arg", "Type de commande").setRequired(true)),
-	    		Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)),
-	    		Commands.slash("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"),
-	    		Commands.slash("link", "Affiche des liens en rapport à allcraft0r"),
-	    		Commands.slash("tank", "AMERICA ! F*CK YEAHH !!"),
-	    		Commands.slash("eyes", "I'm watching you..."),
-				Commands.slash("play", "Démarre une musique depuis le nom de la chanson, ou par son URL").addOptions(new OptionData(OptionType.STRING, "play_search", "Le titre ou l'URL d'une chanson").setRequired(true)),
-				Commands.slash("stop", "Arrête la musique en cours"),
-				Commands.slash("skip", "Passe la musique en cours"),
+				// Music
 				Commands.slash("disconnect", "Se déconnecte du channel"),
-				Commands.slash("pause", "Mette en pause ou remet la musique en cours"),
-				Commands.slash("repeat", "Met ou retire la boucle de la liste"),
 				Commands.slash("now", "Affiche la musique en cours"),
+				Commands.slash("pause", "Mette en pause ou remet la musique en cours"),
+				Commands.slash("play", "Démarre une musique depuis le nom de la chanson, ou par son URL").addOptions(new OptionData(OptionType.STRING, "play_search", "Le titre ou l'URL d'une chanson").setRequired(true)),
 				Commands.slash("queue", "Affiche les musiques de la liste"),
-				Commands.slash("volume", "Modifie le volume de la musique").addOptions(new OptionData(OptionType.INTEGER, "volume", "Le volume soité")),
-				Commands.slash("8ball", "Seul l'avenir est ici").addOptions(new OptionData(OptionType.STRING, "8ball", "La phrase de l'avenir"))
+				Commands.slash("repeat", "Met ou retire la boucle de la liste"),
+				Commands.slash("skip", "Passe la musique en cours"),
+				Commands.slash("stop", "Arrête la musique en cours"),
+				Commands.slash("volume", "Modifie le volume de la musique").addOptions(new OptionData(OptionType.INTEGER, "volume", "Le volume soité"))
 				).queue();
 	    
 	    try {
