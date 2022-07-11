@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.allcraft0rDiscordBot.Main;
 import fr.djredstone.allcraft0rDiscordBot.Setup;
-import fr.djredstone.allcraft0rDiscordBot.classes.blacklist;
 import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 import fr.djredstone.allcraft0rDiscordBot.commands.forAll.*;
 import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandDaily;
@@ -27,22 +26,14 @@ import fr.djredstone.allcraft0rDiscordBot.commands.music.CommandRepeat;
 import fr.djredstone.allcraft0rDiscordBot.commands.music.CommandSkip;
 import fr.djredstone.allcraft0rDiscordBot.commands.music.CommandStop;
 import fr.djredstone.allcraft0rDiscordBot.commands.music.CommandVolume;
+import org.jetbrains.annotations.NotNull;
 
 public class OnDiscordCommand extends ListenerAdapter {
 
 	@Override
-	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+	public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
 
-		try {
-			if (blacklist.contains(event.getUser())) {
-				event.reply("Vous êtes actuellement blacklist !").setEphemeral(true).queue();
-				return;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Setup.DBConnect();
-			return;
-		}
+		if (UtilsCommands.chekBlacklist(null, event)) return;
 
 		try {
 			switch (event.getName().toLowerCase()) {
@@ -125,7 +116,9 @@ public class OnDiscordCommand extends ListenerAdapter {
 	}
 	
 	@Override
-	public void onMessageReceived(MessageReceivedEvent event) {
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+
+		if (UtilsCommands.chekBlacklist(event, null)) return;
 
 		String[] args = event.getMessage().getContentRaw().split("\\s+");
 		
@@ -136,68 +129,55 @@ public class OnDiscordCommand extends ListenerAdapter {
 		try {
 			switch(cmd.toLowerCase()) {
 				case "number":
-					if (chekBlacklist(event)) return;
 					if (args.length > 1) new CommandFindNumber(args[1], event.getAuthor(), event, null);
 					else new CommandFindNumber(null, event.getAuthor(), event, null);
 					break;
 
 				case "slot":
-					if (chekBlacklist(event)) return;
 					new CommandSlot(event, null);
 					break;
 
 				case "money":
-					if (chekBlacklist(event)) return;
 					new CommandMoney(event.getAuthor(), event, null);
 					break;
 
 				case "daily":
-					if (chekBlacklist(event)) return;
 					new CommandDaily(event.getAuthor(), event, null);
 					break;
 
 				case "send":
-					if (chekBlacklist(event)) return;
 					new CommandSend(event.getAuthor(), args[1], event, null);
 					break;
 
 				case "eyes":
-					if (chekBlacklist(event)) return;
 					new CommandEyes(event, null);
 					break;
 
 				case "tank":
-					if (chekBlacklist(event)) return;
 					new CommandTank(event, null);
 					break;
 
 				case "aide":
-					if (chekBlacklist(event)) return;
 					new CommandHelp(args[1], event, null);
 					break;
 
 				case "link":
-					if (chekBlacklist(event)) return;
 					new CommandLink(event, null);
 					break;
 
 				case "ping":
-					if (chekBlacklist(event)) return;
 					new CommandPing(event, null);
 					break;
 
 				case "dashboard":
-					if (chekBlacklist(event)) return;
 					new CommandDashboard(event, null);
 					break;
 
 				case "p4":
-					if (chekBlacklist(event)) return;
 					new CommandP4(event, null);
 					break;
 
 				case "play":
-					if (chekBlacklist(event)) return;
 					if (args.length > 1) {
 						StringBuilder builder = new StringBuilder();
 						for (int i = 1; i < args.length; i++) {
@@ -209,48 +189,39 @@ public class OnDiscordCommand extends ListenerAdapter {
 					break;
 
 				case "stop":
-					if (chekBlacklist(event)) return;
 					new CommandStop(event, null);
 					break;
 
 				case "skip":
-					if (chekBlacklist(event)) return;
 					new CommandSkip(event, null);
 					break;
 
 				case "disconnect":
-					if (chekBlacklist(event)) return;
 					new CommandDisconnect(event, null);
 					break;
 
 				case "pause":
-					if (chekBlacklist(event)) return;
 					new CommandPause(event, null);
 					break;
 
 				case "repeat":
-					if (chekBlacklist(event)) return;
 					new CommandRepeat(event, null);
 					break;
 
 				case "queue":
-					if (chekBlacklist(event)) return;
 					new CommandQueue(event, null);
 					break;
 
 				case "now":
-					if (chekBlacklist(event)) return;
 					new CommandNow(event, null);
 					break;
 
 				case "volume":
-					if (chekBlacklist(event)) return;
 					if (args.length > 1) new CommandVolume(args[1], event, null);
 					else new CommandVolume(null, event, null);
 					break;
 
 				case "8ball":
-					if (chekBlacklist(event)) return;
 					StringBuilder builder = new StringBuilder();
 					for (int i = 1; i < args.length; i++) {
 						builder.append(args[i]).append(" ");
@@ -263,19 +234,5 @@ public class OnDiscordCommand extends ListenerAdapter {
 			e.printStackTrace();
 			UtilsCommands.replyOrSend(UtilsCommands.getSQLErrorMessage(), event, null);
 		}
-	}
-
-	private static boolean chekBlacklist(MessageReceivedEvent event) {
-		try {
-			if (blacklist.contains(event.getAuthor())) {
-				event.getMessage().delete().queue();
-				event.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage("Vous êtes actuellement blacklist !").queue());
-				return true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			Setup.DBConnect();
-		}
-		return false;
 	}
 }

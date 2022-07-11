@@ -3,6 +3,7 @@ package fr.djredstone.allcraft0rDiscordBot.commands;
 import javax.annotation.Nullable;
 
 import java.awt.*;
+import java.sql.SQLException;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -10,6 +11,9 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.ItemComponent;
+
+import fr.djredstone.allcraft0rDiscordBot.Setup;
+import fr.djredstone.allcraft0rDiscordBot.classes.blacklist;
 
 public class UtilsCommands {
 
@@ -61,6 +65,32 @@ public class UtilsCommands {
 		embed.setColor(Color.BLUE);
 		embed.setTitle(String.format("%1$s Musique %1$s", Emoji.fromMarkdown("\uD83C\uDFB6")));
 		return embed;
+	}
+
+	public static boolean chekBlacklist(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+
+		final String message = "Vous êtes actuellement blacklist !";
+
+		try {
+			if(event1 != null) {
+				if (blacklist.contains(event1.getAuthor())) {
+					event1.getMessage().delete().queue();
+					event1.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage(message).queue());
+					return true;
+				}
+			}
+
+			if(event2 != null) {
+				if (blacklist.contains(event2.getUser())) {
+					event2.reply(message).setEphemeral(true).queue();
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Setup.DBConnect();
+		}
+		return true;
 	}
 
 }
