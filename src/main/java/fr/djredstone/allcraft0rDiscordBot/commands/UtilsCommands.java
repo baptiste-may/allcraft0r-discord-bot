@@ -69,22 +69,13 @@ public class UtilsCommands {
 
 	public static boolean chekBlacklist(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 
-		final String message = "Vous êtes actuellement blacklist !";
-
 		try {
 			if(event1 != null) {
-				if (blacklist.contains(event1.getAuthor())) {
-					event1.getMessage().delete().queue();
-					event1.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage(message).queue());
-					return true;
-				}
+				if (blacklist.contains(event1.getAuthor())) return true;
 			}
 
 			if(event2 != null) {
-				if (blacklist.contains(event2.getUser())) {
-					event2.reply(message).setEphemeral(true).queue();
-					return true;
-				}
+				if (blacklist.contains(event2.getUser())) return true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
