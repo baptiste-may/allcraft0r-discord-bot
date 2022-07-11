@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.allcraft0rDiscordBot.Main;
+import fr.djredstone.allcraft0rDiscordBot.Setup;
 import fr.djredstone.allcraft0rDiscordBot.classes.blacklist;
 import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 import fr.djredstone.allcraft0rDiscordBot.commands.forAll.*;
@@ -39,6 +40,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Setup.DBConnect();
 			return;
 		}
 
@@ -118,6 +120,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			UtilsCommands.replyOrSend(UtilsCommands.getSQLErrorMessage(), null, event);
+			Setup.DBConnect();
 		}
 	}
 	
@@ -271,6 +274,7 @@ public class OnDiscordCommand extends ListenerAdapter {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Setup.DBConnect();
 		}
 		return false;
 	}
