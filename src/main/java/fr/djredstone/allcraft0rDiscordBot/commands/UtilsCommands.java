@@ -89,8 +89,9 @@ public class UtilsCommands {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			Setup.DBConnect();
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 }

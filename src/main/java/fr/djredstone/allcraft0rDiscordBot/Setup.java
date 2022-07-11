@@ -91,17 +91,6 @@ public class Setup implements EventListener {
 
 		// Normal Commands Adds
 		Main.getJda().updateCommands().addCommands(
-				// Staff
-				Commands.slash("ask", "Demande prise en compte"),
-				Commands.slash("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message")),
-				Commands.slash("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message")),
-				Commands.slash("text", "Message personnalisé").addOptions(new OptionData(OptionType.STRING, "text_message", "Message").setRequired(true), new OptionData(OptionType.CHANNEL, "text_channel", "Channel cible")),
-				Commands.slash("fakeban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "Utilisateur cible").setRequired(true), new OptionData(OptionType.STRING, "fakeban_message", "Raison")),
-				Commands.slash("reset-xp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "reset_xp_user", "Utilisateur cible")),
-				Commands.slash("stopP4", "Arrête la partie de puissance 4 en cours"),
-				Commands.slash("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Raison")),
-				Commands.slash("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "unlock_message", "Raison")),
-				Commands.slash("blacklist", "Blacklist un membre").addOptions(new OptionData(OptionType.STRING, "blacklist_action", "Action de la commande").setRequired(true), new OptionData(OptionType.USER, "blacklist_user", "Utilisateur cible").setRequired(true)),
 				// Utils
 				Commands.slash("aide", "Liste des commandos").addOptions(new OptionData(OptionType.STRING, "help_arg", "Type de commande").setRequired(true)),
 				Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)),
@@ -129,7 +118,20 @@ public class Setup implements EventListener {
 				Commands.slash("stop", "Arrête la musique en cours"),
 				Commands.slash("volume", "Modifie le volume de la musique").addOptions(new OptionData(OptionType.INTEGER, "volume", "Le volume soité"))
 				).queue();
-	    
+
+		Main.getMee6().updateCommands().addCommands(
+				Commands.slash("ask", "Demande prise en compte"),
+				Commands.slash("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message")),
+				Commands.slash("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message")),
+				Commands.slash("text", "Message personnalisé").addOptions(new OptionData(OptionType.STRING, "text_message", "Message").setRequired(true), new OptionData(OptionType.CHANNEL, "text_channel", "Channel cible")),
+				Commands.slash("ban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "Utilisateur cible").setRequired(true), new OptionData(OptionType.STRING, "fakeban_message", "Raison")),
+				Commands.slash("reset-xp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "reset_xp_user", "Utilisateur cible")),
+				Commands.slash("stopp4", "Arrête la partie de puissance 4 en cours"),
+				Commands.slash("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Raison")),
+				Commands.slash("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "unlock_message", "Raison")),
+				Commands.slash("blacklist", "Blacklist un membre").addOptions(new OptionData(OptionType.STRING, "blacklist_action", "Action de la commande").setRequired(true), new OptionData(OptionType.USER, "blacklist_user", "Utilisateur cible").setRequired(true))
+		).queue();
+
 	    try {
 	    	Main.getJda().awaitReady();
 		} catch (InterruptedException e) {

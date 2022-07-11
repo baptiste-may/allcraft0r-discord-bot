@@ -1,16 +1,18 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.hPrivate;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 
 public class CommandHask {
 	
-	public CommandHask(MessageReceivedEvent event) {
+	public CommandHask(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 		
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle(String.format("  %1$s Message de la hiérarchie %1$s", Emoji.fromMarkdown("⚠️")));
@@ -18,7 +20,7 @@ public class CommandHask {
 		embed.setFooter("Nous vous informerons lorsque nous aurons plus d'informations. " + Emoji.fromMarkdown("\uD83D\uDCC3"));
 		embed.setColor(Color.ORANGE);
 		
-		UtilsCommands.replyOrSend(embed, event, null);
+		UtilsCommands.replyOrSend(embed, event1, event2);
 			
 	}
 

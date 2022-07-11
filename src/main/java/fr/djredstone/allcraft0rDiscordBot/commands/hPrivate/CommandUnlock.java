@@ -1,15 +1,15 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.hPrivate;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import fr.djredstone.allcraft0rDiscordBot.Main;
@@ -17,27 +17,39 @@ import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 
 public class CommandUnlock {
 	
-	public CommandUnlock(MessageReceivedEvent event) {
+	public CommandUnlock(@Nullable TextChannel targetChannel, @Nullable String message, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
 
-		User user = event.getAuthor();
-		Message message = event.getMessage();
-		if(message.getMentions().getChannels().isEmpty()) {
-			UtilsCommands.replyOrSend(String.format("Utilisation : %1$slock <#channel>", Main.getPrefix()), event, null);
+		if(targetChannel == null) {
+			UtilsCommands.replyOrSend(String.format("Utilisation : %1$slock <#channel>", Main.getPrefix()), event1, event2);
 			return;
 		}
-		Guild guild = event.getGuild();
-		GuildChannel channel = message.getMentions().getChannels().get(0);
-		TextChannel channelOriginal = event.getTextChannel();
 
-		channel.getPermissionContainer().upsertPermissionOverride(guild.getPublicRole()).setAllowed(Permission.MESSAGE_SEND).queue();
+		User user = null;
+		Guild guild = null;
+		TextChannel channelOriginal = null;
+		if (event1 != null) {
+			user = event1.getAuthor();
+			guild = event1.getGuild();
+			channelOriginal = event1.getTextChannel();
+		}
+		if (event2 != null) {
+			user = event2.getUser();
+			guild = event2.getGuild();
+			channelOriginal = event2.getTextChannel();
+		}
+		assert user != null;
+		assert guild != null;
+
+		targetChannel.getPermissionContainer().upsertPermissionOverride(guild.getPublicRole()).setAllowed(Permission.MESSAGE_SEND).queue();
 
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle("Ce channel a été unlock " + Emoji.fromMarkdown("✅"));
+		embed.setDescription(message);
 		embed.setAuthor(user.getAsTag(), null, user.getAvatarUrl());
 		embed.setColor(Color.GREEN);
 
-		((TextChannel) channel).sendMessageEmbeds(embed.build()).queue();
-		if(channel != channelOriginal) UtilsCommands.replyOrSend("Le channel a été unlock !", event, null);
+		targetChannel.sendMessageEmbeds(embed.build()).queue();
+		if(targetChannel != channelOriginal) UtilsCommands.replyOrSend("Le channel a été unlock !", event1, event2);
         
 	}
 
