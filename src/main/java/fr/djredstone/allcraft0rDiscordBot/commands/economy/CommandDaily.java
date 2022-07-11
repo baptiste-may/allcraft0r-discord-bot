@@ -33,9 +33,9 @@ public class CommandDaily {
 			if (format.format(System.currentTimeMillis()).equals(lastDate))
 				UtilsCommands.replyOrSend(String.format("Vous avez déjà récupéré votre redstone quotidienne, %1$s", user.getAsMention()), event1, event2);
 			else {
-				preparedStatement = Utils.createPreparedStatement("UPDATE daily WHERE uuid = ? SET last_daily = ?");
-				preparedStatement.setString(1, user.getId());
-				preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+				preparedStatement = Utils.createPreparedStatement("UPDATE daily SET last_daily = ? WHERE uuid = ?");
+				preparedStatement.setString(2, user.getId());
+				preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 
 				preparedStatement.executeUpdate();
 
