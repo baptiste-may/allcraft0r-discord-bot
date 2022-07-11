@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import fr.djredstone.allcraft0rDiscordBot.Main;
-import fr.djredstone.allcraft0rDiscordBot.commands.*;
 import fr.djredstone.allcraft0rDiscordBot.commands.hPrivate.CommandBlacklist;
 import fr.djredstone.allcraft0rDiscordBot.commands.hPrivate.CommandFakeBan;
 import fr.djredstone.allcraft0rDiscordBot.commands.hPrivate.CommandFakeResetXP;
@@ -145,10 +144,7 @@ public class OnDiscordOPCommand extends ListenerAdapter {
 
     private static boolean testPerm(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
         if(event1 != null) {
-            if (!Objects.requireNonNull(event1.getMember()).hasPermission(Permission.NICKNAME_MANAGE)) {
-                UtilsCommands.replyOrSend(Main.getNoPermMessage(), event1, null);
-                return true;
-            }
+            if (!Objects.requireNonNull(event1.getMember()).hasPermission(Permission.NICKNAME_MANAGE)) return true;
         }
 
         if(event2 != null) {
