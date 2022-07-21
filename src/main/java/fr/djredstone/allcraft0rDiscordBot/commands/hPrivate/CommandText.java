@@ -1,42 +1,29 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.hPrivate;
 
-import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.Objects;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandText {
 	
-	public CommandText(String message, @Nullable TextChannel channel, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
-
-		User user = null;
-		if(event1 != null)
-			user = event1.getAuthor();
-
-		if(event2 != null)
-			user = event2.getUser();
-
-		assert user != null;
+	public CommandText(SlashCommandInteractionEvent event) {
 
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle(String.format("  %1$s Message de la hiérarchie %1$s", Emoji.fromMarkdown("⚠️")));
-		embed.setDescription(message);
-		embed.setFooter(" - " + user.getAsTag());
+		embed.setFooter(" - " + event.getUser().getAsTag());
 		embed.setColor(Color.YELLOW);
 
-		if(channel == null) {
-			if(event1 != null)
-				channel = event1.getTextChannel();
-			if(event2 != null)
-				channel = event2.getTextChannel();
-		} else return;
+		if (event.getOption("text") != null) embed.setDescription(Objects.requireNonNull(event.getOption("text")).getAsString());
 
-		channel.sendMessageEmbeds(embed.build()).queue();
+		if(event.getOption("channel") == null) {
+			event.replyEmbeds(embed.build()).queue();
+		} else {
+			Objects.requireNonNull(Objects.requireNonNull(event.getOption("channel")).getAsTextChannel()).sendMessageEmbeds(embed.build()).queue();
+			event.reply("Le message a été envoyé !").setEphemeral(true).queue();
+		}
 		
 	}
 }

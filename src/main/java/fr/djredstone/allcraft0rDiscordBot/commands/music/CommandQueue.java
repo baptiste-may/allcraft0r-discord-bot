@@ -1,47 +1,31 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.music;
 
-import javax.annotation.Nullable;
-
+import java.util.Objects;
 import java.util.Queue;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 import fr.djredstone.allcraft0rDiscordBot.classes.music.GuildMusicManager;
 import fr.djredstone.allcraft0rDiscordBot.classes.music.PlayerManager;
+import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 
 public class CommandQueue {
 
-    public CommandQueue(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+    public CommandQueue(SlashCommandInteractionEvent event) {
 
-        Guild guild;
-        User user;
-        if (event1 != null) {
-            guild = event1.getGuild();
-            user = event1.getAuthor();
-        }
-        else {
-            assert event2 != null;
-            guild = event2.getGuild();
-            user = event2.getUser();
-        }
-        assert guild != null;
-        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(Objects.requireNonNull(event.getGuild()));
         Queue<AudioTrack> queue = musicManager.scheduler.queue;
         synchronized (queue) {
             if (queue.isEmpty()) {
-                EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
+                EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic();
                 embed.setDescription(Emoji.fromMarkdown("❔") + " Il n'y a pas de musique dans la liste");
-                UtilsCommands.replyOrSend(embed, event1, event2);
+                event.replyEmbeds(embed.build()).setEphemeral(true).queue();
             } else {
                 int trackCount = (int) musicManager.scheduler.player.getPlayingTrack().getPosition();
-                EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic(user);
+                EmbedBuilder embed = UtilsCommands.getEmbedBuilderMusic();
                 embed.setDescription(Emoji.fromMarkdown("\uD83D\uDCC3") + " Liste des 10 prochaines musiques :");
                 for (AudioTrack track : queue) {
                     if (trackCount < musicManager.scheduler.player.getPlayingTrack().getPosition() + 10) {
@@ -49,7 +33,7 @@ public class CommandQueue {
                         trackCount++;
                     }
                 }
-                UtilsCommands.replyOrSend(embed, event1, event2);
+                event.replyEmbeds(embed.build()).setEphemeral(true).queue();
             }
         }
     }

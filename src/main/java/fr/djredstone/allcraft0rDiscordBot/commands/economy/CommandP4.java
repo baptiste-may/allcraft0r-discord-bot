@@ -1,6 +1,5 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.economy;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,17 +8,14 @@ import java.util.Objects;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import fr.djredstone.allcraft0rDiscordBot.Main;
-import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 import fr.djredstone.allcraft0rDiscordBot.classes.money;
 
 public class CommandP4 extends ListenerAdapter {
@@ -194,35 +190,23 @@ public class CommandP4 extends ListenerAdapter {
 
 	}
 
-	public CommandP4(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+	public CommandP4(SlashCommandInteractionEvent event) {
 
-		if (event1 == null && event2 == null) return;
+		if (event == null) return;
 
 		if (getGameMessage() != null) {
-			UtilsCommands.replyOrSend("Une partie est déjà en cours !", event1, event2);
+			event.reply("Une partie est déjà en cours !").setEphemeral(true).queue();
 			return;
 		}
 
-		User user;
-		TextChannel textChannel;
-		if (event1 != null) {
-			user = event1.getAuthor();
-			textChannel = event1.getTextChannel();
-		}
-		else {
-			user = event2.getUser();
-			textChannel = event2.getTextChannel();
-		}
-
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setTitle(String.format("**%1$s** commence une partie de puissance 4 !", user.getName()));
+		embed.setTitle(String.format("**%1$s** commence une partie de puissance 4 !", event.getUser().getName()));
 		embed.setDescription(String.format("Clickez sur l'émoji %1$s pour l'affronter !", Emoji.fromMarkdown("⚔️")));
 		embed.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/1200px-Puissance4_01.svg.png");
 		embed.setColor(Color.ORANGE);
 
-		setFirstUser(user);
-		textChannel.sendMessageEmbeds(embed.build()).setActionRow(Button.success("P4_start", Emoji.fromMarkdown("⚔️"))).queue();
-		if (event1 != null) event1.getMessage().delete().queue();
+		setFirstUser(event.getUser());
+		event.replyEmbeds(embed.build()).addActionRow(Button.success("P4_start", Emoji.fromMarkdown("⚔️"))).queue();
 	}
 
 	@Override

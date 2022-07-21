@@ -75,62 +75,21 @@ public class Setup implements EventListener {
 	    Main.getJda().addEventListener(new OnDiscordCommand());
 		Main.getMee6().addEventListener(new OnDiscordOPCommand());
 
-	    Main.getJda().addEventListener(new CommandFindNumber(null, null, null, null));
+	    Main.getJda().addEventListener(new CommandFindNumber(null));
 		try {
-			Main.getJda().addEventListener(new CommandSlot(null, null));
+			Main.getJda().addEventListener(new CommandSlot(null));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
 		}
 		CommandP4.setup();
-		Main.getJda().addEventListener(new CommandP4(null, null));
+		Main.getJda().addEventListener(new CommandP4(null));
 
 		new messageByMinuteTest();
 
 		Main.getJda().addEventListener(new MessageReceivedListener());
 
-		// Normal Commands Adds
-		Main.getJda().updateCommands().addCommands(
-				// Utils
-				Commands.slash("aide", "Liste des commandos").addOptions(new OptionData(OptionType.STRING, "help_arg", "Type de commande").setRequired(true)),
-				Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(new OptionData(OptionType.STRING, "send_message", "Message").setRequired(true)),
-				Commands.slash("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"),
-				Commands.slash("link", "Affiche des liens en rapport à allcraft0r"),
-				// Fun
-				Commands.slash("tank", "AMERICA ! F*CK YEAHH !!"),
-				Commands.slash("eyes", "I'm watching you..."),
-				Commands.slash("8ball", "Seul l'avenir est ici").addOptions(new OptionData(OptionType.STRING, "8ball", "La phrase de l'avenir")),
-				// Economy
-				Commands.slash("money", "Affiche son nombre de redstones"),
-				Commands.slash("dashboard", "Affiche les 10 membres ayant le plus de redstone"),
-				Commands.slash("daily", "Récupère sa redstone quotidienne"),
-				Commands.slash("number", "Démarre une partie de find number").addOptions(new OptionData(OptionType.INTEGER, "nb_max", "Nombre maximum").setRequired(false)),
-				Commands.slash("slot", "Démarre une partie de machine à sous"),
-				Commands.slash("p4", "Démarre une partie de puissance 4"),
-				// Music
-				Commands.slash("disconnect", "Se déconnecte du channel"),
-				Commands.slash("now", "Affiche la musique en cours"),
-				Commands.slash("pause", "Mette en pause ou remet la musique en cours"),
-				Commands.slash("play", "Démarre une musique depuis le nom de la chanson, ou par son URL").addOptions(new OptionData(OptionType.STRING, "play_search", "Le titre ou l'URL d'une chanson").setRequired(true)),
-				Commands.slash("queue", "Affiche les musiques de la liste"),
-				Commands.slash("repeat", "Met ou retire la boucle de la liste"),
-				Commands.slash("skip", "Passe la musique en cours"),
-				Commands.slash("stop", "Arrête la musique en cours"),
-				Commands.slash("volume", "Modifie le volume de la musique").addOptions(new OptionData(OptionType.INTEGER, "volume", "Le volume soité"))
-				).queue();
-
-		Main.getMee6().updateCommands().addCommands(
-				Commands.slash("ask", "Demande prise en compte"),
-				Commands.slash("non", "Demande refusée").addOptions(new OptionData(OptionType.STRING, "non_message", "Message")),
-				Commands.slash("oui", "Demande acceptée").addOptions(new OptionData(OptionType.STRING, "oui_message", "Message")),
-				Commands.slash("text", "Message personnalisé").addOptions(new OptionData(OptionType.STRING, "text_message", "Message").setRequired(true), new OptionData(OptionType.CHANNEL, "text_channel", "Channel cible")),
-				Commands.slash("ban", "Faux message de ban").addOptions(new OptionData(OptionType.USER, "fakeban_user", "Utilisateur cible").setRequired(true), new OptionData(OptionType.STRING, "fakeban_message", "Raison")),
-				Commands.slash("reset-xp", "Faux message de reset d'XP").addOptions(new OptionData(OptionType.USER, "reset_xp_user", "Utilisateur cible")),
-				Commands.slash("stopp4", "Arrête la partie de puissance 4 en cours"),
-				Commands.slash("lock", "Lock un channel").addOptions(new OptionData(OptionType.CHANNEL, "lock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "lock_message", "Raison")),
-				Commands.slash("unlock", "Unlock un channel").addOptions(new OptionData(OptionType.CHANNEL, "unlock_channel", "Channel cible").setRequired(true), new OptionData(OptionType.STRING, "unlock_message", "Raison")),
-				Commands.slash("blacklist", "Blacklist un membre").addOptions(new OptionData(OptionType.STRING, "blacklist_action", "Action de la commande").setRequired(true), new OptionData(OptionType.USER, "blacklist_user", "Utilisateur cible").setRequired(true))
-		).queue();
+		updateCommands();
 
 	    try {
 	    	Main.getJda().awaitReady();
@@ -157,6 +116,58 @@ public class Setup implements EventListener {
 	public static void DBConnect() {
 		if (Main.getDatabaseManager() != null) Main.getDatabaseManager().close();
 		Main.setDatabaseManager(new DatabaseManager(env.get("DB-HOST"), env.get("DB-USER"), env.get("DB-PASSWORD"), env.get("DB-NAME")));
+	}
+
+	private static void updateCommands() {
+
+		final OptionData optionUser = new OptionData(OptionType.USER, "user", "Utilisateur");
+		final OptionData optionChannel = new OptionData(OptionType.CHANNEL, "channel", "Salon");
+		final OptionData optionText = new OptionData(OptionType.STRING, "text", "Texte");
+		final OptionData optionNumber = new OptionData(OptionType.INTEGER, "number", "Nombre");
+
+		// Normal bot
+		Main.getJda().updateCommands().addCommands(
+				// Utils
+				Commands.slash("aide", "Liste des commandos").addOptions(optionText.setRequired(true)),
+				Commands.slash("send", "Envoie un message aux personnes de puissances").addOptions(optionText.setRequired(true)),
+				Commands.slash("ping", "Lance une balle de ping pong, voit en combien de temps je la renvoie"),
+				Commands.slash("link", "Affiche des liens en rapport à allcraft0r"),
+				// Fun
+				Commands.slash("tank", "AMERICA ! F*CK YEAHH !!"),
+				Commands.slash("eyes", "I'm watching you..."),
+				Commands.slash("8ball", "Seul l'avenir est ici").addOptions(optionText.setRequired(true)),
+				// Economy
+				Commands.slash("money", "Affiche son nombre de redstones"),
+				Commands.slash("dashboard", "Affiche les 10 membres ayant le plus de redstone"),
+				Commands.slash("daily", "Récupère sa redstone quotidienne"),
+				Commands.slash("number", "Démarre une partie de find number").addOptions(optionNumber.setRequired(false)),
+				Commands.slash("slot", "Démarre une partie de machine à sous"),
+				Commands.slash("p4", "Démarre une partie de puissance 4"),
+				// Music
+				Commands.slash("disconnect", "Se déconnecte du channel"),
+				Commands.slash("now", "Affiche la musique en cours"),
+				Commands.slash("pause", "Mette en pause ou remet la musique en cours"),
+				Commands.slash("play", "Démarre une musique depuis le nom de la chanson, ou par son URL").addOptions(optionText.setRequired(true)),
+				Commands.slash("queue", "Affiche les musiques de la liste"),
+				Commands.slash("repeat", "Met ou retire la boucle de la liste"),
+				Commands.slash("skip", "Passe la musique en cours"),
+				Commands.slash("stop", "Arrête la musique en cours"),
+				Commands.slash("volume", "Modifie le volume de la musique").addOptions(optionNumber.setRequired(false))
+		).queue();
+
+		// Private bot
+		Main.getMee6().updateCommands().addCommands(
+				Commands.slash("ask", "Demande prise en compte"),
+				Commands.slash("non", "Demande refusée").addOptions(optionText.setRequired(false)),
+				Commands.slash("oui", "Demande acceptée").addOptions(optionText.setRequired(false)),
+				Commands.slash("text", "Message personnalisé").addOptions(optionText.setRequired(true), optionChannel.setRequired(false)),
+				Commands.slash("ban", "Faux message de ban").addOptions(optionUser.setRequired(true), optionText.setRequired(false)),
+				Commands.slash("reset-xp", "Faux message de reset d'XP").addOptions(optionUser.setRequired(false)),
+				Commands.slash("stopp4", "Arrête la partie de puissance 4 en cours"),
+				Commands.slash("lock", "Lock un channel").addOptions(optionChannel.setRequired(true), optionText.setRequired(false)),
+				Commands.slash("unlock", "Unlock un channel").addOptions(optionChannel.setRequired(true), optionText.setRequired(false)),
+				Commands.slash("blacklist", "Blacklist un membre").addOptions(optionText.setRequired(true), optionUser.setRequired(true))
+		).queue();
 	}
 	
 	@Override

@@ -1,19 +1,13 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.economy;
 
-import java.awt.Color;
+import javax.annotation.Nullable;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.annotation.Nullable;
-
-import fr.djredstone.allcraft0rDiscordBot.Main;
-import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
-import fr.djredstone.allcraft0rDiscordBot.classes.money;
-import org.jetbrains.annotations.NotNull;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -22,6 +16,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import fr.djredstone.allcraft0rDiscordBot.Main;
+import fr.djredstone.allcraft0rDiscordBot.classes.money;
+import org.jetbrains.annotations.NotNull;
+
 public class CommandFindNumber extends ListenerAdapter {
 	
 	private static String channelID = null;
@@ -29,53 +27,40 @@ public class CommandFindNumber extends ListenerAdapter {
 	private static final HashMap<User, Integer> coups = new HashMap<>();
 	private static int nbDeBase;
 
-	public CommandFindNumber(@Nullable String option, @Nullable User user, @Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
+	public CommandFindNumber(@Nullable SlashCommandInteractionEvent event) {
 		
-		if(event1 == null && event2 == null) return;
+		if(event == null) return;
 		
 		int max = 1000;
 			
 		if(channelID == null) {
-			
-			if(event2 != null) {
-				try {
-					if(event2.getOption("nb_max") != null) max = (int) Objects.requireNonNull(event2.getOption("nb_max")).getAsLong();
-				} catch (NumberFormatException ignored) {
-				}
-			} else {
-				try {
-					if(option != null) max = Integer.parseInt(option);
-				} catch (NumberFormatException ignored) {
-				}
+
+			try {
+				if(event.getOption("number") != null) max = (int) Objects.requireNonNull(event.getOption("number")).getAsLong();
+			} catch (NumberFormatException ignored) {
 			}
 			
 			if(max < 1000) {
-				UtilsCommands.replyOrSend("Le nombre maximum doit être supérieur à 1000 !", event1, event2);
+				event.reply("Le nombre maximum doit être supérieur à 1000 !").setEphemeral(true).queue();
 				return;
 			}
 			
 			nbDeBase = max;
-			
-			if(event1 != null) {
-				channelID = event1.getChannel().getId();
-			} else {
-				channelID = event2.getChannel().getId();
-			}
+
 			Random random = new Random();
 			randomNB = random.nextInt(max - 1 + 1) + 1;
 			
 			coups.clear();
+			channelID = event.getTextChannel().getId();
 			
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setTitle(String.format("Un nombre aléatoire a été génréré entre 1 et %1$s :game_die:", max));
 			embed.setDescription(String.format("Tout le monde peut chercher mon nombre %1$s", Emoji.fromMarkdown("\uD83D\uDC40")));
-			assert user != null;
-			embed.setFooter("Commandé par " + user.getAsTag(), user.getAvatarUrl());
 			embed.setColor(Color.RED);
 			
-			UtilsCommands.replyOrSend(embed, event1, event2);
+			event.replyEmbeds(embed.build()).queue();
 			
-		}
+		} else event.reply("Une partie est déjà en cours dans ce salon").setEphemeral(true).queue();
 		
 	}
 

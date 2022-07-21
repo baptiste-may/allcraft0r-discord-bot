@@ -16,7 +16,7 @@ import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 
 public class CommandDashboard extends ListenerAdapter {
 
-	public CommandDashboard(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) throws SQLException {
+	public CommandDashboard(SlashCommandInteractionEvent event) throws SQLException {
 
 		final EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle("Dashboard de redstone " + Main.getRedstoneEmoji());
@@ -39,7 +39,7 @@ public class CommandDashboard extends ListenerAdapter {
 		}
 
 		embed.setDescription(stringBuilder);
-		UtilsCommands.replyOrSend(embed, event1, event2);
+		event.replyEmbeds(embed.build()).queue();
 
 	}
 }

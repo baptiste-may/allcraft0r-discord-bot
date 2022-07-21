@@ -38,6 +38,22 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+def targetJavaVersion = 16
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
 jar {
     manifest{
         attributes 'Class-Path': '/libs/allcraft0r-discord-bot-1.0.jar', 'Main-Class': 'fr.djredstone.allcraft0rDiscordBot.Main'

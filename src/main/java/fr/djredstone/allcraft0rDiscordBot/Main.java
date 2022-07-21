@@ -8,9 +8,6 @@ import net.dv8tion.jda.api.entities.User;
 
 public class Main {
 
-	private static final String prefix = "!";
-	public static String getPrefix() { return prefix; }
-
 	private static final String noPermMessage = "Vous n'êtes pas une personne de puissance.";
 	public static String getNoPermMessage() { return noPermMessage; }
 

@@ -1,6 +1,5 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.economy;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -10,12 +9,10 @@ import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import fr.djredstone.allcraft0rDiscordBot.Main;
-import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 import fr.djredstone.allcraft0rDiscordBot.classes.money;
 
 public class CommandSlot extends ListenerAdapter {
@@ -23,15 +20,11 @@ public class CommandSlot extends ListenerAdapter {
 	private static final int max = 125;
 	private static final int min = 75;
 
-	public CommandSlot(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) throws SQLException {
+	public CommandSlot(SlashCommandInteractionEvent event) throws SQLException {
 		
-		if (event1 == null && event2 == null) return;
+		if (event == null) return;
 
-		User user;
-		if (event1 != null) user = event1.getAuthor();
-		else user = event2.getUser();
-
-		final int userMoney = money.get(user);
+		final int userMoney = money.get(event.getUser());
 
 		if (50 < userMoney) {
 
@@ -39,27 +32,27 @@ public class CommandSlot extends ListenerAdapter {
 
 				int randomNB = (int) Math.round(Math.random()*(max-min+1)+min);
 
-				money.add(user, randomNB);
+				money.add(event.getUser(), randomNB);
 
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
-				embed.setDescription(String.format("Bravo %1$s ! Tu as gagner une mise est de **%2$s** %3$s !", Objects.requireNonNull(user).getAsMention(), randomNB, Main.getRedstoneEmoji()));
+				embed.setDescription(String.format("Bravo %1$s ! Tu as gagner une mise est de **%2$s** %3$s !", event.getUser().getAsMention(), randomNB, Main.getRedstoneEmoji()));
 				embed.setColor(Color.GREEN);
 
-				UtilsCommands.replyOrSend(embed, event1, event2, Button.primary("slot_replay", "♻️ Rejouer"));
+				event.replyEmbeds(embed.build()).addActionRow(Button.primary("slot_replay", "♻️ Rejouer")).setEphemeral(true).queue();
 
 			} else {
-				money.remove(user, 50);
+				money.remove(event.getUser(), 50);
 
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setTitle(String.format("%1$s Machine à sous %1$s", Emoji.fromMarkdown("\uD83C\uDF40")));
-				embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50** %2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
+				embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50** %2$s !", event.getUser().getAsMention(), Main.getRedstoneEmoji()));
 				embed.setColor(Color.RED);
 
-				UtilsCommands.replyOrSend(embed, event1, event2, Button.primary("slot_replay", "♻️ Rejouer"));
+				event.replyEmbeds(embed.build()).addActionRow(Button.primary("slot_replay", "♻️ Rejouer")).setEphemeral(true).queue();
 			}
 
-		} else UtilsCommands.replyOrSend(String.format("%1$s, tu n'as pas assez de %2$s !", user.getAsMention(), Main.getRedstoneEmoji()), event1, event2);
+		} else event.reply(String.format("%1$s, tu n'as pas assez de %2$s !", event.getUser().getAsMention(), Main.getRedstoneEmoji())).setEphemeral(true).queue();
 	}
 
 	public void onButtonInteraction(ButtonInteractionEvent event) {
@@ -93,7 +86,7 @@ public class CommandSlot extends ListenerAdapter {
 					embed.setDescription(String.format("Bravo %1$s ! Tu as gagner une mise est de **%2$s** %3$s !", Objects.requireNonNull(user).getAsMention(), randomNB, Main.getRedstoneEmoji()));
 					embed.setColor(Color.GREEN);
 
-					event.replyEmbeds(embed.build()).addActionRow(Button.primary("slot_replay", "♻️ Rejouer")).queue();
+					event.replyEmbeds(embed.build()).setEphemeral(true).addActionRow(Button.primary("slot_replay", "♻️ Rejouer")).queue();
 
 				} else {
 					try {
@@ -108,10 +101,10 @@ public class CommandSlot extends ListenerAdapter {
 					embed.setDescription(String.format("Dommage ! %1$s, tu viens de perdre la mise de **50** %2$s !", Objects.requireNonNull(user).getAsMention(), Main.getRedstoneEmoji()));
 					embed.setColor(Color.RED);
 
-					event.replyEmbeds(embed.build()).addActionRow(Button.primary("slot_replay", "♻️ Rejouer")).queue();
+					event.replyEmbeds(embed.build()).setEphemeral(true).addActionRow(Button.primary("slot_replay", "♻️ Rejouer")).queue();
 				}
 
-			} else event.reply(String.format("%1$s, tu n'as pas assez de %2$s !", user.getAsMention(), Main.getRedstoneEmoji())).queue();
+			} else event.reply(String.format("%1$s, tu n'as pas assez de %2$s !", user.getAsMention(), Main.getRedstoneEmoji())).setEphemeral(true).queue();
 		}
 	}
 }

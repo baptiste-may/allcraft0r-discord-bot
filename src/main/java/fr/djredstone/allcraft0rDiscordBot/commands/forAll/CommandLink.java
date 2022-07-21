@@ -1,35 +1,16 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.forAll;
 
-import javax.annotation.Nullable;
-
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class CommandLink {
 	
-	public CommandLink(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2) {
-			
-		if(event1 != null) {
-	   		
-			event1.getChannel().sendMessage("Voici plusieurs lien en rapport avec allcraft0r :").setActionRow(
-					Button.link("https://www.youtube.com/channel/UCY8ryk_01LytUhgfA5X3vFg", "Chaîne Youtube de allcraft0r"),
-					Button.link("https://www.youtube.com/channel/UCQH2Kxrr6Y68ZcBWfJdtZ6A", "Chaîne Youtube Best Of Discord"),
-					Button.link("https://twitter.com/bestOfAllcraft?s=09", "Compte Twitter Best of Discord")
-					).queue();
-	   		event1.getChannel().sendTyping().queue();
-	   		event1.getMessage().delete().queue();
-	   		
-	    	}
-	   	
-	   	if(event2 != null) {
-	   		
-	   		event2.reply("Voici plusieurs lien en rapport avec allcraft0r :").addActionRow(
-					Button.link("https://www.youtube.com/channel/UCY8ryk_01LytUhgfA5X3vFg", "Chaîne Youtube de allcraft0r"),
-					Button.link("https://www.youtube.com/channel/UCQH2Kxrr6Y68ZcBWfJdtZ6A", "Chaîne Youtube Best Of Discord"),
-					Button.link("https://twitter.com/bestOfAllcraft?s=09", "Compte Twitter Best of Discord")
-					).queue();
-	   		
-	   	}
+	public CommandLink(SlashCommandInteractionEvent event) {
+
+		event.reply("Voici plusieurs lien en rapport avec allcraft0r :").addActionRow(
+				Button.link("https://www.youtube.com/channel/UCY8ryk_01LytUhgfA5X3vFg", "Chaîne Youtube de allcraft0r"),
+				Button.link("https://www.youtube.com/channel/UCQH2Kxrr6Y68ZcBWfJdtZ6A", "Chaîne Youtube Best Of Discord"),
+				Button.link("https://twitter.com/bestOfAllcraft?s=09", "Compte Twitter Best of Discord")
+		).setEphemeral(true).queue();
 	}
 }

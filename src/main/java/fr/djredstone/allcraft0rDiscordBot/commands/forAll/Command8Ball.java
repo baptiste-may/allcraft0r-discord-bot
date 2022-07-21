@@ -1,19 +1,14 @@
 package fr.djredstone.allcraft0rDiscordBot.commands.forAll;
 
-import javax.annotation.Nullable;
-
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import fr.djredstone.allcraft0rDiscordBot.commands.UtilsCommands;
 
 public class Command8Ball {
 
@@ -40,22 +35,14 @@ public class Command8Ball {
             "Impossible"
     );
 
-    public Command8Ball(@Nullable MessageReceivedEvent event1, @Nullable SlashCommandInteractionEvent event2, String message) {
-
-        User user;
-        if (event1 != null) user = event1.getAuthor();
-        else {
-            assert event2 != null;
-            user = event2.getUser();
-        }
+    public Command8Ball(SlashCommandInteractionEvent event) {
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(String.format("%1$s 8 Ball %1$s", Emoji.fromMarkdown("\uD83D\uDD2E")))
-                .setColor(new Color(170, 8, 239))
-                .addField(String.format("__%1$s__", message), messages.get(new Random().nextInt(messages.size())), true)
-                .setFooter("Commandé par " + user.getAsTag(), user.getAvatarUrl());
+                .addField(String.format("__%1$s__", Objects.requireNonNull(event.getOption("text")).getAsString()), messages.get(new Random().nextInt(messages.size())), true)
+                .setColor(new Color(170, 8, 239));
 
-        UtilsCommands.replyOrSend(embed, event1 ,event2);
+        event.replyEmbeds(embed.build()).queue();
 
     }
 
