@@ -26,7 +26,7 @@ import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandSlot;
 import fr.djredstone.allcraft0rDiscordBot.listener.MessageReceivedListener;
 import fr.djredstone.allcraft0rDiscordBot.listener.OnDiscordCommand;
 import fr.djredstone.allcraft0rDiscordBot.listener.OnDiscordOPCommand;
-import fr.djredstone.allcraft0rDiscordBot.mysql.DatabaseManager;
+import fr.djredstone.allcraft0rDiscordBot.classes.mysql.DatabaseManager;
 import fr.djredstone.allcraft0rDiscordBot.tasks.messageByMinuteTest;
 import org.jetbrains.annotations.NotNull;
 

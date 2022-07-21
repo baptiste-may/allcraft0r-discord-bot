@@ -2,7 +2,7 @@ package fr.djredstone.allcraft0rDiscordBot;
 
 import java.util.HashMap;
 
-import fr.djredstone.allcraft0rDiscordBot.mysql.DatabaseManager;
+import fr.djredstone.allcraft0rDiscordBot.classes.mysql.DatabaseManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 

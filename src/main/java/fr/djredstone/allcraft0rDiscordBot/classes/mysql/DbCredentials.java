@@ -1,4 +1,4 @@
-package fr.djredstone.allcraft0rDiscordBot.mysql;
+package fr.djredstone.allcraft0rDiscordBot.classes.mysql;
 
 public class DbCredentials {
 
