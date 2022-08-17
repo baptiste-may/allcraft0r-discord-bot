@@ -1,6 +1,7 @@
 package fr.djredstone.allcraft0rDiscordBot.listener;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -13,6 +14,8 @@ import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandFindNumber;
 import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandMoney;
 import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandP4;
 import fr.djredstone.allcraft0rDiscordBot.commands.economy.CommandSlot;
+import fr.djredstone.allcraft0rDiscordBot.commands.economy.apero.CommandAperoCreate;
+import fr.djredstone.allcraft0rDiscordBot.commands.economy.apero.CommandAperoStop;
 import fr.djredstone.allcraft0rDiscordBot.commands.forAll.Command8Ball;
 import fr.djredstone.allcraft0rDiscordBot.commands.forAll.CommandEyes;
 import fr.djredstone.allcraft0rDiscordBot.commands.forAll.CommandHelp;
@@ -62,6 +65,12 @@ public class OnDiscordCommand extends ListenerAdapter {
 				case "now" -> new CommandNow(event);
 				case "volume" -> new CommandVolume(event);
 				case "8ball" -> new Command8Ball(event);
+				case "apero" -> {
+					switch (Objects.requireNonNull(event.getSubcommandName()).toLowerCase()) {
+						case "create" -> new CommandAperoCreate(event);
+						case "stop" -> new CommandAperoStop(event);
+					}
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

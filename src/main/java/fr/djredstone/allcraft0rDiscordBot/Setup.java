@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
@@ -143,6 +144,11 @@ public class Setup implements EventListener {
 				Commands.slash("number", "Démarre une partie de find number").addOptions(optionNumber.setRequired(false)),
 				Commands.slash("slot", "Démarre une partie de machine à sous"),
 				Commands.slash("p4", "Démarre une partie de puissance 4"),
+				Commands.slash("apero", "Gére les apéros")
+						.addSubcommands(
+								new SubcommandData("create", "Créer une apéritif").addOptions(optionText.setRequired(false)),
+								new SubcommandData("stop", "Arrête l'apéritif en cours")
+						),
 				// Music
 				Commands.slash("disconnect", "Se déconnecte du channel"),
 				Commands.slash("now", "Affiche la musique en cours"),
